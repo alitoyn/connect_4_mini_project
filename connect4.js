@@ -2,8 +2,6 @@ for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
         const gridPosition = document.getElementById("row-" + i + "-column-" + j);
         //gridPosition.addEventListener("click", positionClick.bind(null, i, j));
-
-
     }
 }
 
