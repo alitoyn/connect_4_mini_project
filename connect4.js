@@ -1,9 +1,6 @@
 for (let i = 0; i < 5; i++) {
     for (let j = 0; j < 7; j++) {
-        document.getElementById("row-" + i + "-column-" + j).innerText = "___"
-            // document.getElementById("row-" + i + "-column-" + j).style = 'justifyContent = space-between'
-
-
+        document.getElementById("row-" + i + "-column-" + j).innerText = "🔵"
     }
 }
 
