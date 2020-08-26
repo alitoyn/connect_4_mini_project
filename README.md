@@ -5,3 +5,10 @@
 - grid lines 
 - place item in clicked space
 
+# UI
+- Move reversal?
+- Score
+- arrow above board
+- confirmation/back button?
+- show user where counter will appear?
+- dynamic board sizes

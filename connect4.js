@@ -20,8 +20,7 @@ const button3 = document.getElementById("button3");
 const button4 = document.getElementById("button4");
 const button5 = document.getElementById("button5");
 const button6 = document.getElementById("button6");
-
-resetButton.addEventListener("click", resetClick);
+button0.addEventListener("click", resetClick);
 resetButton.addEventListener("click", resetClick);
 resetButton.addEventListener("click", resetClick);
 resetButton.addEventListener("click", resetClick);
