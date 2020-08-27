@@ -51,18 +51,6 @@ udpateHTML(board)
 // logic
 
 
-function sumOfCol(col) {
-    let sum = 0;
-    for (let i = 0; i < rows; i++) {
-
-
-    }
-}
-
-
-
-
-
 
 //. button initialiser
 // let buttonRow = document.getElementById('button-row')
