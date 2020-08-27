@@ -1,47 +1,34 @@
-for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < 7; j++) {
-        document.getElementById("row-" + i + "-column-" + j).innerText = "🔵"
-    }
-}
+let rows = 5;
+let cols = 7;
+
+resetBoard(0)
 
 document.getElementById('main').style = ''
 
-function resetClick(event, col) {
-    console.log('clicked')
-    document.getElementById("row-0-column-0").innerText = "🟣"
+function buttonClick(event) {
+    console.log(event.target.id)
+
+    let button = event.target.id
+    button = button[button.length - 1]
+
+    document.getElementById("row-0-column-" + button).innerText = "🟣"
 }
 
-function resetClick1(event, col) {
-    console.log('clicked')
-    document.getElementById("row-0-column-1").innerText = "🟣"
+function resetBoard(event) {
+    if (event !== 0) {
+        console.log(event.target.id)
+    } else {
+        console.log('Initialising Game...')
+    }
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            document.getElementById("row-" + i + "-column-" + j).innerText = "🔵"
+        }
+    }
 }
 
-function resetClick2(event, col) {
-    console.log('clicked')
-    document.getElementById("row-0-column-2").innerText = "🟣"
-}
 
-function resetClick3(event, col) {
-    console.log('clicked')
-    document.getElementById("row-0-column-3").innerText = "🟣"
-}
-
-function resetClick4(event, col) {
-    console.log('clicked')
-    document.getElementById("row-0-column-4").innerText = "🟣"
-}
-
-function resetClick5(event, col) {
-    console.log('clicked')
-    document.getElementById("row-0-column-5").innerText = "🟣"
-}
-
-function resetClick6(event, col) {
-    console.log('clicked')
-    document.getElementById("row-0-column-6").innerText = "🟣"
-}
-
-// Bind the click event for the reset button.
 const button0 = document.getElementById("button0");
 const button1 = document.getElementById("button1");
 const button2 = document.getElementById("button2");
@@ -49,11 +36,13 @@ const button3 = document.getElementById("button3");
 const button4 = document.getElementById("button4");
 const button5 = document.getElementById("button5");
 const button6 = document.getElementById("button6");
+const resetButton = document.getElementById("reset");
 
-button0.addEventListener("click", resetClick);
-button1.addEventListener("click", resetClick1);
-button2.addEventListener("click", resetClick2);
-button3.addEventListener("click", resetClick3);
-button4.addEventListener("click", resetClick4);
-button5.addEventListener("click", resetClick5);
-button6.addEventListener("click", resetClick6);
+button0.addEventListener("click", buttonClick);
+button1.addEventListener("click", buttonClick);
+button2.addEventListener("click", buttonClick);
+button3.addEventListener("click", buttonClick);
+button4.addEventListener("click", buttonClick);
+button5.addEventListener("click", buttonClick);
+button6.addEventListener("click", buttonClick);
+resetButton.addEventListener("click", resetBoard);
