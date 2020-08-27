@@ -1,4 +1,4 @@
-const rows = 15;
+const rows = 5;
 const cols = 7;
 const grid = document.getElementById("grid")
 
