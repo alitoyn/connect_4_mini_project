@@ -1,7 +1,7 @@
 let rows = 5;
 let cols = 7;
 
-resetBoard(0)
+resetBoard(null)
 
 document.getElementById('main').style = ''
 
@@ -15,7 +15,7 @@ function buttonClick(event) {
 }
 
 function resetBoard(event) {
-    if (event !== 0) {
+    if (event !== null) {
         console.log(event.target.id)
     } else {
         console.log('Initialising Game...')
