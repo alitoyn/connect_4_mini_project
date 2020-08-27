@@ -1,8 +1,30 @@
-for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < 7; j++) {
-        document.getElementById("row-" + i + "-column-" + j).innerText = '🔵';
+const rows = 6;
+const cols = 7;
+const grid = document.getElementById("grid")
+
+//. grid initialiser
+for (let i = 0; i < rows; i++) {
+
+    let row = document.createElement("div")
+
+    row.id = "row-" + i
+    row.className = "row"
+
+    document.getElementById("grid").appendChild(row)
+    console.log(row)
+
+    for (let j = 0; j < cols; j++) {
+        console.log(row)
+        let col = document.createElement("div")
+        col.innerText = "🔵"
+        col.className = "col-1"
+        col.id = "row-" + i + "-column-" + j
+        document.getElementById("row-" + i).appendChild(col)
+
+
     }
 }
+
 
 function resetBoard() {
     for (let i = 0; i < 5; i++) {
