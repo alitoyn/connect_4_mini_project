@@ -2,26 +2,67 @@ const rows = 6;
 const cols = 7;
 const grid = document.getElementById("grid")
 
+// board init
+
+function getBoard() {
+    const board = new Array(rows);
+    for (let i = 0; i < rows; i++) {
+        board[i] = new Array(cols);
+        board[i].fill(null)
+    }
+    return board;
+}
+
+let board = getBoard()
+
 
 //. grid initialiser
 for (let i = 0; i < rows; i++) {
     let row = document.createElement("div")
-
     row.id = "row-" + i
     row.className = "row"
-
-    document.getElementById("grid").appendChild(row)
-
+    document.getElementById("grid").prepend(row)
     for (let j = 0; j < cols; j++) {
         let col = document.createElement("div")
-        col.innerText = "🔵"
+            // col.innerText = "🔵"
         col.className = "col-1"
         col.id = "row-" + i + "-column-" + j
         document.getElementById("row-" + i).appendChild(col)
+    }
+}
+
+function udpateHTML(board) {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let col = document.getElementById("row-" + i + "-column-" + j)
+            if (board[i][j] === null) {
+                col.innerText = "⚪"
+            } else if (board[i][j] === 'y') {
+                col.innerText = "🟡"
+            } else {
+                col.innerText = "🔴"
+            }
+        }
+    }
+}
+
+udpateHTML(board)
+
+// logic
+
+
+function sumOfCol(col) {
+    let sum = 0;
+    for (let i = 0; i < rows; i++) {
 
 
     }
 }
+
+
+
+
+
 
 //. button initialiser
 // let buttonRow = document.getElementById('button-row')
