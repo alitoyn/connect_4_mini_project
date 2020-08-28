@@ -29,7 +29,6 @@ for (let i = 0; i < rows; i++) {
 }
 
 function updateHTML(board) {
-    playerCount++;
     console.log(playerCount)
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -61,10 +60,13 @@ function buttonClick(event) {
         for (let i = 0; i < rows; i++) {
             if (board[i][button] === null) {
                 playerCount % 2 === 0. ? board[i][button] = 'y' : board[i][button] = 'r'
+                playerCount++;
+                updateHTML(board)
                 break;
             }
         }
-        updateHTML(board)
+
+
 
 
     }
