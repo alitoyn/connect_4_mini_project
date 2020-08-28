@@ -12,3 +12,4 @@
 - confirmation/back button?
 - show user where counter will appear?
 - dynamic board sizes
+- could have spans with circles inside the divs - this might make them more circular!
