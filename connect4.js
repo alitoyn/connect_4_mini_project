@@ -1,10 +1,9 @@
-
 const rows = 6;
 const cols = 7;
+let playerCount = 0;
 const grid = document.getElementById("grid")
 
-// board init
-
+//. get board, reset or init
 function getBoard() {
     const board = new Array(rows);
     for (let i = 0; i < rows; i++) {
@@ -13,9 +12,6 @@ function getBoard() {
     }
     return board;
 }
-
-let board = getBoard()
-
 
 //. grid initialiser
 for (let i = 0; i < rows; i++) {
@@ -32,7 +28,9 @@ for (let i = 0; i < rows; i++) {
     }
 }
 
-function udpateHTML(board) {
+function updateHTML(board) {
+    playerCount++;
+    console.log(playerCount)
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             let col = document.getElementById("row-" + i + "-column-" + j)
@@ -47,30 +45,8 @@ function udpateHTML(board) {
     }
 }
 
-udpateHTML(board)
-
-// logic
-
-
-
-//. button initialiser
-// let buttonRow = document.getElementById('button-row')
-for (let i = 0; i < cols; i++) {
-    let button = document.createElement("button")
-    button.id = "button" + i
-    button.className = "btn btn-primary btn-lg"
-    button.innerText = "🖖"
-    document.getElementById("button-row").appendChild(button)
-
-} { /* <button type="button" id="button1" class="btn btn-primary btn-lg">🖖</button> */ }
-
-
 function resetBoard() {
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 7; j++) {
-            document.getElementById("row-" + i + "-column-" + j).innerText = '🔵';
-        }
-    }
+    updateHTML(getBoard())
 }
 
 function buttonClick(event) {
@@ -81,20 +57,40 @@ function buttonClick(event) {
         resetBoard()
     } else {
         button = button[button.length - 1]
-        let i = 0
-        document.getElementById("row-" + i + "-column-" + button).innerText = '🟡'
+
+        for (let i = 0; i < rows; i++) {
+            if (board[i][button] === null) {
+                playerCount % 2 === 0. ? board[i][button] = 'y' : board[i][button] = 'r'
+                break;
+            }
+        }
+        updateHTML(board)
+
+
     }
 }
 
-// Bind the click event for the reset button.
+// setup
+let board = getBoard()
+
+updateHTML(board)
+
+for (let i = 0; i < cols; i++) {
+    let button = document.createElement("button")
+    button.id = "button" + i
+    button.className = "btn btn-primary btn-lg"
+    button.innerText = "🖖"
+    document.getElementById("button-row").appendChild(button)
+
+}
+
 for (i = 0; i < cols; i++) {
     let button_grab = document.getElementById("button" + i);
     button_grab.addEventListener("click", buttonClick);
 
 }
 
-
-
-
 const reset = document.getElementById("reset");
 reset.addEventListener("click", buttonClick);
+
+// game logic
