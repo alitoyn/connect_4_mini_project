@@ -108,9 +108,36 @@ function checkRows(row) {
 
     }
 }
-
+// need to check j doesn't go off the board
 function checkDiags(row, column) {
+    pointerRow = row - connectN //set pointer as connectN spaces down to the left
+    pointerCol = column - connectN
 
+    movePointer: for (let i = 0; i < connectN; i++) {
+        if (pointerCol + i < 0 || pointerRow + i < 0) { // if pointer is off the board
+            continue movePointer;
+        } else if (board[pointerRow + i][pointerCol + i] === null) { // if pointer is at an empty slot
+            continue movePointer;
+        }
+
+        for (let j = 1; j < connectN; j++) { //second pointer to check other tokens
+            if (pointerRow + j < 0 || pointerCol + j < 0) { //confirm this pointer is on the board
+                break;
+            }
+            if (board[pointerRow + i][pointerCol + i] === board[pointerRow + j][pointerCol + j]) {
+                if (j === connectN - 1) {
+                    console.log('diag winner', board[row][column])
+                    return;
+                }
+            } else {
+                break;
+            }
+
+        }
+
+
+
+    }
 }
 
 
