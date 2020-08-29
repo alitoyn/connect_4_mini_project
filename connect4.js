@@ -59,8 +59,8 @@ function buttonClick(event) {
                 playerCount % 2 === 0. ? board[i][button] = 'y' : board[i][button] = 'r'
                 playerCount++;
                 updateHTML(board)
-                    //checkWinner()
-                console.log('i have checked winner')
+                checkCols(i, button)
+                checkRows(i, button)
                 break;
             }
         }
@@ -68,40 +68,29 @@ function buttonClick(event) {
     }
 }
 
-function checkWinner() {
-
-    let pointer = 0;
-
-    for (let i = 0; i < cols; i++) {
-        console.log(i)
-        let flag = true;
-        while (flag) {
-            if (board[pointer][i] !== null && board[pointer][i] === board[pointer + 1][i]) {
-                if (board[pointer][i] === board[pointer + 2][i]) { // three in a row 
-                    if (board[pointer][i] === board[pointer + 3][i]) { // four in a row 
-                        console.log(board[pointer][i] + ' is winner')
-                        flag = false; // winner found
-                    } else if (board[pointer + 3][i] !== null) { // update pointer + 3 up
-                        pointer += 3
-                    }
-                } else if (board[pointer + 2][i] !== null) { // update pointer + 2 up
-                    pointer += 2;
-                }
-            } else if (board[pointer + 1][i] !== null) { // update pointer + 1
-                pointer = pointer++;
+function checkCols(row, column) {
+    if (row < connectN - 1) { // leave if too close to bottom of board
+        return;
+    }
+    count = 1
+    for (let i = 1; i < connectN; i++) {
+        if (board[row][column] === board[row - i][column]) {
+            if (i === connectN - 1) {
+                console.log('winner', board[row][column])
             }
-
-            if (pointer > rows - 4 || board[pointer][i] === null) { // check if pointer 
-                flag = false;
-            }
-            // End iteration continue from top
-
-
+            continue;
+        } else {
+            break;
         }
     }
+}
+
+function checkRows(row, column) {
 
 }
-console.log('i have been clicked')
+
+
+// setup
 let board = getBoard()
 
 updateHTML(board)
