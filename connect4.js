@@ -55,16 +55,24 @@ function buttonClick(event) {
     if (button === 'reset') {
         resetBoard()
     } else {
+        if (winner === true) { // if the winner flag as not been reset, don't change anything
+            return;
+        }
         button = button[button.length - 1]
         for (let i = 0; i < rows; i++) {
-            if (board[i][button] === null) {
+            if (board[i][button] === null) { // if the selected cell is empty
+                // put the right token in the cell
                 playerCount % 2 === 0. ? board[i][button] = 'y' : board[i][button] = 'r'
                 playerCount++;
+                // update the board
                 updateHTML(board)
-                checkCols(i, button)
-                checkRows(i)
-                checkDiags_positive()
-                checkDiags_negative()
+
+                // check for a winner
+                if (checkCols(i, button) || checkRows(i) || checkDiags_positive() || checkDiags_negative()) {
+                    winner = true;
+                }
+
+
                 break;
             }
         }
@@ -80,13 +88,14 @@ function checkCols(row, column) {
         if (board[row][column] === board[row - i][column]) {
             if (i === connectN - 1) {
                 console.log('column winner')
-                return;
+                return true;
             }
             continue;
         } else {
             break;
         }
     }
+    return false;
 }
 
 function checkRows(row) {
@@ -99,7 +108,7 @@ function checkRows(row) {
             if (board[row][i] === board[row][j]) { // if it is equal ...
                 if (j === i + connectN - 1) { // check to see if it is the last one in the chain
                     console.log('row winner') // if it it, then we have a winner
-                    return;
+                    return true;
                 }
             } else { // if the if statement failed, move the pointer to the next iteration
                 break;
@@ -108,6 +117,7 @@ function checkRows(row) {
         }
 
     }
+    return false;
 }
 
 function checkDiags_positive() {
@@ -123,7 +133,7 @@ function checkDiags_positive() {
                 if (board[i][j] === board[i + k][j + k]) { // if it is equal ...
                     if (k === connectN - 1) { // check to see if it is the last one in the chain
                         console.log('positive diag winner') // if it it, then we have a winner
-                        return;
+                        return true;
                     }
                 } else { // if the if statement failed, move the pointer to the next iteration
                     break;
@@ -131,6 +141,7 @@ function checkDiags_positive() {
             }
         }
     }
+    return false;
 }
 
 function checkDiags_negative(row, column) {
@@ -146,7 +157,7 @@ function checkDiags_negative(row, column) {
                 if (board[i][j] === board[i - k][j + k]) { // if it is equal ...
                     if (k === connectN - 1) { // check to see if it is the last one in the chain
                         console.log('negative diag winner') // if it it, then we have a winner
-                        return;
+                        return true;
                     }
                 } else { // if the if statement failed, move the pointer to the next iteration
                     break;
@@ -154,6 +165,7 @@ function checkDiags_negative(row, column) {
             }
         }
     }
+    return false;
 }
 
 // setup
