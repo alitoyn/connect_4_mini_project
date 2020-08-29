@@ -3,6 +3,7 @@ const cols = 7;
 let connectN = 4;
 let playerCount = 0;
 const grid = document.getElementById("grid")
+let winner = false;
 
 //. get board, reset or init
 function getBoard() {
@@ -44,6 +45,7 @@ function updateHTML(board) {
 }
 
 function resetBoard() {
+    winner = false;
     board = getBoard()
     updateHTML(board)
 }
@@ -60,7 +62,8 @@ function buttonClick(event) {
                 playerCount++;
                 updateHTML(board)
                 checkCols(i, button)
-                checkRows(i, button)
+                checkRows(i)
+                checkDiags(i, button)
                 break;
             }
         }
@@ -72,11 +75,11 @@ function checkCols(row, column) {
     if (row < connectN - 1) { // leave if too close to bottom of board
         return;
     }
-    count = 1
     for (let i = 1; i < connectN; i++) {
         if (board[row][column] === board[row - i][column]) {
             if (i === connectN - 1) {
-                console.log('winner', board[row][column])
+                console.log('column winner')
+                return;
             }
             continue;
         } else {
@@ -85,7 +88,28 @@ function checkCols(row, column) {
     }
 }
 
-function checkRows(row, column) {
+function checkRows(row) {
+    for (let i = 0; i < cols - connectN + 1; i++) { //looping pointer across column
+        if (board[row][i] === null) { // if the pointer is at a null slot, skip this iteration
+            continue;
+        }
+
+        for (let j = i + 1; j < i + connectN; j++) { // check the next token along as far as the win amount
+            if (board[row][i] === board[row][j]) { // if it is equal ...
+                if (j === i + connectN - 1) { // check to see if it is the last one in the chain
+                    console.log('row winner') // if it it, then we have a winner
+                    return;
+                }
+            } else { // if the if statement failed, move the pointer to the next iteration
+                break;
+            }
+
+        }
+
+    }
+}
+
+function checkDiags(row, column) {
 
 }
 
