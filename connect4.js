@@ -33,7 +33,7 @@ function updateHTML(board) {
         for (let j = 0; j < cols; j++) {
             let col = document.getElementById("row-" + i + "-column-" + j)
             if (board[i][j] === null) {
-                col.innerText = "⚪"
+                col.innerText = "🟣"
             } else if (board[i][j] === 'y') {
                 col.innerText = "🟡"
             } else {
