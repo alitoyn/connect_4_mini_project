@@ -82,7 +82,7 @@ function buttonClick(event) {
 
 function checkCols(row, column) {
     if (row < connectN - 1) { // leave if too close to bottom of board
-        return;
+        return false;
     }
     for (let i = 1; i < connectN; i++) {
         if (board[row][column] === board[row - i][column]) {
@@ -127,7 +127,7 @@ function checkDiags_positive() {
                 continue;
             }
             for (let k = 1; k < connectN; k++) { // check the next token along as far as the win amount
-                if (i + k > rows || j + k > cols) { // check the k pointer is not off the board
+                if (i + k > rows - 1 || j + k > cols - 1) { // check the k pointer is not off the board
                     break;
                 }
                 if (board[i][j] === board[i + k][j + k]) { // if it is equal ...
