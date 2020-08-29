@@ -1,22 +1,32 @@
-#grid {
-    display: grid;
-    grid-column-gap: 50px;
+body {
+    background-color: rgb(131, 42, 131);
 }
 
-.column {
-    width: 100px;
-    height: 100px;
-    margin: 0px;
-    border: 2px black solid;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
+#mainHeading {
+    color: blanchedalmond;
+}
+
+#grid {
+    background-color: darkblue;
+    border-radius: 25px;
+    font-size: 5vw;
 }
 
 .row {
-    width: 800px;
-    margin: 0px auto;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.col-1 {
+    margin-left: 2.5%;
+    margin-right: 2.5%;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+#button-row {
+    justify-content: space-between;
+    margin-left: 5.5%;
+    margin-right: 6%;
 }

@@ -1,0 +1,23 @@
+{
+    "name": "connect_4_mini_project",
+    "version": "1.0.0",
+    "description": "- Create html, css and js files - setup blank grid (put it in a table?) - grid lines  - place item in clicked space",
+    "main": "connect4.js",
+    "dependencies": {
+        "jest": "^26.4.2"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alitoyn/connect_4_mini_project.git"
+    },
+    "author": "Ali Toyn",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/alitoyn/connect_4_mini_project/issues"
+    },
+    "homepage": "https://github.com/alitoyn/connect_4_mini_project#readme"
+}
