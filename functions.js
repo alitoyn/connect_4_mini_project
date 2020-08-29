@@ -114,11 +114,12 @@ function updateHTML(board) {
 }
 
 function resetBoard() {
-    winner = false;
+
     board = getBoard()
     if (winner === true) {
         document.getElementById("winnerText").remove()
     }
+    winner = false;
     updateHTML(board)
 }
 
