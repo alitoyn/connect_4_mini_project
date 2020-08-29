@@ -63,7 +63,8 @@ function buttonClick(event) {
                 updateHTML(board)
                 checkCols(i, button)
                 checkRows(i)
-                checkDiags(i, button)
+                checkDiags_positive()
+                checkDiags_negative()
                 break;
             }
         }
@@ -108,38 +109,52 @@ function checkRows(row) {
 
     }
 }
-// need to check j doesn't go off the board
-function checkDiags(row, column) {
-    pointerRow = row - connectN //set pointer as connectN spaces down to the left
-    pointerCol = column - connectN
 
-    movePointer: for (let i = 0; i < connectN; i++) {
-        if (pointerCol + i < 0 || pointerRow + i < 0) { // if pointer is off the board
-            continue movePointer;
-        } else if (board[pointerRow + i][pointerCol + i] === null) { // if pointer is at an empty slot
-            continue movePointer;
-        }
-
-        for (let j = 1; j < connectN; j++) { //second pointer to check other tokens
-            if (pointerRow + j < 0 || pointerCol + j < 0) { //confirm this pointer is on the board
-                break;
+function checkDiags_positive() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
+            if (board[i][j] === null) {
+                continue;
             }
-            if (board[pointerRow + i][pointerCol + i] === board[pointerRow + j][pointerCol + j]) {
-                if (j === connectN - 1) {
-                    console.log('diag winner', board[row][column])
-                    return;
+            for (let k = 1; k < connectN; k++) { // check the next token along as far as the win amount
+                if (i + k > rows || j + k > cols) { // check the k pointer is not off the board
+                    break;
                 }
-            } else {
-                break;
+                if (board[i][j] === board[i + k][j + k]) { // if it is equal ...
+                    if (k === connectN - 1) { // check to see if it is the last one in the chain
+                        console.log('positive diag winner') // if it it, then we have a winner
+                        return;
+                    }
+                } else { // if the if statement failed, move the pointer to the next iteration
+                    break;
+                }
             }
-
         }
-
-
-
     }
 }
 
+function checkDiags_negative(row, column) {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
+            if (board[i][j] === null) {
+                continue;
+            }
+            for (let k = 1; k < connectN; k++) { // check the next token along as far as the win amount
+                if (i - k < 0 || j + k > cols) { // check the k pointer is not off the board
+                    break;
+                }
+                if (board[i][j] === board[i - k][j + k]) { // if it is equal ...
+                    if (k === connectN - 1) { // check to see if it is the last one in the chain
+                        console.log('negative diag winner') // if it it, then we have a winner
+                        return;
+                    }
+                } else { // if the if statement failed, move the pointer to the next iteration
+                    break;
+                }
+            }
+        }
+    }
+}
 
 // setup
 let board = getBoard()
