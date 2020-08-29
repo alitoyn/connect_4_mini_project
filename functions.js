@@ -116,6 +116,9 @@ function updateHTML(board) {
 function resetBoard() {
     winner = false;
     board = getBoard()
+    if (winner === true) {
+        document.getElementById("winnerText").remove()
+    }
     updateHTML(board)
 }
 
@@ -139,6 +142,7 @@ function buttonClick(event) {
                 // check for a winner
                 if (checkCols(i, button) || checkRows(i) || checkDiags_positive() || checkDiags_negative()) {
                     winner = true;
+                    winnerNotification(board[i][button])
                 }
 
 
@@ -147,6 +151,18 @@ function buttonClick(event) {
         }
 
     }
+}
+
+function winnerNotification(winner) {
+    let banner = document.createElement("h2")
+    let player
+    winner === 'y' ? player = 'yellow' : player = 'red'
+    winner === 'y' ? banner.style.backgroundColor = 'yellow' : banner.style.backgroundColor = 'red'
+    banner.textContent = player + ' is the winner'
+    banner.id = 'winnerText'
+    banner.className = 'text-center'
+    banner.style.backgroundColor =
+        document.getElementById("notification-area").appendChild(banner)
 }
 
 
