@@ -117,7 +117,7 @@ function resetBoard() {
 
     board = getBoard()
     if (winner === true) {
-        document.getElementById("winnerText").remove()
+        document.getElementById('grid').style.backgroundColor = 'darkblue';
     }
     winner = false;
     updateHTML(board)
@@ -159,11 +159,7 @@ function winnerNotification(winner) {
     let player
     winner === 'y' ? player = 'yellow' : player = 'red'
     winner === 'y' ? banner.style.backgroundColor = 'yellow' : banner.style.backgroundColor = 'red'
-    banner.textContent = player + ' is the winner'
-    banner.id = 'winnerText'
-    banner.className = 'text-center'
-    banner.style.backgroundColor =
-        document.getElementById("notification-area").appendChild(banner)
+    document.getElementById('grid').style.backgroundColor = player;
 }
 
 
