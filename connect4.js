@@ -28,21 +28,18 @@ for (let i = 0; i < rows; i++) {
 // setup
 let board = getBoard()
 
+// create row buttons and bind them 
 for (let i = 0; i < cols; i++) {
     $('#button-row').append(
         $('<button />')
         .attr('id', "button" + i)
         .addClass("btn btn-primary btn-lg")
+        .click(buttonClick)
     )
 }
 
+// bind reset buttons
+$('#reset').click(buttonClick)
+
+// push board to html
 updateHTML(board)
-
-for (i = 0; i < cols; i++) {
-    let button_grab = document.getElementById("button" + i);
-    button_grab.addEventListener("click", buttonClick);
-
-}
-
-const reset = document.getElementById("reset");
-reset.addEventListener("click", buttonClick);
