@@ -30,3 +30,10 @@ body {
     margin-left: 5.5%;
     margin-right: 6%;
 }
+
+.score {
+    margin-right: 10%;
+    margin-left: 10%;
+    text-align: center;
+    color: blanchedalmond;
+}
