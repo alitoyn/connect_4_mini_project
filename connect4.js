@@ -2,20 +2,26 @@ const rows = 6;
 const cols = 7;
 let connectN = 4;
 let playerCount = 0;
-const grid = document.getElementById("grid")
+const grid = $("grid")
 let winner = false;
 
 //. grid initialiser
 for (let i = 0; i < rows; i++) {
-    let row = document.createElement("div")
-    row.id = "row-" + i
-    row.className = "row"
-    document.getElementById("grid").prepend(row)
+    elementID_row = "row-" + i
+
+    $('#grid').prepend(
+        $("<div></div>")
+        .addClass("row")
+        .attr('id', elementID_row)
+    )
+
     for (let j = 0; j < cols; j++) {
-        let col = document.createElement("div")
-        col.className = "col-1"
-        col.id = "row-" + i + "-column-" + j
-        document.getElementById("row-" + i).appendChild(col)
+        elementID_col = "row-" + i + "-column-" + j
+        $('#' + elementID_row).append(
+            $('<div></div>')
+            .addClass("col-1")
+            .attr('id', elementID_col)
+        )
     }
 }
 
