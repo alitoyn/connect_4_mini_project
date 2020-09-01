@@ -29,12 +29,11 @@ for (let i = 0; i < rows; i++) {
 let board = getBoard()
 
 for (let i = 0; i < cols; i++) {
-    let button = document.createElement("button")
-    button.id = "button" + i
-    button.className = "btn btn-primary btn-lg"
-        // button.innerText = "🖖"
-    document.getElementById("button-row").appendChild(button)
-
+    $('#button-row').append(
+        $('<button />')
+        .attr('id', "button" + i)
+        .addClass("btn btn-primary btn-lg")
+    )
 }
 
 updateHTML(board)
