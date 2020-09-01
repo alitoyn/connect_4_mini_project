@@ -99,13 +99,12 @@ function checkDiags_negative(row, column) {
 
 
 function updateHTML(board) {
-
     // update buttons with current player token
     for (let i = 0; i < cols; i++) {
-
         let buttonInnerText = playerCount % 2 === 0 ? "🟡" : "🔴"
         $("#button" + i).text(buttonInnerText)
     }
+
     // match the html board to the array
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -122,10 +121,9 @@ function updateHTML(board) {
 }
 
 function resetBoard() {
-
     board = getBoard()
     if (winner === true) {
-        document.getElementById('grid').style.backgroundColor = 'darkblue';
+        $('#grid').css('background-color', 'darkblue')
     }
     winner = false;
     updateHTML(board)
