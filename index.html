@@ -12,14 +12,27 @@
 <body>
     <div class='container '>
         <h1 class="text-center" id='mainHeading'> Connect 4 </h1>
+        <div class='container' id='notification-area'></div>
+
         <div class='container' id="grid">
+
         </div>
 
         <div class="row" id="button-row">
         </div>
         <br>
         <div class=row>
+            <div class='score'>
+                <p>
+                    Yellow: <span id="playerCounter1">0</span>
+                </p>
+            </div>
             <button type="button" id="reset" class="btn btn-danger btn-lg">Reset</button>
+            <div class='score'>
+                <p>
+                    Red: <span id="playerCounter2">0</span>
+                </p>
+            </div>
         </div>
 
     </div>

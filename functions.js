@@ -99,6 +99,13 @@ function checkDiags_negative(row, column) {
 
 
 function updateHTML(board) {
+
+    // update buttons with current player token
+    for (let i = 0; i < cols; i++) {
+        let button = document.getElementById("button" + i)
+        playerCount % 2 === 0 ? button.innerText = "🟡" : button.innerText = "🔴"
+    }
+    // match the html board to the array
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             let col = document.getElementById("row-" + i + "-column-" + j)
@@ -114,8 +121,12 @@ function updateHTML(board) {
 }
 
 function resetBoard() {
-    winner = false;
+
     board = getBoard()
+    if (winner === true) {
+        document.getElementById('grid').style.backgroundColor = 'darkblue';
+    }
+    winner = false;
     updateHTML(board)
 }
 
@@ -139,6 +150,7 @@ function buttonClick(event) {
                 // check for a winner
                 if (checkCols(i, button) || checkRows(i) || checkDiags_positive() || checkDiags_negative()) {
                     winner = true;
+                    winnerNotification(board[i][button])
                 }
 
 
@@ -147,6 +159,14 @@ function buttonClick(event) {
         }
 
     }
+}
+
+function winnerNotification(winner) {
+    let banner = document.createElement("h2")
+    let player
+    winner === 'y' ? player = 'yellow' : player = 'red'
+    winner === 'y' ? banner.style.backgroundColor = 'yellow' : banner.style.backgroundColor = 'red'
+    document.getElementById('grid').style.backgroundColor = player;
 }
 
 

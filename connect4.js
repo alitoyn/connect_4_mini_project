@@ -22,16 +22,16 @@ for (let i = 0; i < rows; i++) {
 // setup
 let board = getBoard()
 
-updateHTML(board)
-
 for (let i = 0; i < cols; i++) {
     let button = document.createElement("button")
     button.id = "button" + i
     button.className = "btn btn-primary btn-lg"
-    button.innerText = "🖖"
+        // button.innerText = "🖖"
     document.getElementById("button-row").appendChild(button)
 
 }
+
+updateHTML(board)
 
 for (i = 0; i < cols; i++) {
     let button_grab = document.getElementById("button" + i);
