@@ -102,19 +102,20 @@ function updateHTML(board) {
 
     // update buttons with current player token
     for (let i = 0; i < cols; i++) {
-        let button = document.getElementById("button" + i)
-        playerCount % 2 === 0 ? button.innerText = "🟡" : button.innerText = "🔴"
+
+        let buttonInnerText = playerCount % 2 === 0 ? "🟡" : "🔴"
+        $("#button" + i).text(buttonInnerText)
     }
     // match the html board to the array
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-            let col = document.getElementById("row-" + i + "-column-" + j)
+
             if (board[i][j] === null) {
-                col.innerText = "🟣"
+                $("#row-" + i + "-column-" + j).text("🟣")
             } else if (board[i][j] === 'y') {
-                col.innerText = "🟡"
+                $("#row-" + i + "-column-" + j).text("🟡")
             } else {
-                col.innerText = "🔴"
+                $("#row-" + i + "-column-" + j).text("🔴")
             }
         }
     }
