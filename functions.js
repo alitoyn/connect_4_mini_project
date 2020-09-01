@@ -151,8 +151,6 @@ function buttonClick(event) {
                     winner = true;
                     winnerNotification(board[i][button])
                 }
-
-
                 break;
             }
         }
@@ -161,11 +159,9 @@ function buttonClick(event) {
 }
 
 function winnerNotification(winner) {
-    let banner = document.createElement("h2")
     let player
     winner === 'y' ? player = 'yellow' : player = 'red'
-    winner === 'y' ? banner.style.backgroundColor = 'yellow' : banner.style.backgroundColor = 'red'
-    document.getElementById('grid').style.backgroundColor = player;
+    $('#grid').css('background-color', player)
 }
 
 
