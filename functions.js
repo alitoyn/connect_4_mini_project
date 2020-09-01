@@ -1,9 +1,9 @@
-function checkCols(row, column) {
-    if (row < connectN - 1) { // leave if too close to bottom of board
+function checkCols(row, column, local_board, connectN) {
+    if (row < connectN - 1) { // leave if too close to bottom of local_board
         return false;
     }
     for (let i = 1; i < connectN; i++) {
-        if (board[row][column] === board[row - i][column]) {
+        if (local_board[row][column] === local_board[row - i][column]) {
             if (i === connectN - 1) {
                 console.log('column winner')
                 return true;
@@ -17,7 +17,7 @@ function checkCols(row, column) {
 }
 
 //. get board, reset or init
-function getBoard() {
+function getBoard(rows, cols) {
     let board = new Array(rows);
     for (let i = 0; i < rows; i++) {
         board[i] = new Array(cols);
@@ -147,7 +147,7 @@ function buttonClick(event) {
                 updateHTML(board)
 
                 // check for a winner
-                if (checkCols(i, button) || checkRows(i) || checkDiags_positive() || checkDiags_negative()) {
+                if (checkCols(i, button, board, connectN) || checkRows(i) || checkDiags_positive() || checkDiags_negative()) {
                     winner = true;
                     winnerNotification(board[i][button])
                 }

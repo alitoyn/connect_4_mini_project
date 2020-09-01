@@ -3,10 +3,6 @@ const { checkCols, getBoard } = require('./functions.js');
 const each = require("jest-each").default;
 
 describe("token in empty board", () => {
-    rows = 6;
-    cols = 7;
-    connectN = 4;
-
 
     let t1_counter = 'y'
     let t2_counter = 'r'
@@ -18,21 +14,20 @@ describe("token in empty board", () => {
 
 
     ]).it("'%s'", (text, counter, expected_output) => {
-
-        let board = getBoard();
+        let rows = 6;
+        let cols = 7;
+        let connectN = 4;
+        let board = getBoard(rows, cols);
         let placedCounter = [0, 0]
         board[0][0] = counter;
-        expect(checkCols(placedCounter[0], placedCounter[1])).toStrictEqual(expected_output);
+
+        expect(checkCols(placedCounter[0], placedCounter[1], board, connectN)).toStrictEqual(expected_output);
 
 
     });
 });
 
 describe("column in empty board", () => {
-    rows = 6;
-    cols = 7;
-    connectN = 4;
-
 
     let expected = true;
     counter1 = 'y'
@@ -43,16 +38,18 @@ describe("column in empty board", () => {
         ["red column in empty board", counter2, expected],
 
     ]).it("'%s'", (text, counter, expected_output) => {
-
-        let board = getBoard();
+        let rows = 6;
+        let cols = 7;
+        let connectN = 4;
+        let board = getBoard(rows, cols);
         board[0][0] = counter
         board[1][0] = counter
         board[2][0] = counter
         board[3][0] = counter
 
-        let placedCounter = [3][0]
+        let placedCounter = [3, 0]
 
-        expect(checkCols(placedCounter[0], placedCounter[1])).toStrictEqual(expected_output);
+        expect(checkCols(placedCounter[0], placedCounter[1], board, connectN)).toStrictEqual(expected_output);
 
     });
 });

@@ -26,7 +26,7 @@ for (let i = 0; i < rows; i++) {
 }
 
 // setup
-let board = getBoard()
+let board = getBoard(rows, cols)
 
 // create row buttons and bind them 
 for (let i = 0; i < cols; i++) {
