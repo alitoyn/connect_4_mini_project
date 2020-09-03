@@ -1,11 +1,18 @@
-function checkCols(row, column, localBoard, connectN) {
-  if (row < connectN - 1) { // leave if too close to bottom of localBoard
+function tokenTooCloseToBottom(row, winCondition) {
+  return row < winCondition - 1;
+}
+
+function pointerEqualToLastCheckpoint(pointer, winCondition) {
+  return pointer === winCondition - 1;
+}
+
+function checkCols(row, column, board, connectN) {
+  if (tokenTooCloseToBottom(row, connectN)) {
     return false;
   }
   for (let i = 1; i < connectN; i++) {
-    if (localBoard[row][column] === localBoard[row - i][column]) {
-      if (i === connectN - 1) {
-        console.log('column winner');
+    if (board[row][column] === board[row - i][column]) {
+      if (pointerEqualToLastCheckpoint(i, connectN)) {
         return true;
       }
       continue;
@@ -16,7 +23,6 @@ function checkCols(row, column, localBoard, connectN) {
   return false;
 }
 
-// . get board, reset or init
 function getBoard(rows, cols) {
   const board = new Array(rows);
   for (let i = 0; i < rows; i++) {
