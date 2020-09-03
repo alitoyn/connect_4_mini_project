@@ -119,13 +119,11 @@ function updateHTML(board) {
   }
 }
 
-function resetBoard() {
-  board = getBoard(rows, cols);
-  if (winner === true) {
-    $('#grid').css('background-color', 'darkblue');
-  }
-  winner = false;
-  updateHTML(board);
+function resetBoard(rows, cols) {
+  const board = getBoard(rows, cols);
+  $('#grid').css('background-color', 'darkblue');
+
+  return board;
 }
 
 function winnerNotification(winner) {
@@ -136,7 +134,10 @@ function winnerNotification(winner) {
 function buttonClick(event) {
   let button = event.target.id;
   if (button === 'reset') {
-    resetBoard();
+    board = resetBoard(rows, cols);
+    console.log(board);
+    updateHTML(board);
+    winner = false;
   } else {
     if (winner === true) { // if the winner flag as not been reset, don't change anything
       return;

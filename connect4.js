@@ -26,7 +26,8 @@ for (let i = 0; i < rows; i++) {
   }
 }
 
-// setup
+// create global board variable
+// needs to be redefined when reset
 // eslint-disable-next-line prefer-const
 let board = getBoard(rows, cols);
 
