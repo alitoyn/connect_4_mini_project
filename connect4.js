@@ -1,9 +1,7 @@
 const rows = 6;
 const cols = 7;
 const connectN = 4;
-// eslint-disable-next-line prefer-const
 let playerCount = 0;
-// eslint-disable-next-line prefer-const
 let winner = false;
 
 // grid initialiser
@@ -30,6 +28,40 @@ for (let i = 0; i < rows; i++) {
 // needs to be redefined when reset
 // eslint-disable-next-line prefer-const
 let board = getBoard(rows, cols);
+
+// event loop
+function buttonClick(event) {
+  let button = event.target.id;
+  if (button === 'reset') {
+    board = resetBoard(rows, cols);
+    updateHTML(board);
+    winner = false;
+  } else {
+    if (winner === true) { // if the winner flag as not been reset, don't change anything
+      return;
+    }
+    button = returnLastChar(button);
+    for (let i = 0; i < rows; i++) {
+      if (board[i][button] === null) { // if the selected cell is empty
+        // put the right token in the cell
+        board[i][button] = playerCount % 2 === 0.0 ? 'y' : 'r';
+        playerCount++;
+        // update the board
+        updateHTML(board);
+        console.log('checking for a winner...');
+        // check for a winner
+        if (checkCols(i, button, board, connectN)
+            || checkRows(i, cols, board, connectN)
+            || checkDiagsPositive()
+            || checkDiagsNegative()) {
+          winner = true;
+          winnerNotification(board[i][button]);
+        }
+        break;
+      }
+    }
+  }
+}
 
 // create row buttons and bind them
 for (let i = 0; i < cols; i++) {

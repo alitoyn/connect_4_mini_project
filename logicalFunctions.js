@@ -119,13 +119,6 @@ function updateHTML(board) {
   }
 }
 
-function resetBoard(rows, cols) {
-  const board = getBoard(rows, cols);
-  $('#grid').css('background-color', 'darkblue');
-
-  return board;
-}
-
 function winnerNotification(winner) {
   const player = winner === 'y' ? 'yellow' : 'red';
   $('#grid').css('background-color', player);
@@ -133,39 +126,6 @@ function winnerNotification(winner) {
 
 function returnLastChar(string) {
   return string[string.length - 1];
-}
-
-function buttonClick(event) {
-  let button = event.target.id;
-  if (button === 'reset') {
-    board = resetBoard(rows, cols);
-    updateHTML(board);
-    winner = false;
-  } else {
-    if (winner === true) { // if the winner flag as not been reset, don't change anything
-      return;
-    }
-    button = returnLastChar(button);
-    for (let i = 0; i < rows; i++) {
-      if (board[i][button] === null) { // if the selected cell is empty
-        // put the right token in the cell
-        board[i][button] = playerCount % 2 === 0.0 ? 'y' : 'r';
-        playerCount++;
-        // update the board
-        updateHTML(board);
-        console.log('checking for a winner...');
-        // check for a winner
-        if (checkCols(i, button, board, connectN)
-          || checkRows(i, cols, board, connectN)
-          || checkDiagsPositive()
-          || checkDiagsNegative()) {
-          winner = true;
-          winnerNotification(board[i][button]);
-        }
-        break;
-      }
-    }
-  }
 }
 
 // eslint-disable-next-line no-global-assign

@@ -1,5 +1,5 @@
 const each = require('jest-each').default;
-const { checkCols, getBoard, checkRows } = require('./functions.js');
+const { checkCols, getBoard, checkRows } = require('./logicalFunctions.js');
 
 describe('token in empty board', () => {
   const t1Counter = 'y';
