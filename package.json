@@ -4,7 +4,8 @@
     "description": "- Create html, css and js files - setup blank grid (put it in a table?) - grid lines  - place item in clicked space",
     "main": "connect4.js",
     "dependencies": {
-        "jest": "^26.4.2"
+        "jest": "^26.4.2",
+        "jest-each": "^26.4.2"
     },
     "devDependencies": {
         "eslint": "^7.8.1",
