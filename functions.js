@@ -164,6 +164,7 @@ function buttonClick(event) {
   }
 }
 
+// eslint-disable-next-line no-global-assign
 module = module || {};
 module.exports = {
   checkCols,

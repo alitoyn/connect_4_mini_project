@@ -15,6 +15,8 @@
         "no-plusplus": "off",
         "no-undef": "off",
         "prefer-template": "off",
-        "no-continue": "off"
+        "no-continue": "off",
+        "no-unused-vars": "off",
+        "no-console": "off"
     }
 }

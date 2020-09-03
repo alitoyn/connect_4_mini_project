@@ -1,7 +1,9 @@
 const rows = 6;
 const cols = 7;
 const connectN = 4;
+// eslint-disable-next-line prefer-const
 let playerCount = 0;
+// eslint-disable-next-line prefer-const
 let winner = false;
 
 // grid initialiser
@@ -25,6 +27,7 @@ for (let i = 0; i < rows; i++) {
 }
 
 // setup
+// eslint-disable-next-line prefer-const
 let board = getBoard(rows, cols);
 
 // create row buttons and bind them
