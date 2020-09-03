@@ -1,9 +1,9 @@
-function checkCols(row, column, local_board, connectN) {
-  if (row < connectN - 1) { // leave if too close to bottom of local_board
+function checkCols(row, column, localBoard, connectN) {
+  if (row < connectN - 1) { // leave if too close to bottom of localBoard
     return false;
   }
   for (let i = 1; i < connectN; i++) {
-    if (local_board[row][column] === local_board[row - i][column]) {
+    if (localBoard[row][column] === localBoard[row - i][column]) {
       if (i === connectN - 1) {
         console.log('column winner');
         return true;
@@ -34,9 +34,10 @@ function checkRows(row, cols, board, connectN) {
       continue;
     }
 
-    for (let j = i + 1; j <= i + connectN; j++) { // check the next token along as far as the win amount
+    // check the next token along as far as the win amount
+    for (let j = i + 1; j <= i + connectN; j++) {
       if (board[row][i] === board[row][j]) { // if it is equal ...
-        console.log(`${j} in a row`);
+        console.log(j + ' in a row');
         if (j === i + connectN - 1) { // check to see if it is the last one in the chain
           console.log('row winner'); // if it it, then we have a winner
           return true;
@@ -49,7 +50,7 @@ function checkRows(row, cols, board, connectN) {
   return false;
 }
 
-function checkDiags_positive() {
+function checkDiagsPositive() {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
@@ -73,7 +74,7 @@ function checkDiags_positive() {
   return false;
 }
 
-function checkDiags_negative(row, column) {
+function checkDiagsNegative(row, column) {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
@@ -127,6 +128,11 @@ function resetBoard() {
   updateHTML(board);
 }
 
+function winnerNotification(winner) {
+  const player = winner === 'y' ? 'yellow' : 'red';
+  $('#grid').css('background-color', player);
+}
+
 function buttonClick(event) {
   let button = event.target.id;
   if (button === 'reset') {
@@ -139,13 +145,16 @@ function buttonClick(event) {
     for (let i = 0; i < rows; i++) {
       if (board[i][button] === null) { // if the selected cell is empty
         // put the right token in the cell
-        playerCount % 2 === 0.0 ? board[i][button] = 'y' : board[i][button] = 'r';
+        board[i][button] = playerCount % 2 === 0.0 ? 'y' : 'r';
         playerCount++;
         // update the board
         updateHTML(board);
         console.log('checking for a winner...');
         // check for a winner
-        if (checkCols(i, button, board, connectN) || checkRows(i, cols, board, connectN) || checkDiags_positive() || checkDiags_negative()) {
+        if (checkCols(i, button, board, connectN)
+          || checkRows(i, cols, board, connectN)
+          || checkDiagsPositive()
+          || checkDiagsNegative()) {
           winner = true;
           winnerNotification(board[i][button]);
         }
@@ -153,12 +162,6 @@ function buttonClick(event) {
       }
     }
   }
-}
-
-function winnerNotification(winner) {
-  let player;
-  winner === 'y' ? player = 'yellow' : player = 'red';
-  $('#grid').css('background-color', player);
 }
 
 module = module || {};
