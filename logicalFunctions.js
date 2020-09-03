@@ -36,20 +36,17 @@ function pointerAtEmptySlot(row, column, board) {
 }
 
 function checkRows(row, cols, board, connectN) {
-  for (let i = 0; i < cols - connectN + 1; i++) { // looping pointer across column
+  for (let i = 0; i < cols - connectN + 1; i++) { // looping pointer across row
     if (pointerAtEmptySlot(row, i, board)) {
       continue;
     }
-
     // check the next token along as far as the win amount
     for (let j = i + 1; j <= i + connectN; j++) {
       if (board[row][i] === board[row][j]) { // if it is equal ...
-        console.log(j + ' in a row');
-        if (j === i + connectN - 1) { // check to see if it is the last one in the chain
-          console.log('row winner'); // if it it, then we have a winner
+        if (pointerEqualToLastCheckpoint(j, i + connectN)) {
           return true;
         }
-      } else { // if the if statement failed, move the pointer to the next iteration
+      } else {
         break;
       }
     }
