@@ -1,5 +1,5 @@
 // check cols
-const { checkCols, getBoard } = require('./functions.js');
+const { checkCols, getBoard, checkRows } = require('./functions.js');
 const each = require("jest-each").default;
 
 describe("token in empty board", () => {
@@ -55,5 +55,34 @@ describe("column in empty board", () => {
 });
 
 // check rows
+
+describe("row in empty board", () => {
+
+    let expected = true;
+    counter1 = 'y'
+    counter2 = 'r'
+
+    each([
+        ["yellow row in empty board", counter1, expected],
+        ["red row in empty board", counter2, expected],
+
+    ]).it("'%s'", (text, counter, expected_output) => {
+        let rows = 6;
+        let cols = 7;
+        let connectN = 4;
+        let board = getBoard(rows, cols);
+
+        board[0][0] = counter
+        board[0][1] = counter
+        board[0][2] = counter
+        board[0][3] = counter
+
+        let placedCounter = [0, 3]
+
+        expect(checkRows(placedCounter[0], placedCounter[1], board, connectN)).toStrictEqual(expected_output);
+
+    });
+});
+
 
 // check diagonals
