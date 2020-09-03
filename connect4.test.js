@@ -1,62 +1,94 @@
-// check cols
-const { checkCols, getBoard } = require('./functions.js');
-const each = require("jest-each").default;
+const each = require('jest-each').default;
+const { checkCols, getBoard, checkRows } = require('./logicalFunctions.js');
 
-describe("token in empty board", () => {
-    rows = 6;
-    cols = 7;
-    connectN = 4;
+describe('token in empty board', () => {
+  const t1Counter = 'y';
+  const t2Counter = 'r';
+  const expected = false;
 
+  each([
+    ['Place yellow in empty board', t1Counter, expected],
+    ['Place red in empty board', t2Counter, expected],
 
-    let t1_counter = 'y'
-    let t2_counter = 'r'
-    let expected = false;
+  ]).it("'%s'", (text, counter, expectedOutput) => {
+    const rows = 6;
+    const cols = 7;
+    const connectN = 4;
+    const board = getBoard(rows, cols);
+    const placedCounter = [0, 0];
+    board[0][0] = counter;
 
-    each([
-        ["Place yellow in empty board", t1_counter, expected],
-        ["Place red in empty board", t2_counter, expected],
-
-
-    ]).it("'%s'", (text, counter, expected_output) => {
-
-        let board = getBoard();
-        let placedCounter = [0, 0]
-        board[0][0] = counter;
-        expect(checkCols(placedCounter[0], placedCounter[1])).toStrictEqual(expected_output);
-
-
-    });
+    expect(
+      checkCols(placedCounter[0],
+        placedCounter[1],
+        board,
+        connectN),
+    )
+      .toStrictEqual(expectedOutput);
+  });
 });
 
-describe("column in empty board", () => {
-    rows = 6;
-    cols = 7;
-    connectN = 4;
+describe('column in empty board', () => {
+  const expected = true;
+  const counter1 = 'y';
+  const counter2 = 'r';
 
+  each([
+    ['yellow column in empty board', counter1, expected],
+    ['red column in empty board', counter2, expected],
 
-    let expected = true;
-    counter1 = 'y'
-    counter2 = 'r'
+  ]).it("'%s'", (text, counter, expectedOutput) => {
+    const rows = 6;
+    const cols = 7;
+    const connectN = 4;
+    const board = getBoard(rows, cols);
+    board[0][0] = counter;
+    board[1][0] = counter;
+    board[2][0] = counter;
+    board[3][0] = counter;
 
-    each([
-        ["yellow column in empty board", counter1, expected],
-        ["red column in empty board", counter2, expected],
+    const placedCounter = [3, 0];
 
-    ]).it("'%s'", (text, counter, expected_output) => {
-
-        let board = getBoard();
-        board[0][0] = counter
-        board[1][0] = counter
-        board[2][0] = counter
-        board[3][0] = counter
-
-        let placedCounter = [3][0]
-
-        expect(checkCols(placedCounter[0], placedCounter[1])).toStrictEqual(expected_output);
-
-    });
+    expect(
+      checkCols(placedCounter[0],
+        placedCounter[1],
+        board,
+        connectN),
+    )
+      .toStrictEqual(expectedOutput);
+  });
 });
 
 // check rows
 
-// check diagonals
+describe('row in empty board', () => {
+  const expected = true;
+  counter1 = 'y';
+  counter2 = 'r';
+
+  each([
+    ['yellow row in empty board', counter1, expected],
+    ['red row in empty board', counter2, expected],
+
+  ]).it("'%s'", (text, counter, expectedOutput) => {
+    const rows = 6;
+    const cols = 7;
+    const connectN = 4;
+    const board = getBoard(rows, cols);
+
+    board[0][0] = counter;
+    board[0][1] = counter;
+    board[0][2] = counter;
+    board[0][3] = counter;
+
+    const placedCounter = [0, 3];
+
+    expect(
+      checkRows(placedCounter[0],
+        placedCounter[1],
+        board,
+        connectN),
+    )
+      .toStrictEqual(expectedOutput);
+  });
+});

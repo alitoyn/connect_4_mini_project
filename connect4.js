@@ -1,45 +1,80 @@
 const rows = 6;
 const cols = 7;
-let connectN = 4;
+const connectN = 4;
 let playerCount = 0;
-const grid = $("grid")
 let winner = false;
 
-//. grid initialiser
+// grid initialiser
 for (let i = 0; i < rows; i++) {
-    elementID_row = "row-" + i
+  elementIDRow = 'row-' + i;
 
-    $('#grid').prepend(
-        $("<div></div>")
-        .addClass("row")
-        .attr('id', elementID_row)
-    )
+  $('#grid').prepend(
+    $('<div></div>')
+      .addClass('row')
+      .attr('id', elementIDRow),
+  );
 
-    for (let j = 0; j < cols; j++) {
-        elementID_col = "row-" + i + "-column-" + j
-        $('#' + elementID_row).append(
-            $('<div></div>')
-            .addClass("col-1")
-            .attr('id', elementID_col)
-        )
-    }
+  for (let j = 0; j < cols; j++) {
+    elementIDCol = 'row-' + i + '-column-' + j;
+    $('#' + elementIDRow).append(
+      $('<div></div>')
+        .addClass('col-1')
+        .attr('id', elementIDCol),
+    );
+  }
 }
 
-// setup
-let board = getBoard()
+// create global board variable
+// needs to be redefined when reset
+// eslint-disable-next-line prefer-const
+let board = getBoard(rows, cols);
 
-// create row buttons and bind them 
+// event loop
+function buttonClick(event) {
+  let button = event.target.id;
+  if (button === 'reset') {
+    board = resetBoard(rows, cols);
+    updateHTML(board);
+    winner = false;
+  } else {
+    if (winner === true) { // if the winner flag as not been reset, don't change anything
+      return;
+    }
+    button = returnLastChar(button);
+    for (let i = 0; i < rows; i++) {
+      if (board[i][button] === null) { // if the selected cell is empty
+        // put the right token in the cell
+        board[i][button] = playerCount % 2 === 0.0 ? 'y' : 'r';
+        playerCount++;
+        // update the board
+        updateHTML(board);
+        console.log('checking for a winner...');
+        // check for a winner
+        if (checkCols(i, button, board, connectN)
+            || checkRows(i, cols, board, connectN)
+            || checkDiagsPositive()
+            || checkDiagsNegative()) {
+          winner = true;
+          winnerNotification(board[i][button]);
+        }
+        break;
+      }
+    }
+  }
+}
+
+// create row buttons and bind them
 for (let i = 0; i < cols; i++) {
-    $('#button-row').append(
-        $('<button />')
-        .attr('id', "button" + i)
-        .addClass("btn btn-primary btn-lg")
-        .click(buttonClick)
-    )
+  $('#button-row').append(
+    $('<button />')
+      .attr('id', 'button' + i)
+      .addClass('btn btn-primary btn-lg')
+      .click(buttonClick),
+  );
 }
 
 // bind reset buttons
-$('#reset').click(buttonClick)
+$('#reset').click(buttonClick);
 
 // push board to html
-updateHTML(board)
+updateHTML(board);
