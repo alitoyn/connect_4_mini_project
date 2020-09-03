@@ -15,7 +15,6 @@ function checkCols(row, column, board, connectN) {
       if (pointerEqualToLastCheckpoint(i, connectN)) {
         return true;
       }
-      continue;
     } else {
       break;
     }
@@ -32,11 +31,13 @@ function getBoard(rows, cols) {
   return board;
 }
 
+function pointerAtEmptySlot(row, column, board) {
+  return board[row][column] === null;
+}
+
 function checkRows(row, cols, board, connectN) {
-  console.log('row checking...');
   for (let i = 0; i < cols - connectN + 1; i++) { // looping pointer across column
-    if (board[row][i] === null) { // if the pointer is at a null slot, skip this iteration
-      console.log('was null');
+    if (pointerAtEmptySlot(row, i, board)) {
       continue;
     }
 
