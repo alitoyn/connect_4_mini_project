@@ -131,18 +131,21 @@ function winnerNotification(winner) {
   $('#grid').css('background-color', player);
 }
 
+function returnLastChar(string) {
+  return string[string.length - 1];
+}
+
 function buttonClick(event) {
   let button = event.target.id;
   if (button === 'reset') {
     board = resetBoard(rows, cols);
-    console.log(board);
     updateHTML(board);
     winner = false;
   } else {
     if (winner === true) { // if the winner flag as not been reset, don't change anything
       return;
     }
-    button = button[button.length - 1];
+    button = returnLastChar(button);
     for (let i = 0; i < rows; i++) {
       if (board[i][button] === null) { // if the selected cell is empty
         // put the right token in the cell
