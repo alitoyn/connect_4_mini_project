@@ -5,9 +5,17 @@ function resetBoard(rows, cols) {
   return board;
 }
 
+function createToast(headerText, bodyText) {
+  $('.toast-header').text(headerText);
+  $('.toast-body').text(bodyText);
+  $(document).ready(() => {
+    $('.toast').toast('show');
+  });
+}
+
 function winnerNotification(winner) {
   const player = winner === 'y' ? 'yellow' : 'red';
-  $('#grid').css('background-color', player);
+  createToast('Winner!', player + ' is the winner!')
 }
 
 function updateHTML(board) {
@@ -30,3 +38,4 @@ function updateHTML(board) {
     }
   }
 }
+

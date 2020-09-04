@@ -38,6 +38,7 @@ function buttonClick(event) {
     winner = false;
   } else {
     if (winner === true) { // if the winner flag as not been reset, don't change anything
+      createToast('Game Over', 'Please press reset to continue...');
       return;
     }
     button = returnLastChar(button);
