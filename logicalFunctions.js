@@ -116,13 +116,13 @@ function returnLastChar(string) {
   return string[string.length - 1];
 }
 
-// eslint-disable-next-line no-global-assign
-module = module || {};
-module.exports = {
-  checkCols,
-  getBoard,
-  checkRows,
-  checkDiagsPositive,
-  checkDiagsNegative,
-  checkWinner,
-};
+if (typeof module !== 'undefined') {
+  module.exports = {
+    checkCols,
+    getBoard,
+    checkRows,
+    checkDiagsPositive,
+    checkDiagsNegative,
+    checkWinner,
+  };
+}
