@@ -102,6 +102,16 @@ function checkDiagsNegative(rows, cols, board, winCondition) {
   return false;
 }
 
+function checkWinner(placedTokenRow, placedTokenCol, board, winCondition) {
+  const cols = board[0].length;
+  const rows = board.length;
+
+  return checkCols(placedTokenRow, placedTokenCol, board, winCondition)
+  || checkRows(placedTokenRow, cols, board, winCondition)
+  || checkDiagsPositive(rows, cols, board, winCondition)
+  || checkDiagsNegative(rows, cols, board, winCondition);
+}
+
 function returnLastChar(string) {
   return string[string.length - 1];
 }
@@ -114,4 +124,5 @@ module.exports = {
   checkRows,
   checkDiagsPositive,
   checkDiagsNegative,
+  checkWinner,
 };
