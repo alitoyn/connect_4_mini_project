@@ -1,5 +1,8 @@
 const each = require('jest-each').default;
-const { checkCols, getBoard, checkRows } = require('./logicalFunctions.js');
+const {
+  checkCols, getBoard, checkRows,
+  checkDiagsPositive, checkDiagsNegative,
+} = require('./logicalFunctions.js');
 
 describe('token in empty board', () => {
   const t1Counter = 'y';
@@ -59,12 +62,10 @@ describe('column in empty board', () => {
   });
 });
 
-// check rows
-
 describe('row in empty board', () => {
   const expected = true;
-  counter1 = 'y';
-  counter2 = 'r';
+  const counter1 = 'y';
+  const counter2 = 'r';
 
   each([
     ['yellow row in empty board', counter1, expected],
@@ -85,10 +86,70 @@ describe('row in empty board', () => {
 
     expect(
       checkRows(placedCounter[0],
-        placedCounter[1],
+        cols,
         board,
         connectN),
     )
-      .toStrictEqual(expectedOutput);
+      .toBe(expectedOutput);
+  });
+});
+
+describe('positive diagonal in empty board', () => {
+  const expected = true;
+  const counter1 = 'y';
+  const counter2 = 'r';
+
+  each([
+    ['yellow positive diagonal in empty board', counter1, expected],
+    ['red positive diagonal in empty board', counter2, expected],
+
+  ]).it("'%s'", (text, counter, expectedOutput) => {
+    const rows = 6;
+    const cols = 7;
+    const connectN = 4;
+    const board = getBoard(rows, cols);
+
+    board[0][0] = counter;
+    board[1][1] = counter;
+    board[2][2] = counter;
+    board[3][3] = counter;
+
+    expect(
+      checkDiagsPositive(rows,
+        cols,
+        board,
+        connectN),
+    )
+      .toBe(expectedOutput);
+  });
+});
+
+describe('negative diagonal in empty board', () => {
+  const expected = true;
+  const counter1 = 'y';
+  const counter2 = 'r';
+
+  each([
+    ['yellow negative diagonal in empty board', counter1, expected],
+    ['red negative diagonal in empty board', counter2, expected],
+
+  ]).it("'%s'", (text, counter, expectedOutput) => {
+    const rows = 6;
+    const cols = 7;
+    const connectN = 4;
+    const board = getBoard(rows, cols);
+
+    board[0][3] = counter;
+    board[1][2] = counter;
+    board[2][1] = counter;
+    board[3][0] = counter;
+
+    expect(
+      checkDiagsNegative(rows,
+        cols,
+        board,
+        connectN),
+    )
+      .toBe(expectedOutput);
   });
 });
