@@ -54,20 +54,20 @@ function checkRows(row, cols, board, connectN) {
   return false;
 }
 
-function checkDiagsPositive() {
+function checkDiagsPositive(rows, cols, board, winCondition) {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
         continue;
       }
-      for (let k = 1; k < connectN; k++) { // check the next token along as far as the win amount
+      // check the next token along as far as the win amount
+      for (let k = 1; k < winCondition; k++) {
         if (i + k > rows - 1 || j + k > cols - 1) { // check the k pointer is not off the board
           break;
         }
         if (board[i][j] === board[i + k][j + k]) { // if it is equal ...
-          if (k === connectN - 1) { // check to see if it is the last one in the chain
-            console.log('positive diag winner'); // if it it, then we have a winner
-            return true;
+          if (k === winCondition - 1) { // check to see if it is the last one in the chain
+            return true; // if it it, then we have a winner
           }
         } else { // if the if statement failed, move the pointer to the next iteration
           break;
@@ -78,20 +78,20 @@ function checkDiagsPositive() {
   return false;
 }
 
-function checkDiagsNegative(row, column) {
+function checkDiagsNegative(rows, cols, board, winCondition) {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
         continue;
       }
-      for (let k = 1; k < connectN; k++) { // check the next token along as far as the win amount
+      // check the next token along as far as the win amount
+      for (let k = 1; k < winCondition; k++) {
         if (i - k < 0 || j + k > cols) { // check the k pointer is not off the board
           break;
         }
         if (board[i][j] === board[i - k][j + k]) { // if it is equal ...
-          if (k === connectN - 1) { // check to see if it is the last one in the chain
-            console.log('negative diag winner'); // if it it, then we have a winner
-            return true;
+          if (k === winCondition - 1) { // check to see if it is the last one in the chain
+            return true; // if it it, then we have a winner
           }
         } else { // if the if statement failed, move the pointer to the next iteration
           break;
