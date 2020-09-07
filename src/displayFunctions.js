@@ -13,6 +13,11 @@ function createToast(headerText, bodyText) {
   });
 }
 
+function updatePlayerWinCount(gameState, playerScoreKey) {
+  $('#' + playerScoreKey)
+    .text(gameState[playerScoreKey]);
+}
+
 function winnerNotification(winner) {
   const player = winner === 'y' ? 'yellow' : 'red';
   createToast('Winner!', player + ' is the winner!');

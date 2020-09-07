@@ -125,6 +125,15 @@ function getFirstEmptyRow(board, selectedColumn) {
   return null;
 }
 
+function getPlayerScoreKey(gameState, winner) {
+  return winner === 'y' ? 'player1Score' : 'player2Score';
+}
+
+function increasePlayerScore(gameState, playerScoreKey) {
+  const newPlayerScore = gameState[playerScoreKey] + 1;
+  return newPlayerScore;
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,

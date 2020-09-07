@@ -5,6 +5,8 @@ const gameState = {
   turnCount: 0,
   winner: false,
   winCondition: 4,
+  player1Score: 0,
+  player2Score: 0,
 };
 
 // grid initialiser
@@ -38,7 +40,7 @@ function buttonClick(event) {
   if (buttonId === 'reset') {
     gameState.board = resetBoard(gameState.rows, gameState.cols);
     updateHTML(gameState);
-    winner = false;
+    gameState.winner = false;
   } else {
     if (gameState.winner === true) { // if the winner flag as not been reset, don't change anything
       createToast('Game Over', 'Please press reset to continue...');
@@ -53,7 +55,11 @@ function buttonClick(event) {
       gameState.winner = checkWinner(selectedRow, selectedColumn,
         gameState.board, gameState.winCondition);
       if (gameState.winner) {
+        const playerScoreKey = getPlayerScoreKey(gameState,
+          gameState.board[selectedRow][selectedColumn]);
+        gameState[playerScoreKey] = increasePlayerScore(gameState, playerScoreKey);
         winnerNotification(gameState.board[selectedRow][selectedColumn]);
+        updatePlayerWinCount(gameState, playerScoreKey);
       }
     }
   }
