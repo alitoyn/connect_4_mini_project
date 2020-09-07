@@ -61,6 +61,8 @@ function buttonClick(event) {
         winnerNotification(gameState.board[selectedRow][selectedColumn]);
         updatePlayerWinCount(gameState, playerScoreKey);
       }
+    } else {
+      createToast('Column Full', 'Select a different one or reset the game');
     }
   }
 }
