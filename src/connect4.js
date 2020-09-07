@@ -70,7 +70,7 @@ for (let i = 0; i < gameState.cols; i++) {
   $('#button-row').append(
     $('<button />')
       .attr('id', 'button' + i)
-      .addClass('btn btn-primary btn-lg')
+      .addClass('col-1 btn btn-primary btn-lg')
       .click(buttonClick),
   );
 }

@@ -26,9 +26,7 @@ body {
 }
 
 #button-row {
-    justify-content: space-between;
-    margin-left: 5.5%;
-    margin-right: 6%;
+    justify-content: center;
 }
 
 .score {
