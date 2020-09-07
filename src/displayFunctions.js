@@ -18,19 +18,19 @@ function winnerNotification(winner) {
   createToast('Winner!', player + ' is the winner!');
 }
 
-function updateHTML(board, turnCount) {
+function updateHTML(gameState) {
   // update buttons with current player token
-  for (let i = 0; i < cols; i++) {
-    const buttonInnerText = turnCount % 2 === 0 ? '🟡' : '🔴';
+  for (let i = 0; i < gameState.cols; i++) {
+    const buttonInnerText = gameState.turnCount % 2 === 0 ? '🟡' : '🔴';
     $(`#button${i}`).text(buttonInnerText);
   }
 
   // match the html board to the array
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      if (board[i][j] === null) {
+  for (let i = 0; i < gameState.rows; i++) {
+    for (let j = 0; j < gameState.cols; j++) {
+      if (gameState.board[i][j] === null) {
         $(`#row-${i}-column-${j}`).text('🟣');
-      } else if (board[i][j] === 'y') {
+      } else if (gameState.board[i][j] === 'y') {
         $(`#row-${i}-column-${j}`).text('🟡');
       } else {
         $(`#row-${i}-column-${j}`).text('🔴');
