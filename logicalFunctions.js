@@ -116,6 +116,15 @@ function returnLastChar(string) {
   return string[string.length - 1];
 }
 
+function getFirstEmptyRow(board, selectedColumn) {
+  for (let i = 0; i < board.length; i++) {
+    if (board[i][selectedColumn] === null) {
+      return i;
+    }
+  }
+  return null;
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,

@@ -41,19 +41,15 @@ function buttonClick(event) {
       createToast('Game Over', 'Please press reset to continue...');
       return;
     }
-    const selectedColumn = returnLastChar(button);
-    for (let i = 0; i < rows; i++) {
-      if (board[i][selectedColumn] === null) { // if the selected cell is empty
-        // put the right token in the cell
-        board[i][selectedColumn] = turnCount % 2 === 0.0 ? 'y' : 'r';
-        turnCount++;
-        // update the board
-        updateHTML(board);
-        winner = checkWinner(i, selectedColumn, board, connectN);
-        if (winner) {
-          winnerNotification(board[i][selectedColumn]);
-        }
-        break;
+    const selectedColumn = returnLastChar(buttonId);
+    const selectedRow = getFirstEmptyRow(board, selectedColumn);
+    if (selectedRow !== null) {
+      board[selectedRow][selectedColumn] = turnCount % 2 === 0.0 ? 'y' : 'r';
+      turnCount++;
+      updateHTML(board);
+      winner = checkWinner(selectedRow, selectedColumn, board, connectN);
+      if (winner) {
+        winnerNotification(board[selectedRow][selectedColumn]);
       }
     }
   }
