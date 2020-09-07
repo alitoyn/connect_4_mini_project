@@ -31,8 +31,8 @@ let board = getBoard(rows, cols);
 
 // event loop
 function buttonClick(event) {
-  let button = event.target.id;
-  if (button === 'reset') {
+  const buttonId = event.target.id;
+  if (buttonId === 'reset') {
     board = resetBoard(rows, cols);
     updateHTML(board);
     winner = false;
@@ -41,17 +41,17 @@ function buttonClick(event) {
       createToast('Game Over', 'Please press reset to continue...');
       return;
     }
-    button = returnLastChar(button);
+    const selectedColumn = returnLastChar(button);
     for (let i = 0; i < rows; i++) {
-      if (board[i][button] === null) { // if the selected cell is empty
+      if (board[i][selectedColumn] === null) { // if the selected cell is empty
         // put the right token in the cell
-        board[i][button] = turnCount % 2 === 0.0 ? 'y' : 'r';
+        board[i][selectedColumn] = turnCount % 2 === 0.0 ? 'y' : 'r';
         turnCount++;
         // update the board
         updateHTML(board);
-        winner = checkWinner(i, button, board, connectN);
+        winner = checkWinner(i, selectedColumn, board, connectN);
         if (winner) {
-          winnerNotification(board[i][button]);
+          winnerNotification(board[i][selectedColumn]);
         }
         break;
       }
