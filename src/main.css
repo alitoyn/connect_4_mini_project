@@ -9,8 +9,14 @@ body {
 #grid {
     background-color: darkblue;
     border-radius: 25px;
-    font-size: 5vw;
+    font-size: 70px;
 }
+
+@media (max-width: 1500px) {
+    #grid {
+      font-size: 5vw;
+    }
+  }
 
 .row {
     justify-content: center;
