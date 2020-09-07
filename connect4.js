@@ -48,13 +48,8 @@ function buttonClick(event) {
         playerCount++;
         // update the board
         updateHTML(board);
-        console.log('checking for a winner...');
-        // check for a winner
-        if (checkCols(i, button, board, connectN)
-            || checkRows(i, cols, board, connectN)
-            || checkDiagsPositive()
-            || checkDiagsNegative()) {
-          winner = true;
+        winner = checkWinner(i, button, board, connectN);
+        if (winner) {
           winnerNotification(board[i][button]);
         }
         break;

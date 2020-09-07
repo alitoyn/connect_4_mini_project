@@ -1,14 +1,20 @@
-function checkCols(row, column, localBoard, connectN) {
-  if (row < connectN - 1) { // leave if too close to bottom of localBoard
+function tokenTooCloseToBottom(row, winCondition) {
+  return row < winCondition - 1;
+}
+
+function pointerEqualToLastCheckpoint(pointer, winCondition) {
+  return pointer === winCondition - 1;
+}
+
+function checkCols(row, column, board, connectN) {
+  if (tokenTooCloseToBottom(row, connectN)) {
     return false;
   }
   for (let i = 1; i < connectN; i++) {
-    if (localBoard[row][column] === localBoard[row - i][column]) {
-      if (i === connectN - 1) {
-        console.log('column winner');
+    if (board[row][column] === board[row - i][column]) {
+      if (pointerEqualToLastCheckpoint(i, connectN)) {
         return true;
       }
-      continue;
     } else {
       break;
     }
@@ -16,7 +22,6 @@ function checkCols(row, column, localBoard, connectN) {
   return false;
 }
 
-// . get board, reset or init
 function getBoard(rows, cols) {
   const board = new Array(rows);
   for (let i = 0; i < rows; i++) {
@@ -26,23 +31,22 @@ function getBoard(rows, cols) {
   return board;
 }
 
+function pointerAtEmptySlot(row, column, board) {
+  return board[row][column] === null;
+}
+
 function checkRows(row, cols, board, connectN) {
-  console.log('row checking...');
-  for (let i = 0; i < cols - connectN + 1; i++) { // looping pointer across column
-    if (board[row][i] === null) { // if the pointer is at a null slot, skip this iteration
-      console.log('was null');
+  for (let i = 0; i < cols - connectN + 1; i++) { // looping pointer across row
+    if (pointerAtEmptySlot(row, i, board)) {
       continue;
     }
-
     // check the next token along as far as the win amount
     for (let j = i + 1; j <= i + connectN; j++) {
       if (board[row][i] === board[row][j]) { // if it is equal ...
-        console.log(j + ' in a row');
-        if (j === i + connectN - 1) { // check to see if it is the last one in the chain
-          console.log('row winner'); // if it it, then we have a winner
+        if (pointerEqualToLastCheckpoint(j, i + connectN)) {
           return true;
         }
-      } else { // if the if statement failed, move the pointer to the next iteration
+      } else {
         break;
       }
     }
@@ -50,20 +54,20 @@ function checkRows(row, cols, board, connectN) {
   return false;
 }
 
-function checkDiagsPositive() {
+function checkDiagsPositive(rows, cols, board, winCondition) {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
         continue;
       }
-      for (let k = 1; k < connectN; k++) { // check the next token along as far as the win amount
+      // check the next token along as far as the win amount
+      for (let k = 1; k < winCondition; k++) {
         if (i + k > rows - 1 || j + k > cols - 1) { // check the k pointer is not off the board
           break;
         }
         if (board[i][j] === board[i + k][j + k]) { // if it is equal ...
-          if (k === connectN - 1) { // check to see if it is the last one in the chain
-            console.log('positive diag winner'); // if it it, then we have a winner
-            return true;
+          if (k === winCondition - 1) { // check to see if it is the last one in the chain
+            return true; // if it it, then we have a winner
           }
         } else { // if the if statement failed, move the pointer to the next iteration
           break;
@@ -74,20 +78,20 @@ function checkDiagsPositive() {
   return false;
 }
 
-function checkDiagsNegative(row, column) {
+function checkDiagsNegative(rows, cols, board, winCondition) {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
         continue;
       }
-      for (let k = 1; k < connectN; k++) { // check the next token along as far as the win amount
+      // check the next token along as far as the win amount
+      for (let k = 1; k < winCondition; k++) {
         if (i - k < 0 || j + k > cols) { // check the k pointer is not off the board
           break;
         }
         if (board[i][j] === board[i - k][j + k]) { // if it is equal ...
-          if (k === connectN - 1) { // check to see if it is the last one in the chain
-            console.log('negative diag winner'); // if it it, then we have a winner
-            return true;
+          if (k === winCondition - 1) { // check to see if it is the last one in the chain
+            return true; // if it it, then we have a winner
           }
         } else { // if the if statement failed, move the pointer to the next iteration
           break;
@@ -96,16 +100,29 @@ function checkDiagsNegative(row, column) {
     }
   }
   return false;
+}
+
+function checkWinner(placedTokenRow, placedTokenCol, board, winCondition) {
+  const cols = board[0].length;
+  const rows = board.length;
+
+  return checkCols(placedTokenRow, placedTokenCol, board, winCondition)
+  || checkRows(placedTokenRow, cols, board, winCondition)
+  || checkDiagsPositive(rows, cols, board, winCondition)
+  || checkDiagsNegative(rows, cols, board, winCondition);
 }
 
 function returnLastChar(string) {
   return string[string.length - 1];
 }
 
-// eslint-disable-next-line no-global-assign
-module = module || {};
-module.exports = {
-  checkCols,
-  getBoard,
-  checkRows,
-};
+if (typeof module !== 'undefined') {
+  module.exports = {
+    checkCols,
+    getBoard,
+    checkRows,
+    checkDiagsPositive,
+    checkDiagsNegative,
+    checkWinner,
+  };
+}
