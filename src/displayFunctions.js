@@ -15,7 +15,7 @@ function createToast(headerText, bodyText) {
 
 function winnerNotification(winner) {
   const player = winner === 'y' ? 'yellow' : 'red';
-  createToast('Winner!', player + ' is the winner!')
+  createToast('Winner!', player + ' is the winner!');
 }
 
 function updateHTML(board, turnCount) {
@@ -38,4 +38,3 @@ function updateHTML(board, turnCount) {
     }
   }
 }
-

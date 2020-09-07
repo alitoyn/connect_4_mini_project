@@ -1,3 +1,7 @@
+# Connect 4 Mini Project
+This project is a recreation of connect 4 for the Infinity Works Academy
+
+
 # Code Structure
 
 - Create html, css and js files
