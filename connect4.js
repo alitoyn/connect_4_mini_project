@@ -1,7 +1,7 @@
 const rows = 6;
 const cols = 7;
 const connectN = 4;
-let playerCount = 0;
+let turnCount = 0;
 let winner = false;
 
 // grid initialiser
@@ -45,8 +45,8 @@ function buttonClick(event) {
     for (let i = 0; i < rows; i++) {
       if (board[i][button] === null) { // if the selected cell is empty
         // put the right token in the cell
-        board[i][button] = playerCount % 2 === 0.0 ? 'y' : 'r';
-        playerCount++;
+        board[i][button] = turnCount % 2 === 0.0 ? 'y' : 'r';
+        turnCount++;
         // update the board
         updateHTML(board);
         winner = checkWinner(i, button, board, connectN);
@@ -73,4 +73,4 @@ for (let i = 0; i < cols; i++) {
 $('#reset').click(buttonClick);
 
 // push board to html
-updateHTML(board);
+updateHTML(board, turnCount);

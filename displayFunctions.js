@@ -18,10 +18,10 @@ function winnerNotification(winner) {
   createToast('Winner!', player + ' is the winner!')
 }
 
-function updateHTML(board) {
+function updateHTML(board, turnCount) {
   // update buttons with current player token
   for (let i = 0; i < cols; i++) {
-    const buttonInnerText = playerCount % 2 === 0 ? '🟡' : '🔴';
+    const buttonInnerText = turnCount % 2 === 0 ? '🟡' : '🔴';
     $(`#button${i}`).text(buttonInnerText);
   }
 
