@@ -116,6 +116,24 @@ function returnLastChar(string) {
   return string[string.length - 1];
 }
 
+function getFirstEmptyRow(board, selectedColumn) {
+  for (let i = 0; i < board.length; i++) {
+    if (board[i][selectedColumn] === null) {
+      return i;
+    }
+  }
+  return null;
+}
+
+function getPlayerScoreKey(gameState, winner) {
+  return winner === 'y' ? 'player1Score' : 'player2Score';
+}
+
+function increasePlayerScore(gameState, playerScoreKey) {
+  const newPlayerScore = gameState[playerScoreKey] + 1;
+  return newPlayerScore;
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,

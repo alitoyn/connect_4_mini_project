@@ -9,8 +9,14 @@ body {
 #grid {
     background-color: darkblue;
     border-radius: 25px;
-    font-size: 5vw;
+    font-size: 70px;
 }
+
+@media (max-width: 1500px) {
+    #grid {
+      font-size: 5vw;
+    }
+  }
 
 .row {
     justify-content: center;
@@ -26,9 +32,7 @@ body {
 }
 
 #button-row {
-    justify-content: space-between;
-    margin-left: 5.5%;
-    margin-right: 6%;
+    justify-content: center;
 }
 
 .score {
@@ -36,4 +40,15 @@ body {
     margin-left: 10%;
     text-align: center;
     color: blanchedalmond;
+}
+
+.toast {
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+}
+
+.toast-header {
+    text-justify: center;
 }

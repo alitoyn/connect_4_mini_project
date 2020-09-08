@@ -3,7 +3,7 @@ const {
   checkCols, getBoard, checkRows,
   checkDiagsPositive, checkDiagsNegative,
   checkWinner,
-} = require('./logicalFunctions.js');
+} = require('../src/logicalFunctions.js');
 
 describe('token in empty board', () => {
   const t1Counter = 'y';
