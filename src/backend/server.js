@@ -13,6 +13,7 @@ const {
 
 const app = express();
 app.use(express.json());
+app.use(express.static('./src/frontend/'))
 
 const port = 8080;
 const gameState = {
@@ -27,13 +28,6 @@ const gameState = {
 };
 
 gameState.board = getBoard(gameState.rows, gameState.cols);
-
-// endpoints
-// GET, POST /state
-// post requires a body that lists the type of decision
-// e.g. move/reset/newroom?
-// then returns the updated state of the game
-// get gets the current state of the game
 
 app.get('/', (req, res) => {
   res.json('Welcome to connect 4. please read the docs to find the right endpoints').send();
