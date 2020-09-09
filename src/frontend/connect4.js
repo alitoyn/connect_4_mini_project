@@ -28,9 +28,13 @@ function buttonClick(event) {
     const selectedColumn = returnLastChar(buttonId);
     const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
     if (selectedRow !== null) {
+      
       gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0.0 ? 'y' : 'r';
+      
       gameState.turnCount++;
       updateHTML(gameState);
+
+      
       gameState.winner = checkWinner(selectedRow, selectedColumn,
         gameState.board, gameState.winCondition);
       if (gameState.winner) {

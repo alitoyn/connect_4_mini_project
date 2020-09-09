@@ -142,5 +142,8 @@ if (typeof module !== 'undefined') {
     checkDiagsPositive,
     checkDiagsNegative,
     checkWinner,
+    getFirstEmptyRow,
+    getPlayerScoreKey,
+    increasePlayerScore,
   };
 }

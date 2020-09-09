@@ -11,7 +11,6 @@
 - DOM manipulation
 - user input (column, reset etc.)
 
-
 ## Endpoints - multi player
 - POST /createRoom
 - POST, GET /updateState
