@@ -13,7 +13,7 @@ const {
 
 const app = express();
 app.use(express.json());
-app.use(express.static('./src/frontend/'))
+app.use(express.static('./src/frontend/'));
 
 const port = 8080;
 const gameState = {
@@ -21,7 +21,7 @@ const gameState = {
   rows: 6,
   cols: 7,
   turnCount: 0,
-  winner: true,
+  winner: false,
   winCondition: 4,
   player1Score: 0,
   player2Score: 0,
@@ -30,24 +30,25 @@ const gameState = {
 gameState.board = getBoard(gameState.rows, gameState.cols);
 
 app.get('/', (req, res) => {
-  res.json('Welcome to connect 4. please read the docs to find the right endpoints').send();
+  res.json('Welcome to connect 4. please read the docs to find the right endpoints');
 });
 
 app.get('/state', (req, res) => {
-  res.json(gameState).send();
+  res.json(gameState);
 });
 
 app.post('/reset', (req, res) => {
   gameState.board = getBoard(gameState.rows, gameState.cols);
   gameState.winner = false;
-  res.json(gameState).send();
+  res.json(gameState);
 });
 
 app.post('/move', (req, res) => {
-  if(parseInt(req.body.button) > gameState.cols - 1) {
-    res.status(406).json('selected column is out of range').send();
+  if (parseInt(req.body.button) > gameState.cols - 1) {
+    res.status(406).json('selected column is out of range');
+    return;
   }
-  if(!gameState.winner) {
+  if (!gameState.winner) {
     const selectedColumn = parseInt(req.body.button);
     const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
     if (selectedRow !== null) {
@@ -60,12 +61,12 @@ app.post('/move', (req, res) => {
           gameState.board[selectedRow][selectedColumn]);
         gameState[playerScoreKey] = increasePlayerScore(gameState, playerScoreKey);
       }
-      res.json(gameState).send();
+      res.json(gameState);
     } else {
-      res.status(406).json('selected column is full').send();
+      res.status(406).json('selected column is full');
     }
   } else {
-    res.status(406).json('there is a winner, please reset the game').send();
+    res.status(406).json('there is a winner, please reset the game');
   }
 });
 
