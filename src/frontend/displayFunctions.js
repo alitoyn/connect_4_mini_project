@@ -23,6 +23,10 @@ function winnerNotification(winner) {
   createToast('Winner!', player + ' is the winner!');
 }
 
+function getPlayerScoreKey(gameState, winner) {
+  return winner === 'y' ? 'player1Score' : 'player2Score';
+}
+
 function updateHTML(gameState) {
   // update buttons with current player token
   for (let i = 0; i < gameState.cols; i++) {
@@ -42,9 +46,26 @@ function updateHTML(gameState) {
       }
     }
   }
+  // const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
+  //   if (selectedRow !== null) {
+  //     gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0.0 ? 'y' : 'r';
+  //     gameState.turnCount++;
+  //     updateHTML(gameState);
+  //     gameState.winner = checkWinner(selectedRow, selectedColumn,
+  //       gameState.board, gameState.winCondition);
+  //     if (gameState.winner) {
+  //       const playerScoreKey = getPlayerScoreKey(gameState,
+  //         gameState.board[selectedRow][selectedColumn]);
+  //       gameState[playerScoreKey] = increasePlayerScore(gameState, playerScoreKey);
+  //       winnerNotification(gameState.board[selectedRow][selectedColumn]);
+  //       updatePlayerWinCount(gameState, playerScoreKey);
+  //     }
+  //   } else {
+  //     createToast('Column Full', 'Select a different one or reset the game');
+  //   }
 }
 
-function loadHTML() {
+function loadHTML(gameState) {
   // grid initialiser
   for (let i = 0; i < gameState.rows; i++) {
     elementIDRow = 'row-' + i;

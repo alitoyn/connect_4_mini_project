@@ -37,7 +37,7 @@ app.get('/state', (req, res) => {
   res.json(gameState);
 });
 
-app.post('/reset', (req, res) => {
+app.get('/reset', (req, res) => {
   gameState.board = getBoard(gameState.rows, gameState.cols);
   gameState.winner = false;
   res.json(gameState);
