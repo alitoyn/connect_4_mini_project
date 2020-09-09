@@ -20,7 +20,7 @@ const gameState = {
   rows: 6,
   cols: 7,
   turnCount: 0,
-  winner: false,
+  winner: true,
   winCondition: 4,
   player1Score: 0,
   player2Score: 0,
@@ -45,6 +45,7 @@ app.get('/state', (req, res) => {
 
 app.post('/reset', (req, res) => {
   gameState.board = getBoard(gameState.rows, gameState.cols);
+  gameState.winner = false;
   res.json(gameState).send();
 });
 
@@ -57,7 +58,6 @@ app.post('/move', (req, res) => {
     const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
     if (selectedRow !== null) {
       gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0 ? 'y' : 'r';
-      console.log(gameState.board);
       gameState.turnCount++;
       gameState.winner = checkWinner(selectedRow, selectedColumn,
         gameState.board, gameState.winCondition);
@@ -68,7 +68,7 @@ app.post('/move', (req, res) => {
       }
       res.json(gameState).send();
     } else {
-        res.status(406).json('selected column is full').send();
+      res.status(406).json('selected column is full').send();
     }
   } else {
     res.status(406).json('there is a winner, please reset the game').send();
