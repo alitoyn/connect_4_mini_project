@@ -47,6 +47,10 @@ function updateHTML(gameState) {
     }
   }
 
+  // update win counts
+  updatePlayerWinCount(gameState, 'player1Score');
+  updatePlayerWinCount(gameState, 'player2Score');
+
   // create toast if the game has finished
   if (gameState.winner === true) { // if the winner flag as not been reset, don't change anything
     createToast('Game Over', 'Please press reset to continue...');
