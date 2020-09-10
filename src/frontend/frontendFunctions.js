@@ -23,6 +23,10 @@ function winnerNotification(winner) {
   createToast('Winner!', player + ' is the winner!');
 }
 
+function getPlayerScoreKey(gameState, winner) {
+  return winner === 'y' ? 'player1Score' : 'player2Score';
+}
+
 function updateHTML(gameState) {
   // update buttons with current player token
   for (let i = 0; i < gameState.cols; i++) {
@@ -42,9 +46,20 @@ function updateHTML(gameState) {
       }
     }
   }
+
+  // update win counts
+  updatePlayerWinCount(gameState, 'player1Score');
+  updatePlayerWinCount(gameState, 'player2Score');
+
+  // create toast if the game has finished
+  if (gameState.winner === true) { // if the winner flag as not been reset, don't change anything
+    createToast('Game Over', 'Please press reset to continue...');
+  } else if (gameState.draw === true) {
+    createToast('Draw', 'Please press reset to start again...');
+  }
 }
 
-function loadHTML() {
+function loadHTML(gameState) {
   // grid initialiser
   for (let i = 0; i < gameState.rows; i++) {
     elementIDRow = 'row-' + i;
@@ -80,4 +95,40 @@ function loadHTML() {
 
   // push board to html
   updateHTML(gameState);
+}
+
+function requestReset() {
+  $.get(api + '/reset', (data) => {
+    updateHTML(data);
+  });
+}
+
+function requestPlaceToken(selectedColumn) {
+  const body = {
+    button: selectedColumn,
+  };
+  $.ajax({
+    method: 'POST',
+    url: api + '/move',
+    dataType: 'json',
+    data: JSON.stringify(body),
+    contentType: 'application/json',
+    success: (res) => { updateHTML(res); },
+    error: (res) => {
+      if (res.status === 406) {
+        createToast('Move Error', res.responseText.slice(1, -1));
+      }
+    },
+  });
+}
+
+function returnLastChar(string) {
+  return string[string.length - 1];
+}
+
+function getInitialGameData() {
+  // get initial game state
+  $.get(api + '/state', (data) => {
+    loadHTML(data);
+  });
 }

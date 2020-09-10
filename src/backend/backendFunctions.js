@@ -1,3 +1,7 @@
+function isRequestValid(gameState, requestedColumn) {
+  return requestedColumn > gameState.cols - 1;
+}
+
 function tokenTooCloseToBottom(row, winCondition) {
   return row < winCondition - 1;
 }
@@ -134,6 +138,11 @@ function increasePlayerScore(gameState, playerScoreKey) {
   return newPlayerScore;
 }
 
+function checkArrayForLastTurn(array) {
+  const newArray = array.flat().filter((x) => (x === null));
+  return (newArray.length === 1);
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
@@ -142,5 +151,10 @@ if (typeof module !== 'undefined') {
     checkDiagsPositive,
     checkDiagsNegative,
     checkWinner,
+    getFirstEmptyRow,
+    getPlayerScoreKey,
+    increasePlayerScore,
+    checkArrayForLastTurn,
+    isRequestValid,
   };
 }
