@@ -1,9 +1,6 @@
 const api = '';
 
-// get initial game state
-$.get(api + '/state', (data) => {
-  loadHTML(data);
-});
+$(document).ready(getInitialGameData);
 
 // event loop
 function buttonClick(event) {

@@ -125,3 +125,10 @@ function requestPlaceToken(selectedColumn) {
 function returnLastChar(string) {
   return string[string.length - 1];
 }
+
+function getInitialGameData() {
+  // get initial game state
+  $.get(api + '/state', (data) => {
+    loadHTML(data);
+  });
+}
