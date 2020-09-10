@@ -96,3 +96,32 @@ function loadHTML(gameState) {
   // push board to html
   updateHTML(gameState);
 }
+
+function requestReset() {
+  $.get(api + '/reset', (data) => {
+    updateHTML(data);
+  });
+}
+
+function requestPlaceToken(selectedColumn) {
+  const body = {
+    button: selectedColumn,
+  };
+  $.ajax({
+    method: 'POST',
+    url: api + '/move',
+    dataType: 'json',
+    data: JSON.stringify(body),
+    contentType: 'application/json',
+    success: (res) => { updateHTML(res); },
+    error: (res) => {
+      if (res.status === 406) {
+        createToast('Move Error', res.responseText.slice(1, -1));
+      }
+    },
+  });
+}
+
+function returnLastChar(string) {
+  return string[string.length - 1];
+}
