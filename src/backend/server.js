@@ -1,14 +1,11 @@
 const express = require('express');
 const {
-  checkCols,
   getBoard,
-  checkRows,
-  checkDiagsPositive,
-  checkDiagsNegative,
   checkWinner,
   getFirstEmptyRow,
   getPlayerScoreKey,
   increasePlayerScore,
+  checkArrayForLastTurn,
 } = require('./logicalFunctions.js');
 
 const app = express();
@@ -22,6 +19,7 @@ const gameState = {
   cols: 7,
   turnCount: 0,
   winner: false,
+  draw: false,
   winCondition: 4,
   player1Score: 0,
   player2Score: 0,
@@ -40,16 +38,21 @@ app.get('/state', (req, res) => {
 app.get('/reset', (req, res) => {
   gameState.board = getBoard(gameState.rows, gameState.cols);
   gameState.winner = false;
+  gameState.draw = false;
   res.json(gameState);
 });
 
 app.post('/move', (req, res) => {
-  if (parseInt(req.body.button) > gameState.cols - 1) {
+  if (checkArrayForLastTurn(gameState.board)) {
+    console.log('last turn');
+    gameState.draw = true;
+  }
+  if (parseInt(req.body.button, 10) > gameState.cols - 1) {
     res.status(406).json('selected column is out of range');
     return;
   }
   if (!gameState.winner) {
-    const selectedColumn = parseInt(req.body.button);
+    const selectedColumn = parseInt(req.body.button, 10);
     const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
     if (selectedRow !== null) {
       gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0 ? 'y' : 'r';

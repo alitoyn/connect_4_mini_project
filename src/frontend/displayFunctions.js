@@ -46,23 +46,13 @@ function updateHTML(gameState) {
       }
     }
   }
-  // const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
-  //   if (selectedRow !== null) {
-  //     gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0.0 ? 'y' : 'r';
-  //     gameState.turnCount++;
-  //     updateHTML(gameState);
-  //     gameState.winner = checkWinner(selectedRow, selectedColumn,
-  //       gameState.board, gameState.winCondition);
-  //     if (gameState.winner) {
-  //       const playerScoreKey = getPlayerScoreKey(gameState,
-  //         gameState.board[selectedRow][selectedColumn]);
-  //       gameState[playerScoreKey] = increasePlayerScore(gameState, playerScoreKey);
-  //       winnerNotification(gameState.board[selectedRow][selectedColumn]);
-  //       updatePlayerWinCount(gameState, playerScoreKey);
-  //     }
-  //   } else {
-  //     createToast('Column Full', 'Select a different one or reset the game');
-  //   }
+
+  // create toast if the game has finished
+  if (gameState.winner === true) { // if the winner flag as not been reset, don't change anything
+    createToast('Game Over', 'Please press reset to continue...');
+  } else if (gameState.draw === true) {
+    createToast('Draw', 'Please press reset to start again...');
+  }
 }
 
 function loadHTML(gameState) {

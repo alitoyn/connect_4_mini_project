@@ -134,6 +134,11 @@ function increasePlayerScore(gameState, playerScoreKey) {
   return newPlayerScore;
 }
 
+function checkArrayForLastTurn(array) {
+  const newArray = array.flat().filter((x) => (x === null));
+  return (newArray.length === 1);
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
@@ -145,5 +150,6 @@ if (typeof module !== 'undefined') {
     getFirstEmptyRow,
     getPlayerScoreKey,
     increasePlayerScore,
+    checkArrayForLastTurn,
   };
 }
