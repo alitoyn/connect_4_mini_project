@@ -1,3 +1,7 @@
+function isRequestValid(gameState, requestedColumn) {
+  return requestedColumn > gameState.cols - 1;
+}
+
 function tokenTooCloseToBottom(row, winCondition) {
   return row < winCondition - 1;
 }
@@ -151,5 +155,6 @@ if (typeof module !== 'undefined') {
     getPlayerScoreKey,
     increasePlayerScore,
     checkArrayForLastTurn,
+    isRequestValid,
   };
 }

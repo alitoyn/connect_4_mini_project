@@ -6,7 +6,8 @@ const {
   getPlayerScoreKey,
   increasePlayerScore,
   checkArrayForLastTurn,
-} = require('./logicalFunctions.js');
+  isRequestValid,
+} = require('./backendFunctions.js');
 
 const app = express();
 app.use(express.json());
@@ -44,15 +45,16 @@ app.get('/reset', (req, res) => {
 
 app.post('/move', (req, res) => {
   if (checkArrayForLastTurn(gameState.board)) {
-    console.log('last turn');
     gameState.draw = true;
   }
-  if (parseInt(req.body.button, 10) > gameState.cols - 1) {
+
+  const selectedColumn = parseInt(req.body.button, 10);
+  if (isRequestValid(gameState, selectedColumn)) {
     res.status(406).json('selected column is out of range');
     return;
   }
+
   if (!gameState.winner) {
-    const selectedColumn = parseInt(req.body.button, 10);
     const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
     if (selectedRow !== null) {
       gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0 ? 'y' : 'r';
