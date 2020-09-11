@@ -1,6 +1,6 @@
 const api = '';
 
-$(document).ready(getInitialGameData);
+$(getInitialGameData);
 
 // event loop
 function buttonClick(event) {
