@@ -2,8 +2,8 @@ const each = require('jest-each').default;
 const {
   checkCols, getBoard, checkRows,
   checkDiagsPositive, checkDiagsNegative,
-  checkWinner,
-} = require('../src/logicalFunctions.js');
+  checkWinner, isRequestValid,
+} = require('../src/backend/backendFunctions');
 
 describe('token in empty board', () => {
   const t1Counter = 'y';
@@ -213,3 +213,48 @@ describe('checkWinner function', () => {
       .toBe(expected);
   });
 });
+
+describe('isRequestValid function', () => {
+  gameState = {
+    board: [],
+    rows: 6,
+    cols: 7,
+    turnCount: 0,
+    winner: false,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  };
+  gameState.board = getBoard(gameState.rows, gameState.cols);
+
+  const t1Col = 1;
+  const t2Col = 5;
+  const t3Col = 10;
+  const t4Col = 'string';
+  const t5Col = null;
+  each([
+    ['valid request #1', t1Col, gameState, true],
+    ['valid request #2', t2Col, gameState, true],
+    ['invalid request - out of range', t3Col, gameState, false],
+    ['invalid request - string', t4Col, gameState, false],
+    ['invalid request - null', t5Col, gameState, false],
+
+  ]).it("'%s'", (text, column, gameState, expected) => {
+    expect(
+      isRequestValid(gameState, column),
+    )
+      .toBe(expected);
+  });
+});
+
+test.todo('isRequestValid');
+test.todo('tokenTooCloseToBottom');
+test.todo('pointerEqualToLastCheckpoint');
+test.todo('getBoard?');
+test.todo('pointerAtEmptySlot');
+test.todo('returnLastChar');
+test.todo('getFirstEmptyRow');
+test.todo('getPlayerScoreKey');
+test.todo('increasePlayerScore');
+test.todo('checkArrayForLastTurn');
