@@ -13,6 +13,9 @@ function tokenTooCloseToBottom(row, winCondition) {
 }
 
 function pointerEqualToLastCheckpoint(pointer, winCondition) {
+  if (typeof (pointer) !== 'number') {
+    return false;
+  }
   return pointer === winCondition - 1;
 }
 
@@ -164,5 +167,6 @@ if (typeof module !== 'undefined') {
     isRequestValid,
     returnLastChar,
     tokenTooCloseToBottom,
+    pointerEqualToLastCheckpoint,
   };
 }

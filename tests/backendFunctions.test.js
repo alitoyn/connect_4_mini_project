@@ -3,6 +3,7 @@ const {
   checkCols, getBoard, checkRows,
   checkDiagsPositive, checkDiagsNegative,
   checkWinner, isRequestValid, tokenTooCloseToBottom,
+  pointerEqualToLastCheckpoint,
 } = require('../src/backend/backendFunctions');
 
 describe('token in empty board', () => {
@@ -251,7 +252,7 @@ describe('isRequestValid function', () => {
 describe('tokenTooCloseToBottom function', () => {
   const winCondition4 = 4;
   const winCondition5 = 5;
-  
+
   const t1Row = 1;
   const t2Row = 5;
   const t3Row = 3;
@@ -267,6 +268,30 @@ describe('tokenTooCloseToBottom function', () => {
   ]).it("'%s'", (text, row, winCondition, expected) => {
     expect(
       tokenTooCloseToBottom(row, winCondition),
+    )
+      .toBe(expected);
+  });
+});
+
+describe('pointerEqualToLastCheckpoint function', () => {
+  const winCondition4 = 4;
+  const winCondition5 = 5;
+
+  const t1pointer = 3;
+  const t2pointer = 4;
+  const t3pointer = 3;
+  const t4pointer = 'string';
+  const t5pointer = null;
+  each([
+    ['valid request #1', t1pointer, winCondition4, true],
+    ['valid request #2', t2pointer, winCondition5, true],
+    ['valid request #3', t3pointer, winCondition5, false],
+    ['invalid request - string', t4pointer, winCondition4, false],
+    ['invalid request - null', t5pointer, winCondition4, false],
+
+  ]).it("'%s'", (text, pointer, winCondition, expected) => {
+    expect(
+      pointerEqualToLastCheckpoint(pointer, winCondition),
     )
       .toBe(expected);
   });
