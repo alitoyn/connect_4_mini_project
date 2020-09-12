@@ -2,7 +2,7 @@ const each = require('jest-each').default;
 const {
   checkCols, getBoard, checkRows,
   checkDiagsPositive, checkDiagsNegative,
-  checkWinner, isRequestValid,
+  checkWinner, isRequestValid, tokenTooCloseToBottom,
 } = require('../src/backend/backendFunctions');
 
 describe('token in empty board', () => {
@@ -248,8 +248,30 @@ describe('isRequestValid function', () => {
   });
 });
 
-test.todo('isRequestValid');
-test.todo('tokenTooCloseToBottom');
+describe('tokenTooCloseToBottom function', () => {
+  const winCondition4 = 4;
+  const winCondition5 = 5;
+  
+  const t1Row = 1;
+  const t2Row = 5;
+  const t3Row = 3;
+  const t4Row = 'string';
+  const t5Row = null;
+  each([
+    ['valid request #1', t1Row, winCondition4, true],
+    ['valid request #2', t2Row, winCondition5, false],
+    ['valid request #3', t3Row, winCondition5, true],
+    ['invalid request - string', t4Row, winCondition4, false],
+    ['invalid request - null', t5Row, winCondition4, false],
+
+  ]).it("'%s'", (text, row, winCondition, expected) => {
+    expect(
+      tokenTooCloseToBottom(row, winCondition),
+    )
+      .toBe(expected);
+  });
+});
+
 test.todo('pointerEqualToLastCheckpoint');
 test.todo('getBoard?');
 test.todo('pointerAtEmptySlot');

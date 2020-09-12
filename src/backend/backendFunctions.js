@@ -6,6 +6,9 @@ function isRequestValid(gameState, requestedColumn) {
 }
 
 function tokenTooCloseToBottom(row, winCondition) {
+  if (typeof (row) !== 'number') {
+    return false;
+  }
   return row < winCondition - 1;
 }
 
@@ -160,5 +163,6 @@ if (typeof module !== 'undefined') {
     checkArrayForLastTurn,
     isRequestValid,
     returnLastChar,
+    tokenTooCloseToBottom,
   };
 }
