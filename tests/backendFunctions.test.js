@@ -297,8 +297,31 @@ describe('pointerEqualToLastCheckpoint function', () => {
   });
 });
 
-test.todo('pointerEqualToLastCheckpoint');
-test.todo('getBoard?');
+describe('getBoard function', () => {
+  const t1Row = 1;
+  const t2Row = 2;
+  const t3Row = null;
+  const t1Cols = 1;
+  const t2Cols = 2;
+  const t3Cols = 'string';
+
+  const expected1 = [[null]];
+  const expected2 = [[null, null], [null, null]];
+  const expected3 = false;
+
+  each([
+    ['valid request #1', t1Row, t1Cols, expected1],
+    ['valid request #1', t2Row, t2Cols, expected2],
+    ['invalid request', t3Row, t3Cols, expected3],
+
+  ]).it("'%s'", (text, rows, cols, expected) => {
+    expect(
+      getBoard(rows, cols),
+    )
+      .toStrictEqual(expected);
+  });
+});
+
 test.todo('pointerAtEmptySlot');
 test.todo('returnLastChar');
 test.todo('getFirstEmptyRow');

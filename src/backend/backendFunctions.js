@@ -36,6 +36,9 @@ function checkCols(row, column, board, connectN) {
 }
 
 function getBoard(rows, cols) {
+  if (typeof (rows) !== 'number' && typeof (cols) !== 'number') {
+    return false;
+  }
   const board = new Array(rows);
   for (let i = 0; i < rows; i++) {
     board[i] = new Array(cols);
