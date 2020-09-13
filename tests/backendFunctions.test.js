@@ -3,7 +3,7 @@ const {
   checkCols, getBoard, checkRows,
   checkDiagsPositive, checkDiagsNegative,
   checkWinner, isRequestValid, tokenTooCloseToBottom,
-  pointerEqualToLastCheckpoint,
+  pointerEqualToLastCheckpoint, pointerAtEmptySlot,
 } = require('../src/backend/backendFunctions');
 
 describe('token in empty board', () => {
@@ -322,7 +322,28 @@ describe('getBoard function', () => {
   });
 });
 
-test.todo('pointerAtEmptySlot');
+describe('pointerAtEmptySlot function', () => {
+  const board = getBoard(5, 5);
+  board[1][1] = 'yellow';
+  board[1][2] = 'red';
+  board[1][3] = 'other string';
+  board[1][4] = 10;
+
+  each([
+    ['valid request #1', 0, 0, board, true],
+    ['valid request #2', 1, 1, board, false],
+    ['valid request #3', 1, 2, board, false],
+    ['valid request #4', 1, 3, board, false],
+    ['invalid request', 1, 4, board, false],
+
+  ]).it("'%s'", (text, rows, cols, passedBoard, expected) => {
+    expect(
+      pointerAtEmptySlot(rows, cols, passedBoard),
+    )
+      .toStrictEqual(expected);
+  });
+});
+
 test.todo('returnLastChar');
 test.todo('getFirstEmptyRow');
 test.todo('getPlayerScoreKey');

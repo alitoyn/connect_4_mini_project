@@ -171,5 +171,6 @@ if (typeof module !== 'undefined') {
     returnLastChar,
     tokenTooCloseToBottom,
     pointerEqualToLastCheckpoint,
+    pointerAtEmptySlot,
   };
 }
