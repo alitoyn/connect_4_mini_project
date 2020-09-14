@@ -4,6 +4,7 @@ const {
   checkDiagsPositive, checkDiagsNegative,
   checkWinner, isRequestValid, tokenTooCloseToBottom,
   pointerEqualToLastCheckpoint, pointerAtEmptySlot,
+  returnLastChar,
 } = require('../src/backend/backendFunctions');
 
 describe('token in empty board', () => {
@@ -311,7 +312,7 @@ describe('getBoard function', () => {
 
   each([
     ['valid request #1', t1Row, t1Cols, expected1],
-    ['valid request #1', t2Row, t2Cols, expected2],
+    ['valid request #2', t2Row, t2Cols, expected2],
     ['invalid request', t3Row, t3Cols, expected3],
 
   ]).it("'%s'", (text, rows, cols, expected) => {
@@ -344,7 +345,29 @@ describe('pointerAtEmptySlot function', () => {
   });
 });
 
-test.todo('returnLastChar');
+describe('returnLastChar function', () => {
+  const t1 = 'test1';
+  const r1 = '1';
+
+  const t2 = 10;
+  const r2 = false;
+
+  const t3 = null;
+  const r3 = false;
+
+  each([
+    ['valid request #1', t1, r1],
+    ['valid request #2', t2, r2],
+    ['invalid request', t3, r3],
+
+  ]).it("'%s'", (text, passedString, expected) => {
+    expect(
+      returnLastChar(passedString),
+    )
+      .toBe(expected);
+  });
+});
+
 test.todo('getFirstEmptyRow');
 test.todo('getPlayerScoreKey');
 test.todo('increasePlayerScore');

@@ -129,6 +129,9 @@ function checkWinner(placedTokenRow, placedTokenCol, board, winCondition) {
 }
 
 function returnLastChar(string) {
+  if (typeof (string) !== 'string') {
+    return false;
+  }
   return string[string.length - 1];
 }
 
