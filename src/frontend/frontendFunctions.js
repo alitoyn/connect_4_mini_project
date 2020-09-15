@@ -97,7 +97,7 @@ function loadHTML(gameState) {
   updateHTML(gameState);
 }
 
-function requestReset() {
+function requestReset(apiKey) {
   $.get(api + '/reset', (data) => {
     updateHTML(data);
   });
