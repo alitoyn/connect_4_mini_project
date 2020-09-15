@@ -4,6 +4,7 @@
         "apikey",
         "crossorigin",
         "darkblue",
-        "plusplus"
+        "plusplus",
+        "randomstring"
     ]
 }

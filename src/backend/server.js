@@ -1,6 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const fs = require('fs').promises;
+const cookieParser = require('cookie-parser');
+const randomstring = require('randomstring');
 
 dotenv.config();
 const apiKey = process.env.APIKEY;
@@ -18,16 +20,7 @@ const {
 const app = express();
 app.use(express.json());
 app.use(express.static('./src/frontend/'));
-
-// check if the api key is correct for every connection
-// app.use((req, res, next) => {
-//   const sentKey = req.headers.apikey;
-//   if (sentKey === apiKey) {
-//     next();
-//   } else {
-//     res.status(401).json('Please use a valid API key');
-//   }
-// });
+app.use(cookieParser());
 
 const port = 8080;
 const gameState = {
@@ -53,6 +46,7 @@ app.get('/state', (req, res) => {
 });
 
 app.get('/reset', (req, res) => {
+  console.log(req.cookies);
   gameState.board = getBoard(gameState.rows, gameState.cols);
   gameState.winner = false;
   gameState.draw = false;
@@ -94,19 +88,22 @@ app.post('/move', (req, res) => {
 app.post('/login', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
-  console.log(req)
   const sentUser = req.body.username;
   const sentPass = req.body.password;
-  console.log(sentUser, data[0].username);
-  
-  if (sentUser === data[0].username) {
-    if (sentPass === data[0].password) {
-      res.json('login user');
-    } else {
-      res.status(401).json('incorrect password');
-    }
-  } else {
+
+  // find index of user in data structure
+  const userIndex = data.findIndex((user) => user.username === sentUser);
+
+  if (userIndex === -1) { // if it doesn't exist
     res.status(404).json('user does not exist');
+  } else if (sentPass === data[userIndex].password) {
+    const cookie = randomstring.generate(7);
+    data[userIndex].token = cookie;
+    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+    res.cookie('token', cookie, { sameSite: true });
+    res.json('login user');
+  } else {
+    res.status(401).json('incorrect password');
   }
 });
 

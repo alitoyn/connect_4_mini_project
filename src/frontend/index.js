@@ -9,10 +9,8 @@ $(() => {
 
   $('#submit-button')
     .click(() => {
-      console.log('Let me in!!!!');
       const user = $('#username').val();
       const pass = $('#password').val();
-      console.log(user, pass);
       const body = {
         username: user,
         password: pass,
@@ -24,13 +22,11 @@ $(() => {
         data: JSON.stringify(body),
         contentType: 'application/json',
         success: (res) => {
-          console.log('logged in');
           getInitialGameData();
           $('#exampleModal').modal('hide');
         },
         error: (res) => {
           $('#error-message').css('display', 'inline');
-          console.log(res.responseJSON);
         },
       });
     });
