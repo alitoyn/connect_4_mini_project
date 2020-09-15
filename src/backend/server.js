@@ -1,4 +1,9 @@
 const express = require('express');
+const dotenv = require('dotenv');
+
+dotenv.config();
+const apiKey = process.env.APIKEY;
+
 const {
   getBoard,
   checkWinner,
@@ -12,6 +17,16 @@ const {
 const app = express();
 app.use(express.json());
 app.use(express.static('./src/frontend/'));
+
+// check if the api key is correct for every connection
+app.use((req, res, next) => {
+  const sentKey = req.headers.apikey;
+  if (sentKey === apiKey) {
+    next();
+  } else {
+    res.status(401).json('Please use a valid API key');
+  }
+});
 
 const port = 8080;
 const gameState = {
@@ -28,7 +43,7 @@ const gameState = {
 
 gameState.board = getBoard(gameState.rows, gameState.cols);
 
-app.get('/', (req, res) => {
+app.get('/info', (req, res) => {
   res.json('Welcome to connect 4. please read the docs to find the right endpoints');
 });
 

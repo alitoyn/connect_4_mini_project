@@ -123,9 +123,9 @@ function checkWinner(placedTokenRow, placedTokenCol, board, winCondition) {
   const rows = board.length;
 
   return checkCols(placedTokenRow, placedTokenCol, board, winCondition)
-  || checkRows(placedTokenRow, cols, board, winCondition)
-  || checkDiagsPositive(rows, cols, board, winCondition)
-  || checkDiagsNegative(rows, cols, board, winCondition);
+    || checkRows(placedTokenRow, cols, board, winCondition)
+    || checkDiagsPositive(rows, cols, board, winCondition)
+    || checkDiagsNegative(rows, cols, board, winCondition);
 }
 
 function returnLastChar(string) {

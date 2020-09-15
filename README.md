@@ -6,7 +6,7 @@ When the user presses a button, the front end must request a new game state from
 
 # API Endpoints
 
-## `/`
+## `/info`
 ### GET
 This will return some welcome text to confirm the server is running
 

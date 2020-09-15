@@ -1,4 +1,9 @@
 const api = '';
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const apiKey = process.env.APIKEY;
 
 $(getInitialGameData);
 
