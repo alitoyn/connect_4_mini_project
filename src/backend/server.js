@@ -1,4 +1,10 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const fs = require('fs').promises;
+
+dotenv.config();
+const apiKey = process.env.APIKEY;
+
 const {
   getBoard,
   checkWinner,
@@ -12,6 +18,16 @@ const {
 const app = express();
 app.use(express.json());
 app.use(express.static('./src/frontend/'));
+
+// check if the api key is correct for every connection
+// app.use((req, res, next) => {
+//   const sentKey = req.headers.apikey;
+//   if (sentKey === apiKey) {
+//     next();
+//   } else {
+//     res.status(401).json('Please use a valid API key');
+//   }
+// });
 
 const port = 8080;
 const gameState = {
@@ -28,7 +44,7 @@ const gameState = {
 
 gameState.board = getBoard(gameState.rows, gameState.cols);
 
-app.get('/', (req, res) => {
+app.get('/info', (req, res) => {
   res.json('Welcome to connect 4. please read the docs to find the right endpoints');
 });
 
@@ -49,8 +65,8 @@ app.post('/move', (req, res) => {
   }
 
   const selectedColumn = parseInt(req.body.button, 10);
-  if (isRequestValid(gameState, selectedColumn)) {
-    res.status(406).json('selected column is out of range');
+  if (!isRequestValid(gameState, selectedColumn)) {
+    res.status(406).json('The selected column is out of range');
     return;
   }
 
@@ -68,10 +84,29 @@ app.post('/move', (req, res) => {
       }
       res.json(gameState);
     } else {
-      res.status(406).json('selected column is full');
+      res.status(406).json('The selected column is full');
     }
   } else {
-    res.status(406).json('there is a winner, please reset the game');
+    res.status(406).json('There is a winner, please reset the game');
+  }
+});
+
+app.post('/login', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  console.log(req)
+  const sentUser = req.body.username;
+  const sentPass = req.body.password;
+  console.log(sentUser, data[0].username);
+  
+  if (sentUser === data[0].username) {
+    if (sentPass === data[0].password) {
+      res.json('login user');
+    } else {
+      res.status(401).json('incorrect password');
+    }
+  } else {
+    res.status(404).json('user does not exist');
   }
 });
 

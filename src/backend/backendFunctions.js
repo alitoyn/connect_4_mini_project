@@ -1,12 +1,21 @@
 function isRequestValid(gameState, requestedColumn) {
-  return requestedColumn > gameState.cols - 1;
+  if (typeof (requestedColumn) !== 'number') {
+    return false;
+  }
+  return requestedColumn < gameState.cols;
 }
 
 function tokenTooCloseToBottom(row, winCondition) {
+  if (typeof (row) !== 'number') {
+    return false;
+  }
   return row < winCondition - 1;
 }
 
 function pointerEqualToLastCheckpoint(pointer, winCondition) {
+  if (typeof (pointer) !== 'number') {
+    return false;
+  }
   return pointer === winCondition - 1;
 }
 
@@ -27,6 +36,9 @@ function checkCols(row, column, board, connectN) {
 }
 
 function getBoard(rows, cols) {
+  if (typeof (rows) !== 'number' && typeof (cols) !== 'number') {
+    return false;
+  }
   const board = new Array(rows);
   for (let i = 0; i < rows; i++) {
     board[i] = new Array(cols);
@@ -111,12 +123,15 @@ function checkWinner(placedTokenRow, placedTokenCol, board, winCondition) {
   const rows = board.length;
 
   return checkCols(placedTokenRow, placedTokenCol, board, winCondition)
-  || checkRows(placedTokenRow, cols, board, winCondition)
-  || checkDiagsPositive(rows, cols, board, winCondition)
-  || checkDiagsNegative(rows, cols, board, winCondition);
+    || checkRows(placedTokenRow, cols, board, winCondition)
+    || checkDiagsPositive(rows, cols, board, winCondition)
+    || checkDiagsNegative(rows, cols, board, winCondition);
 }
 
 function returnLastChar(string) {
+  if (typeof (string) !== 'string') {
+    return false;
+  }
   return string[string.length - 1];
 }
 
@@ -156,5 +171,9 @@ if (typeof module !== 'undefined') {
     increasePlayerScore,
     checkArrayForLastTurn,
     isRequestValid,
+    returnLastChar,
+    tokenTooCloseToBottom,
+    pointerEqualToLastCheckpoint,
+    pointerAtEmptySlot,
   };
 }
