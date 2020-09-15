@@ -21,8 +21,8 @@ $(() => {
         dataType: 'json',
         data: JSON.stringify(body),
         contentType: 'application/json',
-        success: (res) => {
-          getInitialGameData();
+        success: async (res) => {
+          await getInitialGameData();
           $('#exampleModal').modal('hide');
         },
         error: (res) => {

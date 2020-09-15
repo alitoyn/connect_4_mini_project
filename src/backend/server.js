@@ -42,7 +42,7 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/state', (req, res) => {
-  res.json(gameState);
+  res.status(200).json(gameState).send();
 });
 
 app.get('/reset', (req, res) => {

@@ -126,9 +126,22 @@ function returnLastChar(string) {
   return string[string.length - 1];
 }
 
-function getInitialGameData() {
+async function getInitialGameData() {
   // get initial game state
-  $.get(api + '/state', (data) => {
-    loadHTML(data);
+  // $.get('/state', (data) => {
+  //   loadHTML(data);
+  // });
+  $.ajax({
+    method: 'get',
+    url: '/state',
+    dataType: 'json',
+    contentType: 'application/json',
+    success: (res) => { loadHTML(res); },
+    error: (res) => {
+      console.log(res);
+    },
   });
+  // fetch('/state')
+  //   .then((response) => response.json())
+  //   .then((data) => console.log(data));
 }
