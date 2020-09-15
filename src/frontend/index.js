@@ -29,6 +29,7 @@ $(() => {
           $('#exampleModal').modal('hide');
         },
         error: (res) => {
+          $('#error-message').css('display', 'inline');
           console.log(res.responseJSON);
         },
       });
