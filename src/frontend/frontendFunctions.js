@@ -95,6 +95,20 @@ function loadHTML(gameState) {
   // bind reset buttons
   $('#reset').click(buttonClick);
 
+  $('#reset-scores')
+    .click(() => {
+      $.ajax({
+        url: '/reset-scores',
+        dataType: 'json',
+        success: (data) => {
+          updateHTML(data);
+        },
+        error: (res) => {
+          createToast('Reset Error', res.responseText.slice(1, -1));
+        },
+      });
+    });
+
   // push board to html
   updateHTML(gameState);
 }
@@ -143,4 +157,47 @@ function requestLogin(body) {
       $('#error-message').css('display', 'inline');
     },
   });
+}
+
+function bindModalEventListeners() {
+  $('#password').keypress((event) => {
+    if (event.keyCode === 13) {
+      $('#submit-button').click();
+    }
+  });
+
+  $('#submit-button')
+    .click(() => {
+      const user = $('#username').val();
+      const pass = $('#password').val();
+      const body = {
+        username: user,
+        password: pass,
+      };
+      requestLogin(body);
+    });
+
+  $('#guest-button')
+    .click(() => {
+      $.ajax({
+        url: 'https://randomuser.me/api/?inc=name',
+        dataType: 'json',
+        success: (data) => {
+          const user = data.results[0].name.first + ' ' + data.results[0].name.last;
+          const pass = '123';
+          const body = {
+            username: user,
+            password: pass,
+          };
+          requestLogin(body);
+        },
+        error: () => {
+          const body = {
+            username: 'Joe Bloggs',
+            password: '123',
+          };
+          requestLogin(body);
+        },
+      });
+    });
 }
