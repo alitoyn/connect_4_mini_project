@@ -5,6 +5,7 @@
         "crossorigin",
         "darkblue",
         "plusplus",
-        "randomstring"
+        "randomstring",
+        "tabindex"
     ]
 }
