@@ -15,7 +15,7 @@ $(() => {
         username: user,
         password: pass,
       };
-      loginUser(body);
+      requestLogin(body);
     });
   $('#exampleModal').modal({ backdrop: 'static', keyboard: false });
 
@@ -31,7 +31,14 @@ $(() => {
             username: user,
             password: pass,
           };
-          loginUser(body);
+          requestLogin(body);
+        },
+        error: () => {
+          const body = {
+            username: 'Joe Bloggs',
+            password: '123',
+          };
+          requestLogin(body);
         },
       });
     });

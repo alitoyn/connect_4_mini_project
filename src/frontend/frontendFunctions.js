@@ -128,7 +128,7 @@ function returnLastChar(string) {
   return string[string.length - 1];
 }
 
-function loginUser(body) {
+function requestLogin(body) {
   $.ajax({
     method: 'POST',
     url: api + '/login',
