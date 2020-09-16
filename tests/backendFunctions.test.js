@@ -372,3 +372,5 @@ test.todo('getFirstEmptyRow');
 test.todo('getPlayerScoreKey');
 test.todo('increasePlayerScore');
 test.todo('checkArrayForLastTurn');
+test.todo('returnUserObject');
+test.todo('returnUserGameData');

@@ -11,6 +11,8 @@ const {
   increasePlayerScore,
   checkArrayForLastTurn,
   isRequestValid,
+  returnUserObject,
+  returnUserGameData,
 } = require('./backendFunctions.js');
 
 const app = express();
@@ -41,14 +43,14 @@ app.get('/reset', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
-  const userIndex = data.findIndex((user) => user.token === token);
-  const userObject = data[userIndex];
+  userObject = returnUserObject(data, 'token', token);
+  const gameData = returnUserGameData(userObject);
 
-  userObject.gameData[0].board = getBoard(userObject.gameData[0].rows, userObject.gameData[0].cols);
-  userObject.gameData[0].winner = false;
-  userObject.gameData[0].draw = false;
+  gameData.board = getBoard(gameData.rows, gameData.cols);
+  gameData.winner = false;
+  gameData.draw = false;
   fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
-  res.json(userObject.gameData[0]);
+  res.json(gameData);
 });
 
 app.post('/move', async (req, res) => {
@@ -57,33 +59,32 @@ app.post('/move', async (req, res) => {
   const { token } = req.cookies;
   const userIndex = data.findIndex((user) => user.token === token);
   const userObject = data[userIndex];
+  const gameData = returnUserGameData(userObject);
 
-  if (checkArrayForLastTurn(userObject.gameData[0].board)) {
-    userObject.gameData[0].draw = true;
+  if (checkArrayForLastTurn(gameData.board)) {
+    gameData.draw = true;
   }
 
   const selectedColumn = parseInt(req.body.button, 10);
-  if (!isRequestValid(userObject.gameData[0], selectedColumn)) {
+  if (!isRequestValid(gameData, selectedColumn)) {
     res.status(406).json('The selected column is out of range');
     return;
   }
 
-  if (!userObject.gameData[0].winner) {
-    const selectedRow = getFirstEmptyRow(userObject.gameData[0].board, selectedColumn);
+  if (!gameData.winner) {
+    const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
     if (selectedRow !== null) {
-      userObject.gameData[0].board[selectedRow][selectedColumn] = userObject.gameData[0].turnCount % 2 === 0 ? 'y' : 'r';
-      userObject.gameData[0].turnCount++;
-      userObject.gameData[0].winner = checkWinner(selectedRow, selectedColumn,
-        userObject.gameData[0].board, userObject.gameData[0].winCondition);
-      if (userObject.gameData[0].winner) {
-        const playerScoreKey = getPlayerScoreKey(userObject.gameData[0],
-          userObject.gameData[0].board[selectedRow][selectedColumn]);
-        userObject.gameData[0][playerScoreKey] = increasePlayerScore(
-          userObject.gameData[0], playerScoreKey,
-        );
+      gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
+      gameData.turnCount++;
+      gameData.winner = checkWinner(selectedRow, selectedColumn,
+        gameData.board, gameData.winCondition);
+      if (gameData.winner) {
+        const playerScoreKey = getPlayerScoreKey(gameData,
+          gameData.board[selectedRow][selectedColumn]);
+        gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
       }
       fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
-      res.json(userObject.gameData[0]);
+      res.json(gameData);
     } else {
       res.status(406).json('The selected column is full');
     }

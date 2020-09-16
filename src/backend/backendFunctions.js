@@ -158,6 +158,16 @@ function checkArrayForLastTurn(array) {
   return (newArray.length === 1);
 }
 
+function returnUserObject(data, key, passedData) {
+  const userIndex = data.findIndex((user) => user[key] === passedData);
+  const userObject = data[userIndex];
+  return userObject;
+}
+
+function returnUserGameData(userObject) {
+  return userObject.gameData[0];
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
@@ -175,5 +185,7 @@ if (typeof module !== 'undefined') {
     tokenTooCloseToBottom,
     pointerEqualToLastCheckpoint,
     pointerAtEmptySlot,
+    returnUserObject,
+    returnUserGameData,
   };
 }
