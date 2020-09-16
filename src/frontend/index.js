@@ -1,6 +1,8 @@
 const api = '';
 
 $(() => {
+  $('#exampleModal').modal({ backdrop: 'static', keyboard: false });
+
   $('#password').keypress((event) => {
     if (event.keyCode === 13) {
       $('#submit-button').click();
@@ -17,7 +19,6 @@ $(() => {
       };
       requestLogin(body);
     });
-  $('#exampleModal').modal({ backdrop: 'static', keyboard: false });
 
   $('#guest-button')
     .click(() => {
@@ -42,7 +43,20 @@ $(() => {
         },
       });
     });
-  $('#exampleModal').modal({ backdrop: 'static', keyboard: false });
+
+  $('#reset-scores')
+    .click(() => {
+      $.ajax({
+        url: '/reset-scores',
+        dataType: 'json',
+        success: (data) => {
+          updateHTML(data);
+        },
+        error: (res) => {
+          createToast('Reset Error', res.responseText.slice(1, -1));
+        },
+      });
+    });
 });
 
 // event loop

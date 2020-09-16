@@ -54,6 +54,22 @@ app.get('/reset', async (req, res) => {
   res.json(gameData);
 });
 
+app.get('/reset-scores', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  userObject = returnUserObject(data, 'token', token);
+  const gameData = returnUserGameData(userObject);
+
+  gameData.board = getBoard(gameData.rows, gameData.cols);
+  gameData.winner = false;
+  gameData.draw = false;
+  gameData.player1Score = 0;
+  gameData.player2Score = 0;
+  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+  res.json(gameData);
+});
+
 app.post('/move', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
