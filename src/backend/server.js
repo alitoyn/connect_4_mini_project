@@ -41,10 +41,6 @@ app.get('/info', (req, res) => {
   res.json('Welcome to connect 4. please read the docs to find the right endpoints');
 });
 
-app.get('/state', (req, res) => {
-  res.status(200).json(gameState).send();
-});
-
 app.get('/reset', (req, res) => {
   console.log(req.cookies);
   gameState.board = getBoard(gameState.rows, gameState.cols);
@@ -88,6 +84,7 @@ app.post('/move', (req, res) => {
 app.post('/login', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
+
   const sentUser = req.body.username;
   const sentPass = req.body.password;
 
@@ -99,9 +96,12 @@ app.post('/login', async (req, res) => {
   } else if (sentPass === data[userIndex].password) {
     const cookie = randomstring.generate(7);
     data[userIndex].token = cookie;
+
     fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
     res.cookie('token', cookie, { sameSite: true });
-    res.json('login user');
+    console.log(data[userIndex].gameData);
+    data[userIndex].gameData[0].board = getBoard(gameState.rows, gameState.cols);
+    res.status(200).json(data[userIndex].gameData[0]);
   } else {
     res.status(401).json('incorrect password');
   }

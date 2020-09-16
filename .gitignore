@@ -1,5 +1,5 @@
 .env
-secrets.json
+*/secrets.json
 # Logs
 logs
 *.log
@@ -104,3 +104,5 @@ dist
 
 # TernJS port file
 .tern-port
+src/backend/secrets.json
+src/backend/secrets.json

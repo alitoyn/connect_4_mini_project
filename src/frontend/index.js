@@ -22,7 +22,7 @@ $(() => {
         data: JSON.stringify(body),
         contentType: 'application/json',
         success: async (res) => {
-          await getInitialGameData();
+          loadHTML(res);
           $('#exampleModal').modal('hide');
         },
         error: (res) => {
