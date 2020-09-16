@@ -49,30 +49,39 @@ app.get('/reset', (req, res) => {
   res.json(gameState);
 });
 
-app.post('/move', (req, res) => {
-  if (checkArrayForLastTurn(gameState.board)) {
-    gameState.draw = true;
+app.post('/move', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  const userIndex = data.findIndex((user) => 'token=' + user.token === token);
+  const userObject = data[userIndex];
+
+  if (checkArrayForLastTurn(userObject.gameData[0].board)) {
+    userObject.gameData[0].draw = true;
   }
 
   const selectedColumn = parseInt(req.body.button, 10);
-  if (!isRequestValid(gameState, selectedColumn)) {
+  if (!isRequestValid(userObject.gameData[0], selectedColumn)) {
     res.status(406).json('The selected column is out of range');
     return;
   }
 
-  if (!gameState.winner) {
-    const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
+  if (!userObject.gameData[0].winner) {
+    const selectedRow = getFirstEmptyRow(userObject.gameData[0].board, selectedColumn);
     if (selectedRow !== null) {
-      gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0 ? 'y' : 'r';
-      gameState.turnCount++;
-      gameState.winner = checkWinner(selectedRow, selectedColumn,
-        gameState.board, gameState.winCondition);
-      if (gameState.winner) {
-        const playerScoreKey = getPlayerScoreKey(gameState,
-          gameState.board[selectedRow][selectedColumn]);
-        gameState[playerScoreKey] = increasePlayerScore(gameState, playerScoreKey);
+      userObject.gameData[0].board[selectedRow][selectedColumn] = userObject.gameData[0].turnCount % 2 === 0 ? 'y' : 'r';
+      userObject.gameData[0].turnCount++;
+      userObject.gameData[0].winner = checkWinner(selectedRow, selectedColumn,
+        userObject.gameData[0].board, userObject.gameData[0].winCondition);
+      if (userObject.gameData[0].winner) {
+        const playerScoreKey = getPlayerScoreKey(userObject.gameData[0],
+          userObject.gameData[0].board[selectedRow][selectedColumn]);
+        userObject.gameData[0][playerScoreKey] = increasePlayerScore(
+          userObject.gameData[0], playerScoreKey,
+        );
       }
-      res.json(gameState);
+      fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+      res.json(userObject.gameData[0]);
     } else {
       res.status(406).json('The selected column is full');
     }
@@ -97,10 +106,10 @@ app.post('/login', async (req, res) => {
     const cookie = randomstring.generate(7);
     data[userIndex].token = cookie;
 
-    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
     res.cookie('token', cookie, { sameSite: true });
     console.log(data[userIndex].gameData);
-    data[userIndex].gameData[0].board = getBoard(gameState.rows, gameState.cols);
+
+    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
     res.status(200).json(data[userIndex].gameData[0]);
   } else {
     res.status(401).json('incorrect password');
