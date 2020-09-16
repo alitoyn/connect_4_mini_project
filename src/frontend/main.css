@@ -27,6 +27,13 @@ body {
     flex-wrap: nowrap;
 }
 
+.modal-row {
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
 .col-1 {
     margin-left: 2.5%;
     margin-right: 2.5%;
