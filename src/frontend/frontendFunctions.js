@@ -127,3 +127,20 @@ function requestPlaceToken(selectedColumn) {
 function returnLastChar(string) {
   return string[string.length - 1];
 }
+
+function loginUser(body) {
+  $.ajax({
+    method: 'POST',
+    url: api + '/login',
+    dataType: 'json',
+    data: JSON.stringify(body),
+    contentType: 'application/json',
+    success: async (res) => {
+      loadHTML(res);
+      $('#exampleModal').modal('hide');
+    },
+    error: (res) => {
+      $('#error-message').css('display', 'inline');
+    },
+  });
+}

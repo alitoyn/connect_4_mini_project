@@ -15,20 +15,7 @@ $(() => {
         username: user,
         password: pass,
       };
-      $.ajax({
-        method: 'POST',
-        url: api + '/login',
-        dataType: 'json',
-        data: JSON.stringify(body),
-        contentType: 'application/json',
-        success: async (res) => {
-          loadHTML(res);
-          $('#exampleModal').modal('hide');
-        },
-        error: (res) => {
-          $('#error-message').css('display', 'inline');
-        },
-      });
+      loginUser(body);
     });
   $('#exampleModal').modal({ backdrop: 'static', keyboard: false });
 
@@ -44,20 +31,7 @@ $(() => {
             username: user,
             password: pass,
           };
-          $.ajax({
-            method: 'POST',
-            url: api + '/login',
-            dataType: 'json',
-            data: JSON.stringify(body),
-            contentType: 'application/json',
-            success: async (res) => {
-              loadHTML(res);
-              $('#exampleModal').modal('hide');
-            },
-            error: (res) => {
-              $('#error-message').css('display', 'inline');
-            },
-          });
+          loginUser(body);
         },
       });
     });
