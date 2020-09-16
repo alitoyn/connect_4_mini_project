@@ -1,11 +1,7 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const fs = require('fs').promises;
 const cookieParser = require('cookie-parser');
 const randomstring = require('randomstring');
-
-dotenv.config();
-const apiKey = process.env.APIKEY;
 
 const {
   getBoard,
@@ -41,19 +37,25 @@ app.get('/info', (req, res) => {
   res.json('Welcome to connect 4. please read the docs to find the right endpoints');
 });
 
-app.get('/reset', (req, res) => {
-  console.log(req.cookies);
-  gameState.board = getBoard(gameState.rows, gameState.cols);
-  gameState.winner = false;
-  gameState.draw = false;
-  res.json(gameState);
+app.get('/reset', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  const userIndex = data.findIndex((user) => user.token === token);
+  const userObject = data[userIndex];
+
+  userObject.gameData[0].board = getBoard(userObject.gameData[0].rows, userObject.gameData[0].cols);
+  userObject.gameData[0].winner = false;
+  userObject.gameData[0].draw = false;
+  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+  res.json(userObject.gameData[0]);
 });
 
 app.post('/move', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
-  const userIndex = data.findIndex((user) => 'token=' + user.token === token);
+  const userIndex = data.findIndex((user) => user.token === token);
   const userObject = data[userIndex];
 
   if (checkArrayForLastTurn(userObject.gameData[0].board)) {
