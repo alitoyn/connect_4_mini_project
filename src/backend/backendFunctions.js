@@ -168,6 +168,35 @@ function returnUserGameData(userObject) {
   return userObject.gameData[0];
 }
 
+function createUser(dataObject, username, password, cookie) {
+  const dataObjectCopy = JSON.parse(JSON.stringify(dataObject));
+  console.log(dataObjectCopy);
+  console.log('-------------');
+  dataObjectCopy[dataObjectCopy.length] = {};
+  dataObjectCopy[dataObjectCopy.length - 1].username = username;
+  dataObjectCopy[dataObjectCopy.length - 1].password = password;
+  console.log(dataObjectCopy);
+  dataObjectCopy[dataObjectCopy.length - 1].token = cookie;
+  dataObjectCopy[dataObjectCopy.length - 1].gameData = [{
+    board: [],
+    rows: 6,
+    cols: 7,
+    turnCount: 0,
+    winner: false,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  }];
+  dataObjectCopy[dataObjectCopy.length - 1].gameData[0].board = getBoard(
+    dataObjectCopy[dataObjectCopy.length - 1].gameData[0].rows,
+    dataObjectCopy[dataObjectCopy.length - 1].gameData[0].cols,
+  );
+  console.log(dataObjectCopy);
+
+  return dataObjectCopy;
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
@@ -187,5 +216,6 @@ if (typeof module !== 'undefined') {
     pointerAtEmptySlot,
     returnUserObject,
     returnUserGameData,
+    createUser,
   };
 }

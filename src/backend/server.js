@@ -13,6 +13,7 @@ const {
   isRequestValid,
   returnUserObject,
   returnUserGameData,
+  createUser,
 } = require('./backendFunctions.js');
 
 const app = express();
@@ -104,7 +105,12 @@ app.post('/login', async (req, res) => {
   const userIndex = data.findIndex((user) => user.username === sentUser);
 
   if (userIndex === -1) { // if it doesn't exist
-    res.status(404).json('user does not exist');
+    const cookie = randomstring.generate(7);
+    data = createUser(data, sentUser, sentPass, cookie);
+
+    res.cookie('token', cookie, { sameSite: true });
+    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+    res.status(200).json(data[data.length - 1].gameData[0]);
   } else if (sentPass === data[userIndex].password) {
     const cookie = randomstring.generate(7);
     data[userIndex].token = cookie;
