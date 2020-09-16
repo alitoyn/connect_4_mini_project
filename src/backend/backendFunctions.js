@@ -170,15 +170,13 @@ function returnUserGameData(userObject) {
 
 function createUser(dataObject, username, password, cookie) {
   const dataObjectCopy = JSON.parse(JSON.stringify(dataObject));
-  console.log(dataObjectCopy);
-  console.log('-------------');
   dataObjectCopy[dataObjectCopy.length] = {};
   dataObjectCopy[dataObjectCopy.length - 1].username = username;
   dataObjectCopy[dataObjectCopy.length - 1].password = password;
-  console.log(dataObjectCopy);
   dataObjectCopy[dataObjectCopy.length - 1].token = cookie;
   dataObjectCopy[dataObjectCopy.length - 1].gameData = [{
     board: [],
+    name: username,
     rows: 6,
     cols: 7,
     turnCount: 0,
@@ -192,7 +190,6 @@ function createUser(dataObject, username, password, cookie) {
     dataObjectCopy[dataObjectCopy.length - 1].gameData[0].rows,
     dataObjectCopy[dataObjectCopy.length - 1].gameData[0].cols,
   );
-  console.log(dataObjectCopy);
 
   return dataObjectCopy;
 }

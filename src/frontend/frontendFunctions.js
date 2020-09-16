@@ -64,6 +64,8 @@ function loadHTML(gameState) {
   for (let i = 0; i < gameState.rows; i++) {
     elementIDRow = 'row-' + i;
 
+    $('#nameHeading').text('Welcome ' + gameState.name + '!');
+
     $('#grid').prepend(
       $('<div></div>')
         .addClass('row')
