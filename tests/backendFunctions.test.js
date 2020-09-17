@@ -5,6 +5,7 @@ const {
   checkWinner, isRequestValid, tokenTooCloseToBottom,
   pointerEqualToLastCheckpoint, pointerAtEmptySlot,
   returnLastChar,
+  getFirstEmptyRow,
 } = require('../src/backend/backendFunctions');
 
 describe('token in empty board', () => {
@@ -359,7 +360,6 @@ describe('returnLastChar function', () => {
     ['valid request #1', t1, r1],
     ['valid request #2', t2, r2],
     ['invalid request', t3, r3],
-
   ]).it("'%s'", (text, passedString, expected) => {
     expect(
       returnLastChar(passedString),
@@ -368,7 +368,51 @@ describe('returnLastChar function', () => {
   });
 });
 
-test.todo('getFirstEmptyRow');
+describe('getFirstEmptyRow function', () => {
+  // Setup
+  const board = getBoard(5, 5);
+
+  // test 1
+  board[0][0] = 'red';
+  const t1Col = 0;
+  const t1Expected = 1;
+
+  // test 2
+  board[0][1] = 'yellow';
+  board[1][1] = 'red';
+  const t2Col = 1;
+  const t2Expected = 2;
+
+  // test 3
+  board[0][2] = 'yellow';
+  board[1][2] = 'red';
+  board[2][2] = 'red';
+  const t3Col = 2;
+  const t3Expected = 3;
+
+  // test 4
+  board[0][3] = 'yellow';
+  board[1][3] = 'red';
+  board[2][3] = 'red';
+  board[3][3] = 'yellow';
+  board[4][3] = 'red';
+  const t4Col = 3;
+  const t4Expected = null;
+
+  each([
+    ['valid request #1', board, t1Col, t1Expected],
+    ['valid request #2', board, t2Col, t2Expected],
+    ['valid request #3', board, t3Col, t3Expected],
+    ['valid request #4 - full column', board, t4Col, t4Expected],
+
+  ]).it("'%s'", (text, passedBoard, column, expected) => {
+    expect(
+      getFirstEmptyRow(passedBoard, column),
+    )
+      .toBe(expected);
+  });
+});
+
 test.todo('getPlayerScoreKey');
 test.todo('increasePlayerScore');
 test.todo('checkArrayForLastTurn');
