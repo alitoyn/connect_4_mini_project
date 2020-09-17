@@ -1,8 +1,7 @@
 const api = '';
 
 $(() => {
-  $('#exampleModal').modal({ backdrop: 'static', keyboard: false });
-
+  $('#modal').modal({ backdrop: 'static', keyboard: false });
   bindModalEventListeners();
 });
 

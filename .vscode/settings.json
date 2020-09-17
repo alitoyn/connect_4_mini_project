@@ -2,6 +2,7 @@
     "eslint.enable": true,
     "cSpell.words": [
         "apikey",
+        "coolusername",
         "crossorigin",
         "darkblue",
         "plusplus",

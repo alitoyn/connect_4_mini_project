@@ -151,7 +151,7 @@ function requestLogin(body) {
     contentType: 'application/json',
     success: async (res) => {
       loadHTML(res);
-      $('#exampleModal').modal('hide');
+      $('#modal').modal('hide');
     },
     error: (res) => {
       $('#error-message').css('display', 'inline');
