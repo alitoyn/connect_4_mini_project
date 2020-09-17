@@ -1,0 +1,6 @@
+{
+    "nodemonConfig": {
+      "ignore": ["./src/backend/secrets.*"]
+    }
+  }
+  

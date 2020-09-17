@@ -145,6 +145,10 @@ app.use((req, res) => {
   res.status(404).send("<html><body><h1>404</h1><img src='https://media3.giphy.com/media/l2JJKs3I69qfaQleE/giphy.gif'></img><br>This is not the endpoint you are looking for</body></html>");
 });
 
-app.listen(port, () => {
-  console.log('listening on port ' + port + '...');
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log('listening on port ' + port + '...');
+  });
+}
+
+module.exports = { app };
