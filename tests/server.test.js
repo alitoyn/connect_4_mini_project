@@ -9,6 +9,7 @@ const { app } = require('../src/backend/server');
 
 const request = supertest(app);
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 require('iconv-lite').encodingExists('foo');
 
 const dataObject = [{
@@ -16,7 +17,12 @@ const dataObject = [{
   password: '123',
   token: 'RandomToken',
   gameData: [{
-    board: [[null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null]],
+    board: [[null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null]],
     name: 'coolusername123',
     rows: 6,
     cols: 7,
@@ -88,7 +94,40 @@ it('/move', async (done) => {
   done();
 });
 
-test.todo('/login');
+it('/login', async (done) => {
+  const body = {
+    username: 'otherCoolUsername',
+    password: 'password123',
+  };
+
+  const data = {
+    board: [[null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null]],
+    name: 'otherCoolUsername',
+    rows: 6,
+    cols: 7,
+    turnCount: 0,
+    winner: false,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  };
+  const response = await request
+    .post('/login')
+    .send(body)
+    .expect(200)
+    .expect('Content-Type', 'application/json; charset=utf-8')
+    .expect(data);
+  done();
+});
+
 test.todo('404 error');
 
 test.todo('refactor reset for no matching token and test');
+test.todo('move errors');
+test.todo('login errors');

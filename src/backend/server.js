@@ -81,7 +81,7 @@ app.post('/move', async (req, res) => {
   if (checkArrayForLastTurn(gameData.board)) {
     gameData.draw = true;
   }
-  console.log(req.body);
+
   const selectedColumn = parseInt(req.body.button, 10);
   if (!isRequestValid(gameData, selectedColumn)) {
     res.status(406).json('The selected column is out of range');
