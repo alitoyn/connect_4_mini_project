@@ -132,7 +132,6 @@ app.post('/login', async (req, res) => {
     data[userIndex].token = cookie;
 
     res.cookie('token', cookie, { sameSite: true });
-    console.log(data[userIndex].gameData);
 
     fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
     res.status(200).json(data[userIndex].gameData[0]);

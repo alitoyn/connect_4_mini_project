@@ -33,6 +33,28 @@ const dataObject = [{
     player1Score: 0,
     player2Score: 0,
   }],
+},
+{
+  username: 'lastTurnTest',
+  password: '123',
+  token: 'lastTurnTest_token',
+  gameData: [{
+    board: [['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
+      ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
+      ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
+      ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
+      ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
+      ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow']],
+    name: 'coolusername123',
+    rows: 6,
+    cols: 7,
+    turnCount: 16,
+    winner: false,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  }],
 }];
 
 beforeEach(() => {
@@ -50,84 +72,116 @@ afterEach(() => {
   mock.restore();
 });
 
-it('gets the info endpoint', async (done) => {
-  const response = await request.get('/info')
-    .expect(200)
-    .expect('Content-Type', 'application/json; charset=utf-8')
-    .expect('"Welcome to connect 4. please read the docs to find the right endpoints"');
-  done();
+describe('/', () => {
+  it('returns the front end', async () => {
+    const response = await request.get('/')
+      .expect(200)
+      .expect('Content-Type', 'text/html; charset=UTF-8');
+  });
 });
 
-it('returns the front end', async (done) => {
-  const response = await request.get('/')
-    .expect(200)
-    .expect('Content-Type', 'text/html; charset=UTF-8');
-  done();
+describe('/info', () => {
+  it('returns 200 success when called', async () => {
+    const response = await request.get('/info')
+      .expect(200)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect('"Welcome to connect 4. please read the docs to find the right endpoints"');
+  });
 });
 
-it('reset function', async (done) => {
-  const response = await request.get('/reset')
-    .set('Cookie', ['token=RandomToken'])
-    .expect(200)
-    .expect('Content-Type', 'application/json; charset=utf-8');
-  done();
+describe('/reset', () => {
+  it('returns 200', async (done) => {
+    const response = await request.get('/reset')
+      .set('Cookie', ['token=RandomToken'])
+      .expect(200)
+      .expect('Content-Type', 'application/json; charset=utf-8');
+    done();
+  });
+
+  test.todo('refactor reset for no matching token and test');
 });
 
-it('/reset-scores', async (done) => {
-  const response = await request.get('/reset-scores')
-    .set('Cookie', ['token=RandomToken'])
-    .expect(200)
-    .expect('Content-Type', 'application/json; charset=utf-8');
-  done();
+describe('/reset-scores', () => {
+  it('returns 200', async (done) => {
+    const response = await request.get('/reset-scores')
+      .set('Cookie', ['token=RandomToken'])
+      .expect(200)
+      .expect('Content-Type', 'application/json; charset=utf-8');
+    done();
+  });
 });
 
-it('/move', async (done) => {
-  const body = {
-    button: '0',
-  };
-  const response = await request
-    .post('/move')
-    .send(body)
-    .set('Cookie', ['token=RandomToken'])
-    .expect(200)
-    .expect('Content-Type', 'application/json; charset=utf-8');
-  done();
+describe('/move', () => {
+  it('returns 200', async (done) => {
+    const body = {
+      button: '0',
+    };
+    const response = await request
+      .post('/move')
+      .send(body)
+      .set('Cookie', ['token=RandomToken'])
+      .expect(200)
+      .expect('Content-Type', 'application/json; charset=utf-8');
+    done();
+  });
+
+  it('returns error if board is full', async (done) => {
+    const body = {
+      button: '0',
+    };
+    const response = await request
+      .post('/move')
+      .send(body)
+      .set('Cookie', ['token=lastTurnTest_token'])
+      .expect(406)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect('"The selected column is full"');
+    done();
+  });
+  test.todo('move errors');
 });
 
-it('/login', async (done) => {
-  const body = {
-    username: 'otherCoolUsername',
-    password: 'password123',
-  };
+describe('/login', () => {
+  it('returns 200', async (done) => {
+    const body = {
+      username: 'otherCoolUsername',
+      password: 'password123',
+    };
 
-  const data = {
-    board: [[null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null]],
-    name: 'otherCoolUsername',
-    rows: 6,
-    cols: 7,
-    turnCount: 0,
-    winner: false,
-    draw: false,
-    winCondition: 4,
-    player1Score: 0,
-    player2Score: 0,
-  };
-  const response = await request
-    .post('/login')
-    .send(body)
-    .expect(200)
-    .expect('Content-Type', 'application/json; charset=utf-8')
-    .expect(data);
-  done();
+    const data = {
+      board: [[null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null]],
+      name: 'otherCoolUsername',
+      rows: 6,
+      cols: 7,
+      turnCount: 0,
+      winner: false,
+      draw: false,
+      winCondition: 4,
+      player1Score: 0,
+      player2Score: 0,
+    };
+    const response = await request
+      .post('/login')
+      .send(body)
+      .expect(200)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(data);
+    done();
+  });
+  test.todo('login errors');
 });
 
-test.todo('404 error');
-
-test.todo('refactor reset for no matching token and test');
-test.todo('move errors');
-test.todo('login errors');
+describe('hit and invalid endopint', () => {
+  it('return 404 error', async (done) => {
+    const response = await request
+      .get('/non-existent-endpoint')
+      .expect(404)
+      .expect('Content-Type', 'text/html; charset=utf-8');
+    done();
+  });
+});
