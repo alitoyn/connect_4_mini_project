@@ -131,7 +131,7 @@ function requestPlaceToken(selectedColumn) {
     contentType: 'application/json',
     success: (res) => { updateHTML(res); },
     error: (res) => {
-      if (res.status === 406) {
+      if (res.status === 400) {
         createToast('Move Error', res.responseText.slice(1, -1));
       }
     },

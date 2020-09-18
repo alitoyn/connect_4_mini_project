@@ -84,7 +84,7 @@ app.post('/move', async (req, res) => {
 
   const selectedColumn = parseInt(req.body.button, 10);
   if (!isRequestValid(gameData, selectedColumn)) {
-    res.status(406).json('The selected column is out of range');
+    res.status(400).json('The selected column is out of range');
     return;
   }
 
@@ -103,10 +103,10 @@ app.post('/move', async (req, res) => {
       fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
       res.json(gameData);
     } else {
-      res.status(406).json('The selected column is full');
+      res.status(400).json('The selected column is full');
     }
   } else {
-    res.status(406).json('There is a winner, please reset the game');
+    res.status(400).json('There is a winner, please reset the game');
   }
 });
 
