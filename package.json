@@ -25,7 +25,7 @@
         "eslint-plugin-standard": "^4.0.1"
     },
     "scripts": {
-        "test": "jest --coverage"
+        "test": "jest --detectOpenHandles --coverage"
     },
     "repository": {
         "type": "git",

@@ -73,19 +73,29 @@ afterEach(() => {
 });
 
 describe('/', () => {
-  it('returns the front end', async () => {
+  it('returns a html file', async (done) => {
     const response = await request.get('/')
       .expect(200)
       .expect('Content-Type', 'text/html; charset=UTF-8');
+    done();
   });
 });
 
 describe('/info', () => {
-  it('returns 200 success when called', async () => {
+  it('returns 200 success when called', async (done) => {
     const response = await request.get('/info')
-      .expect(200)
-      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200);
+    done();
+  });
+  it('returns a json file', async (done) => {
+    const response = await request.get('/info')
+      .expect('Content-Type', 'application/json; charset=utf-8');
+    done();
+  });
+  it('returns the correct message', async (done) => {
+    const response = await request.get('/info')
       .expect('"Welcome to connect 4. please read the docs to find the right endpoints"');
+    done();
   });
 });
 
@@ -176,7 +186,7 @@ describe('/login', () => {
   test.todo('login errors');
 });
 
-describe('hit and invalid endopint', () => {
+describe('hit and invalid endpoint', () => {
   it('return 404 error', async (done) => {
     const response = await request
       .get('/non-existent-endpoint')
