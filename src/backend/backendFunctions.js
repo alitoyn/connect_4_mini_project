@@ -155,7 +155,7 @@ function increasePlayerScore(gameState, playerScoreKey) {
 
 function checkArrayForLastTurn(array) {
   const newArray = array.flat().filter((x) => (x === null));
-  return (newArray.length === 1);
+  return (newArray.length === 0);
 }
 
 function returnUserObject(data, key, passedData) {
