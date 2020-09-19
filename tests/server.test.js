@@ -232,6 +232,28 @@ describe('/login', () => {
     done();
   });
 
+  it('returns 401 with incorrect password', async (done) => {
+    await request
+      .post('/login')
+      .send({
+        username: 'coolusername123',
+        password: 'incorrect',
+      })
+      .expect(401);
+    done();
+  });
+
+  it('returns correct message for incorrect password', async (done) => {
+    await request
+      .post('/login')
+      .send({
+        username: 'coolusername123',
+        password: 'incorrect',
+      })
+      .expect('"incorrect password"');
+    done();
+  });
+
   test.todo('login errors');
 });
 
