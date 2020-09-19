@@ -185,12 +185,35 @@ describe('/move', () => {
 });
 
 describe('/login', () => {
-  const body = {
+  const bodyNewUser = {
     username: 'otherCoolUsername',
     password: 'password123',
   };
 
-  const data = {
+  const bodyExistingUser = {
+    username: 'coolusername123',
+    password: '123',
+  };
+
+  const dataExistingUser = {
+    board: [[null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null]],
+    name: 'coolusername123',
+    rows: 6,
+    cols: 7,
+    turnCount: 16,
+    winner: false,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  };
+
+  const dataNewUser = {
     board: [[null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
@@ -208,27 +231,51 @@ describe('/login', () => {
     player2Score: 0,
   };
 
-  it('returns 200', async (done) => {
+  it('returns 200 for an existing user', async (done) => {
     const response = await request
       .post('/login')
-      .send(body)
+      .send(bodyExistingUser)
       .expect(200);
     done();
   });
 
-  it('returns a json', async (done) => {
+  it('returns a json for an existing user', async (done) => {
     const response = await request
       .post('/login')
-      .send(body)
+      .send(bodyExistingUser)
       .expect('Content-Type', 'application/json; charset=utf-8');
     done();
   });
 
-  it('returns the correct body data', async (done) => {
+  it('returns the correct body data for an existing user', async (done) => {
     const response = await request
       .post('/login')
-      .send(body)
-      .expect(data);
+      .send(bodyExistingUser)
+      .expect(dataExistingUser);
+    done();
+  });
+
+  it('returns 200 for new user', async (done) => {
+    const response = await request
+      .post('/login')
+      .send(bodyNewUser)
+      .expect(200);
+    done();
+  });
+
+  it('returns a json for new user', async (done) => {
+    const response = await request
+      .post('/login')
+      .send(bodyNewUser)
+      .expect('Content-Type', 'application/json; charset=utf-8');
+    done();
+  });
+
+  it('returns the correct body data for new user', async (done) => {
+    const response = await request
+      .post('/login')
+      .send(bodyNewUser)
+      .expect(dataNewUser);
     done();
   });
 
@@ -257,7 +304,7 @@ describe('/login', () => {
   test.todo('login errors');
 });
 
-describe('hit and invalid endpoint', () => {
+describe('hit an invalid endpoint', () => {
   it('return 404 error', async (done) => {
     const response = await request
       .get('/non-existent-endpoint')
