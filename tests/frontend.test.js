@@ -15,16 +15,19 @@ describe('createToast function', () => {
   it('update the html contents', () => {
     expect($('.toast-header').text() === 'header');
     expect($('.toast-body').text() === 'body');
+    expect($('.toast').toast() === 'show');
   });
 });
 
 describe('updatePlayerWinCount function', () => {
   // Arrange
   document.body.innerHTML = '<div id=\'test-area\'>';
+
   // Act
   updatePlayerWinCount({
     score: 0,
   }, 'score');
+
   // Assert
   it('update the html contents', () => {
     expect($('#test-area').text() === 0);
