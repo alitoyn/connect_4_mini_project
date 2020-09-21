@@ -99,6 +99,28 @@ const dataObject = [{
     player1Score: 0,
     player2Score: 0,
   }],
+},
+{
+  username: 'makeWinningMove',
+  password: '123',
+  token: 'makeWinningMove_token',
+  gameData: [{
+    board: [['y', null, null, null, null, null, null],
+      ['y', null, null, null, null, null, null],
+      ['y', null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null]],
+    name: 'coolusername123',
+    rows: 6,
+    cols: 7,
+    turnCount: 0,
+    winner: false,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  }],
 }];
 
 beforeEach(() => {
@@ -162,7 +184,7 @@ describe('/reset', () => {
     done();
   });
 
-  test.todo('check the body content returned is correct');
+  // TODO requesting reset without a valid token
   test.todo('refactor reset for no matching token and test');
 });
 
@@ -254,8 +276,26 @@ describe('/move', () => {
         button: '1',
       })
       .set('Cookie', ['token=singleWinnerTest_token'])
-      // .expect(400)
+      .expect(400)
       .expect('"There is a winner, please reset the game"');
+    done();
+  });
+
+  it('winner flag flipped when winning move is made', async (done) => {
+    await request
+      .post('/move')
+      .send({
+        button: '0',
+      })
+      .set('Cookie', ['token=makeWinningMove_token'])
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            winner: true,
+          }),
+        );
+      });
     done();
   });
 });
@@ -376,8 +416,6 @@ describe('/login', () => {
       .expect('"incorrect password"');
     done();
   });
-
-  test.todo('login errors');
 });
 
 describe('hit an invalid endpoint', () => {
