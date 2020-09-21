@@ -1,10 +1,3 @@
-function resetBoard(rows, cols) {
-  const board = getBoard(rows, cols);
-  $('#grid').css('background-color', 'darkblue');
-
-  return board;
-}
-
 function createToast(headerText, bodyText) {
   $('.toast-header').text(headerText);
   $('.toast-body').text(bodyText);
@@ -131,7 +124,7 @@ function requestPlaceToken(selectedColumn) {
     contentType: 'application/json',
     success: (res) => { updateHTML(res); },
     error: (res) => {
-      if (res.status === 400) {
+      if (res.status === 406) {
         createToast('Move Error', res.responseText.slice(1, -1));
       }
     },
@@ -200,4 +193,11 @@ function bindModalEventListeners() {
         },
       });
     });
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = {
+    createToast,
+    updatePlayerWinCount,
+  };
 }
