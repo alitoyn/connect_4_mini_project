@@ -208,11 +208,22 @@ describe('/move', () => {
       .post('/move')
       .send(body)
       .set('Cookie', ['token=fullColumnTest_token'])
+      .expect(400)
       .expect('"The selected column is full"');
     done();
   });
 
-  test.todo('different move errors');
+  it('returns correct error invalid selected column', async (done) => {
+    await request
+      .post('/move')
+      .send({
+        button: '50',
+      })
+      .set('Cookie', ['token=RandomToken'])
+      .expect(400)
+      .expect('"The selected column is out of range"');
+    done();
+  });
 });
 
 describe('/login', () => {
