@@ -77,6 +77,28 @@ const dataObject = [{
     player1Score: 0,
     player2Score: 0,
   }],
+},
+{
+  username: 'singleWinnerTest',
+  password: '123',
+  token: 'singleWinnerTest_token',
+  gameData: [{
+    board: [['yellow', null, null, null, null, null, null],
+      ['yellow', null, null, null, null, null, null],
+      ['yellow', null, null, null, null, null, null],
+      ['yellow', null, null, null, null, null, null],
+      ['yellow', null, null, null, null, null, null],
+      ['yellow', null, null, null, null, null, null]],
+    name: 'coolusername123',
+    rows: 6,
+    cols: 7,
+    turnCount: 16,
+    winner: true,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  }],
 }];
 
 beforeEach(() => {
@@ -222,6 +244,18 @@ describe('/move', () => {
       .set('Cookie', ['token=RandomToken'])
       .expect(400)
       .expect('"The selected column is out of range"');
+    done();
+  });
+
+  it('returns error when there is a winner', async (done) => {
+    await request
+      .post('/move')
+      .send({
+        button: '1',
+      })
+      .set('Cookie', ['token=singleWinnerTest_token'])
+      // .expect(400)
+      .expect('"There is a winner, please reset the game"');
     done();
   });
 });
