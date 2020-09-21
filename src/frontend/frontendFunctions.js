@@ -199,5 +199,6 @@ if (typeof module !== 'undefined') {
   module.exports = {
     createToast,
     updatePlayerWinCount,
+    winnerNotification,
   };
 }
