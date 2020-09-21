@@ -17,3 +17,16 @@ describe('createToast function', () => {
     expect($('.toast-body').text() === 'body');
   });
 });
+
+describe('updatePlayerWinCount function', () => {
+  // Arrange
+  document.body.innerHTML = '<div id=\'test-area\'>';
+  // Act
+  updatePlayerWinCount({
+    score: 0,
+  }, 'score');
+  // Assert
+  it('update the html contents', () => {
+    expect($('#test-area').text() === 0);
+  });
+});
