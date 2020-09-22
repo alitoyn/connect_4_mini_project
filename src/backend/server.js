@@ -1,9 +1,7 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const fs = require('fs').promises;
-
-dotenv.config();
-const apiKey = process.env.APIKEY;
+const cookieParser = require('cookie-parser');
+const randomstring = require('randomstring');
 
 const {
   getBoard,
@@ -13,21 +11,15 @@ const {
   increasePlayerScore,
   checkArrayForLastTurn,
   isRequestValid,
+  returnUserObject,
+  returnUserGameData,
+  createUser,
 } = require('./backendFunctions.js');
 
 const app = express();
 app.use(express.json());
 app.use(express.static('./src/frontend/'));
-
-// check if the api key is correct for every connection
-// app.use((req, res, next) => {
-//   const sentKey = req.headers.apikey;
-//   if (sentKey === apiKey) {
-//     next();
-//   } else {
-//     res.status(401).json('Please use a valid API key');
-//   }
-// });
+app.use(cookieParser());
 
 const port = 8080;
 const gameState = {
@@ -48,41 +40,68 @@ app.get('/info', (req, res) => {
   res.json('Welcome to connect 4. please read the docs to find the right endpoints');
 });
 
-app.get('/state', (req, res) => {
-  res.json(gameState);
+app.get('/reset', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  userObject = returnUserObject(data, 'token', token);
+  const gameData = returnUserGameData(userObject);
+
+  gameData.board = getBoard(gameData.rows, gameData.cols);
+  gameData.winner = false;
+  gameData.draw = false;
+  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+  res.json(gameData);
 });
 
-app.get('/reset', (req, res) => {
-  gameState.board = getBoard(gameState.rows, gameState.cols);
-  gameState.winner = false;
-  gameState.draw = false;
-  res.json(gameState);
+app.get('/reset-scores', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  userObject = returnUserObject(data, 'token', token);
+  const gameData = returnUserGameData(userObject);
+
+  gameData.board = getBoard(gameData.rows, gameData.cols);
+  gameData.winner = false;
+  gameData.draw = false;
+  gameData.player1Score = 0;
+  gameData.player2Score = 0;
+  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+  res.json(gameData);
 });
 
-app.post('/move', (req, res) => {
-  if (checkArrayForLastTurn(gameState.board)) {
-    gameState.draw = true;
+app.post('/move', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  const userIndex = data.findIndex((user) => user.token === token);
+  const userObject = data[userIndex];
+  const gameData = returnUserGameData(userObject);
+
+  if (checkArrayForLastTurn(gameData.board)) {
+    gameData.draw = true;
   }
 
   const selectedColumn = parseInt(req.body.button, 10);
-  if (!isRequestValid(gameState, selectedColumn)) {
+  if (!isRequestValid(gameData, selectedColumn)) {
     res.status(406).json('The selected column is out of range');
     return;
   }
 
-  if (!gameState.winner) {
-    const selectedRow = getFirstEmptyRow(gameState.board, selectedColumn);
+  if (!gameData.winner) {
+    const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
     if (selectedRow !== null) {
-      gameState.board[selectedRow][selectedColumn] = gameState.turnCount % 2 === 0 ? 'y' : 'r';
-      gameState.turnCount++;
-      gameState.winner = checkWinner(selectedRow, selectedColumn,
-        gameState.board, gameState.winCondition);
-      if (gameState.winner) {
-        const playerScoreKey = getPlayerScoreKey(gameState,
-          gameState.board[selectedRow][selectedColumn]);
-        gameState[playerScoreKey] = increasePlayerScore(gameState, playerScoreKey);
+      gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
+      gameData.turnCount++;
+      gameData.winner = checkWinner(selectedRow, selectedColumn,
+        gameData.board, gameData.winCondition);
+      if (gameData.winner) {
+        const playerScoreKey = getPlayerScoreKey(gameData,
+          gameData.board[selectedRow][selectedColumn]);
+        gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
       }
-      res.json(gameState);
+      fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+      res.json(gameData);
     } else {
       res.status(406).json('The selected column is full');
     }
@@ -94,19 +113,31 @@ app.post('/move', (req, res) => {
 app.post('/login', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
-  console.log(req)
+
   const sentUser = req.body.username;
   const sentPass = req.body.password;
-  console.log(sentUser, data[0].username);
-  
-  if (sentUser === data[0].username) {
-    if (sentPass === data[0].password) {
-      res.json('login user');
-    } else {
-      res.status(401).json('incorrect password');
-    }
+
+  // find index of user in data structure
+  const userIndex = data.findIndex((user) => user.username === sentUser);
+
+  if (userIndex === -1) { // if it doesn't exist
+    const cookie = randomstring.generate(7);
+    data = createUser(data, sentUser, sentPass, cookie);
+
+    res.cookie('token', cookie, { sameSite: true });
+    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+    res.status(200).json(data[data.length - 1].gameData[0]);
+  } else if (sentPass === data[userIndex].password) {
+    const cookie = randomstring.generate(7);
+    data[userIndex].token = cookie;
+
+    res.cookie('token', cookie, { sameSite: true });
+    console.log(data[userIndex].gameData);
+
+    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+    res.status(200).json(data[userIndex].gameData[0]);
   } else {
-    res.status(404).json('user does not exist');
+    res.status(401).json('incorrect password');
   }
 });
 

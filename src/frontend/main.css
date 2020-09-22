@@ -6,6 +6,10 @@ body {
     color: blanchedalmond;
 }
 
+#nameHeading {
+    color: blanchedalmond;
+}
+
 #grid {
     background-color: darkblue;
     border-radius: 25px;
@@ -21,6 +25,13 @@ body {
 .row {
     justify-content: center;
     flex-wrap: nowrap;
+}
+
+.modal-row {
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
 }
 
 .col-1 {
@@ -52,3 +63,7 @@ body {
 .toast-header {
     text-justify: center;
 }
+
+/* .modal-content {
+    background-color: #5a5a5a;
+ } */

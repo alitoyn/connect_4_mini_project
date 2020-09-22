@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="./dark-theme.css"> -->
     <link rel="stylesheet" href="./main.css">
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -11,12 +12,12 @@
 
 <body>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Login:</h5>
+                    <h5 class="modal-title" id="modalLabel">Login:</h5>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -27,11 +28,14 @@
                         <div class="form-group">
                             <label for="text" class="col-form-label">Password:</label>
                             <input type='password' class="form-control" id="password">
+                            <p id='error-message' style='color: red; display: none;'>Failed to login</p>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button id='submit-button' type="button" class="btn btn-primary">Continue</button>
+                <div class="modal-footer modal-row">
+                    <button id='guest-button' type="button" class="btn btn-primary justify-left col-3">Guest User</button>
+                    
+                        <button id='submit-button' type="button" class="btn btn-primary col-3">Continue</button>
                 </div>
             </div>
         </div>
@@ -47,6 +51,7 @@
     </div>
     <div class='container '>
         <h1 class="text-center" id='mainHeading'> Connect 4 </h1>
+        <h2 class="text-center" id='nameHeading'> Welcome back! </h2>
         <div class='container' id='notification-area'></div>
 
         <div class='container' id="grid">
@@ -62,12 +67,16 @@
                     Yellow:<br><span id="player1Score">0</span>
                 </p>
             </div>
-            <button type="button" id="reset" class="btn btn-danger btn-lg col-2">Reset</button>
+            <button type="button" id="reset" class="btn btn-danger btn-lg col-2">Reset Board</button>
             <div class='score col-5'>
                 <p>
                     Red:<br><span id="player2Score">0</span>
                 </p>
             </div>
+        </div>
+        <br>
+        <div class='row dflex'>
+            <button type="button" id="reset-scores" class="btn btn-danger btn-lg col-2">Reset Scores</button>
         </div>
 
     </div>
