@@ -106,8 +106,8 @@ function loadHTML(gameState) {
   updateHTML(gameState);
 }
 
-function requestReset(apiKey) {
-  $.get(api + '/reset', (data) => {
+function requestReset() {
+  $.get('/reset', (data) => {
     updateHTML(data);
   });
 }
@@ -201,5 +201,6 @@ if (typeof module !== 'undefined') {
     updatePlayerWinCount,
     winnerNotification,
     getPlayerScoreKey,
+    requestReset,
   };
 }

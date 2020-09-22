@@ -3,6 +3,7 @@ const each = require('jest-each').default;
 // eslint-disable-next-line no-global-assign
 $ = require('jquery');
 
+const FileSystem = require('mock-fs/lib/filesystem');
 const fe = require('../src/frontend/frontendFunctions');
 
 beforeEach(() => {
@@ -56,4 +57,18 @@ describe('getPlayerScoreKey function', () => {
       const test = fe.getPlayerScoreKey(winner);
       expect(test).toBe(expected);
     });
+});
+
+// selenium tests
+test.todo('updateHTML function');
+test.todo('loadHTML');
+
+describe('requestReset function', () => {
+  const spy = jest.spyOn($, 'get');
+
+  it('should be called once with the correct argument', () => {
+    fe.requestReset();
+    expect(spy.mock.calls.length).toBe(1);
+    expect(spy.mock.calls[0][0]).toBe('/reset');
+  });
 });
