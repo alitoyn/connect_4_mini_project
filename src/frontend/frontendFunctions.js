@@ -202,5 +202,6 @@ if (typeof module !== 'undefined') {
     winnerNotification,
     getPlayerScoreKey,
     requestReset,
+    requestPlaceToken,
   };
 }

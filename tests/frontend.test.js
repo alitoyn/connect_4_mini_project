@@ -59,16 +59,33 @@ describe('getPlayerScoreKey function', () => {
     });
 });
 
-// selenium tests
-test.todo('updateHTML function');
-test.todo('loadHTML');
-
 describe('requestReset function', () => {
   const spy = jest.spyOn($, 'get');
 
-  it('should be called once with the correct argument', () => {
+  it('should be called once with the correct endpoint', () => {
     fe.requestReset();
     expect(spy.mock.calls.length).toBe(1);
     expect(spy.mock.calls[0][0]).toBe('/reset');
   });
 });
+
+describe('requestPlaceToken function', () => {
+  const spy = jest.spyOn($, 'ajax');
+
+  it('called with the right data', () => {
+    const button = 3;
+    fe.requestPlaceToken(button);
+    expect(spy.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        method: 'POST',
+        url: '/move',
+        dataType: 'json',
+      }),
+    );
+    expect(spy.mock.calls[0][0].data).toBe(JSON.stringify({ button }));
+  });
+});
+
+// selenium tests
+test.todo('updateHTML function');
+test.todo('loadHTML');
