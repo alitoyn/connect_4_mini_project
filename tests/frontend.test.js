@@ -2,13 +2,13 @@ const each = require('jest-each').default;
 // eslint-disable-next-line no-global-assign
 $ = require('jquery');
 
-const webdriver = require('selenium-webdriver');
+// const webdriver = require('selenium-webdriver');
 
-const { By } = webdriver;
+// const { By } = webdriver;
 
-const driver = new webdriver.Builder()
-  .forBrowser('chrome')
-  .build();
+// const driver = new webdriver.Builder()
+//   .forBrowser('chrome')
+//   .build();
 
 const { returnLastChar } = require('../src/backend/backendFunctions');
 const fe = require('../src/frontend/frontendFunctions');
@@ -120,26 +120,26 @@ describe('requestLogin function', () => {
   });
 });
 
-describe('selenium test', () => {
-  test('test', () => {
-    driver.get('http://www.google.com');
+// describe.skip('selenium test', () => {
+//   test('test', () => {
+//     driver.get('http://www.google.com');
 
-    driver.findElement(By.name('q')).sendKeys('webdriver');
+//     driver.findElement(By.name('q')).sendKeys('webdriver');
 
-    driver.sleep(1000).then(() => {
-      driver.findElement(By.name('q')).sendKeys(webdriver.Key.TAB);
-    });
+//     driver.sleep(1000).then(() => {
+//       driver.findElement(By.name('q')).sendKeys(webdriver.Key.TAB);
+//     });
 
-    driver.findElement(By.name('btnK')).click();
+//     driver.findElement(By.name('btnK')).click();
 
-    driver.sleep(2000).then(() => {
-      driver.getTitle().then((title) => {
-        expect(title).toBe('webdriver - Google Search');
-        driver.quit();
-      });
-    });
-  });
-});
+//     driver.sleep(2000).then(() => {
+//       driver.getTitle().then((title) => {
+//         expect(title).toBe('webdriver - Google Search');
+//         driver.quit();
+//       });
+//     });
+//   });
+// });
 
 // selenium tests
 test.todo('updateHTML function');

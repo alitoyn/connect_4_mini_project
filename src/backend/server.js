@@ -148,6 +148,7 @@ app.use((req, res) => {
 /* istanbul ignore next  */
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
+    // eslint-disable-next-line no-console
     console.log(`listening on port ${port}...`);
   });
 }
