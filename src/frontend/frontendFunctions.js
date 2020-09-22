@@ -16,7 +16,7 @@ function winnerNotification(winner) {
   createToast('Winner!', player + ' is the winner!');
 }
 
-function getPlayerScoreKey(gameState, winner) {
+function getPlayerScoreKey(winner) {
   return winner === 'y' ? 'player1Score' : 'player2Score';
 }
 
@@ -200,5 +200,6 @@ if (typeof module !== 'undefined') {
     createToast,
     updatePlayerWinCount,
     winnerNotification,
+    getPlayerScoreKey,
   };
 }

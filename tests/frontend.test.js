@@ -38,12 +38,22 @@ describe('updatePlayerWinCount function', () => {
 
 describe('winnerNotification function', () => {
   document.body.innerHTML = '<div id=\'toast-header\'>< div id=\'toast-body\'>';
-  each([['is called with yellow', 'y']])
+  each([['is called with yellow', 'y'],
+    ['is called with red', 'r']])
     .it('%s', (text, passedPlayer) => {
-      // eslint-disable-next-line global-require
       fe.winnerNotification(passedPlayer);
       expect($('.toast-header').text() === 'Winner!');
       const player = passedPlayer === 'y' ? 'yellow' : 'red';
       expect($('.toast-body').text() === player + ' is the winner!');
+    });
+});
+
+describe('getPlayerScoreKey function', () => {
+  each([['is called with yellow', 'y', 'player1Score'],
+    ['is called with red', 'r', 'player2Score'],
+  ])
+    .it('%s', (text, winner, expected) => {
+      const test = fe.getPlayerScoreKey(winner);
+      expect(test).toBe(expected);
     });
 });
