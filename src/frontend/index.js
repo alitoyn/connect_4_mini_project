@@ -1,5 +1,3 @@
-const api = '';
-
 $(() => {
   $('#modal').modal({ backdrop: 'static', keyboard: false });
   bindModalEventListeners();

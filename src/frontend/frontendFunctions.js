@@ -118,7 +118,7 @@ function requestPlaceToken(selectedColumn) {
   };
   $.ajax({
     method: 'POST',
-    url: api + '/move',
+    url: '/move',
     dataType: 'json',
     data: JSON.stringify(body),
     contentType: 'application/json',
@@ -138,7 +138,7 @@ function returnLastChar(string) {
 function requestLogin(body) {
   $.ajax({
     method: 'POST',
-    url: api + '/login',
+    url: '/login',
     dataType: 'json',
     data: JSON.stringify(body),
     contentType: 'application/json',
