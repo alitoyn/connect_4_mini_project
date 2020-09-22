@@ -204,5 +204,6 @@ if (typeof module !== 'undefined') {
     requestReset,
     requestPlaceToken,
     returnLastChar,
+    requestLogin,
   };
 }

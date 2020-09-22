@@ -101,7 +101,7 @@ describe('requestLogin function', () => {
   it('called with the right data', () => {
     const body = {
       test: 'this data',
-    }
+    };
     fe.requestLogin(body);
     expect(spy.mock.calls[0][0]).toEqual(
       expect.objectContaining({
