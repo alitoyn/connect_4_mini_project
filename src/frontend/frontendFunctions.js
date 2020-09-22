@@ -203,5 +203,6 @@ if (typeof module !== 'undefined') {
     getPlayerScoreKey,
     requestReset,
     requestPlaceToken,
+    returnLastChar,
   };
 }

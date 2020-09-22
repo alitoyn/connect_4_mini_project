@@ -4,6 +4,7 @@ const each = require('jest-each').default;
 $ = require('jquery');
 
 const FileSystem = require('mock-fs/lib/filesystem');
+const { returnLastChar } = require('../src/backend/backendFunctions');
 const fe = require('../src/frontend/frontendFunctions');
 
 beforeEach(() => {
@@ -83,6 +84,14 @@ describe('requestPlaceToken function', () => {
       }),
     );
     expect(spy.mock.calls[0][0].data).toBe(JSON.stringify({ button }));
+  });
+});
+
+describe('returnLastChar function', () => {
+  const string = 'abcd';
+  it('should return last character of a string', () => {
+    const output = returnLastChar(string);
+    expect(output).toBe('d');
   });
 });
 
