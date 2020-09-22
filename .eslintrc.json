@@ -12,11 +12,22 @@
         "ecmaVersion": 12
     },
     "rules": {
-        "no-plusplus": "off",
-        "no-undef": "off",
-        "prefer-template": "off",
-        "no-continue": "off",
-        "no-unused-vars": "off",
-        "no-console": "off"
-    }
+        "no-plusplus": [
+            2,
+            {
+                "allowForLoopAfterthoughts": true
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": ["*.test.js"],
+            "env": {
+                "jest": true
+            },
+            "globals": {
+                "fetchMock": "readonly"
+            }
+        }
+    ]
 }

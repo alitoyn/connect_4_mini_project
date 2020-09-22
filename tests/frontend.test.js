@@ -3,7 +3,6 @@ const each = require('jest-each').default;
 // eslint-disable-next-line no-global-assign
 $ = require('jquery');
 
-const FileSystem = require('mock-fs/lib/filesystem');
 const { returnLastChar } = require('../src/backend/backendFunctions');
 const fe = require('../src/frontend/frontendFunctions');
 
@@ -46,7 +45,7 @@ describe('winnerNotification function', () => {
       fe.winnerNotification(passedPlayer);
       expect($('.toast-header').text() === 'Winner!');
       const player = passedPlayer === 'y' ? 'yellow' : 'red';
-      expect($('.toast-body').text() === player + ' is the winner!');
+      expect($('.toast-body').text() === `${player} is the winner!`);
     });
 });
 
@@ -114,6 +113,36 @@ describe('requestLogin function', () => {
   });
 });
 
+describe('selenium test', () => {
+  test('test', () => {
+    // eslint-disable-next-line global-require
+    const webdriver = require('selenium-webdriver');
+    const { By } = webdriver;
+
+    const driver = new webdriver.Builder()
+      .forBrowser('chrome')
+      .build();
+
+    driver.get('http://www.google.com');
+
+    driver.findElement(By.name('q')).sendKeys('webdriver');
+
+    driver.sleep(1000).then(() => {
+      driver.findElement(By.name('q')).sendKeys(webdriver.Key.TAB);
+    });
+
+    driver.findElement(By.name('btnK')).click();
+
+    driver.sleep(2000).then(() => {
+      driver.getTitle().then((title) => {
+        expect(title).toBe('webdriver - Google Search');
+        driver.quit();
+      });
+    });
+  });
+});
+
 // selenium tests
 test.todo('updateHTML function');
 test.todo('loadHTML');
+test.todo('bindModalEventListeners');

@@ -44,7 +44,7 @@ app.get('/reset', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
-  userObject = returnUserObject(data, 'token', token);
+  const userObject = returnUserObject(data, 'token', token);
   const gameData = returnUserGameData(userObject);
 
   gameData.board = getBoard(gameData.rows, gameData.cols);
@@ -58,7 +58,7 @@ app.get('/reset-scores', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
-  userObject = returnUserObject(data, 'token', token);
+  const userObject = returnUserObject(data, 'token', token);
   const gameData = returnUserGameData(userObject);
 
   gameData.board = getBoard(gameData.rows, gameData.cols);
@@ -92,7 +92,7 @@ app.post('/move', async (req, res) => {
       const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
       if (selectedRow !== null) {
         gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
-        gameData.turnCount++;
+        gameData.turnCount += 1;
         gameData.winner = checkWinner(selectedRow, selectedColumn,
           gameData.board, gameData.winCondition);
         if (gameData.winner) {
@@ -147,7 +147,7 @@ app.use((req, res) => {
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
-    console.log('listening on port ' + port + '...');
+    console.log(`listening on port ${port}...`);
   });
 }
 

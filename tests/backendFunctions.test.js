@@ -218,7 +218,7 @@ describe('checkWinner function', () => {
 });
 
 describe('isRequestValid function', () => {
-  gameState = {
+  const gameState = {
     board: [],
     rows: 6,
     cols: 7,
@@ -243,9 +243,9 @@ describe('isRequestValid function', () => {
     ['invalid request - string', t4Col, gameState, false],
     ['invalid request - null', t5Col, gameState, false],
 
-  ]).it("'%s'", (text, column, gameState, expected) => {
+  ]).it("'%s'", (text, column, _gameState, expected) => {
     expect(
-      isRequestValid(gameState, column),
+      isRequestValid(_gameState, column),
     )
       .toBe(expected);
   });

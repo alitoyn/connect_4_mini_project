@@ -1,8 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 const each = require('jest-each').default;
-const { TestScheduler } = require('jest');
 
 const supertest = require('supertest');
-const fs = require('fs').promises;
 const mock = require('mock-fs');
 
 const { app } = require('../src/backend/server');

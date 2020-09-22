@@ -54,6 +54,7 @@ function pointerAtEmptySlot(row, column, board) {
 function checkRows(row, cols, board, connectN) {
   for (let i = 0; i < cols - connectN + 1; i++) { // looping pointer across row
     if (pointerAtEmptySlot(row, i, board)) {
+      // eslint-disable-next-line no-continue
       continue;
     }
     // check the next token along as far as the win amount
@@ -74,6 +75,7 @@ function checkDiagsPositive(rows, cols, board, winCondition) {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
+        // eslint-disable-next-line no-continue
         continue;
       }
       // check the next token along as far as the win amount
@@ -98,6 +100,7 @@ function checkDiagsNegative(rows, cols, board, winCondition) {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) { // ^ loop through every cell in the board
       if (board[i][j] === null) {
+        // eslint-disable-next-line no-continue
         continue;
       }
       // check the next token along as far as the win amount
