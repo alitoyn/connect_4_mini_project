@@ -95,6 +95,25 @@ describe('returnLastChar function', () => {
   });
 });
 
+describe('requestLogin function', () => {
+  const spy = jest.spyOn($, 'ajax');
+
+  it('called with the right data', () => {
+    const body = {
+      test: 'this data',
+    }
+    fe.requestLogin(body);
+    expect(spy.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        method: 'POST',
+        url: '/login',
+        dataType: 'json',
+      }),
+    );
+    expect(spy.mock.calls[0][0].data).toBe(JSON.stringify(body));
+  });
+});
+
 // selenium tests
 test.todo('updateHTML function');
 test.todo('loadHTML');
