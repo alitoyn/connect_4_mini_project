@@ -1,7 +1,14 @@
 const each = require('jest-each').default;
-// const { iterator } = require('core-js/fn/symbol');
 // eslint-disable-next-line no-global-assign
 $ = require('jquery');
+
+const webdriver = require('selenium-webdriver');
+
+const { By } = webdriver;
+
+const driver = new webdriver.Builder()
+  .forBrowser('chrome')
+  .build();
 
 const { returnLastChar } = require('../src/backend/backendFunctions');
 const fe = require('../src/frontend/frontendFunctions');
@@ -115,14 +122,6 @@ describe('requestLogin function', () => {
 
 describe('selenium test', () => {
   test('test', () => {
-    // eslint-disable-next-line global-require
-    const webdriver = require('selenium-webdriver');
-    const { By } = webdriver;
-
-    const driver = new webdriver.Builder()
-      .forBrowser('chrome')
-      .build();
-
     driver.get('http://www.google.com');
 
     driver.findElement(By.name('q')).sendKeys('webdriver');

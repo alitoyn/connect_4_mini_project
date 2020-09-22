@@ -34,6 +34,28 @@ const dataObject = [{
   }],
 },
 {
+  username: 'coolusername123',
+  password: '123',
+  token: 'RandomToken_2',
+  gameData: [{
+    board: [[null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null]],
+    name: 'coolusername123',
+    rows: 6,
+    cols: 7,
+    turnCount: 17,
+    winner: false,
+    draw: false,
+    winCondition: 4,
+    player1Score: 0,
+    player2Score: 0,
+  }],
+},
+{
   username: 'fullColumnTest',
   password: '123',
   token: 'fullColumnTest_token',
@@ -222,6 +244,16 @@ describe('/move', () => {
       .post('/move')
       .send(body)
       .set('Cookie', ['token=RandomToken'])
+      .expect('Content-Type', 'application/json; charset=utf-8');
+    done();
+  });
+
+  it('returns 200 and json for correct second move', async (done) => {
+    await request
+      .post('/move')
+      .send(body)
+      .set('Cookie', ['token=RandomToken_2'])
+      .expect(200)
       .expect('Content-Type', 'application/json; charset=utf-8');
     done();
   });
