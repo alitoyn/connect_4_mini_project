@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.static('./src/frontend/'));
 app.use(cookieParser());
 
-const port = 8080;
+const port = 3000;
 const gameState = {
   board: [],
   rows: 6,
