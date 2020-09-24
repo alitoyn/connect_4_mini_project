@@ -18,7 +18,7 @@ const {
 
 const app = express();
 app.use(express.json());
-app.use(express.static('./src/frontend/'));
+app.use(express.static('src/frontend/'));
 app.use(cookieParser());
 
 const port = 3000;
