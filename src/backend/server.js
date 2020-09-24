@@ -17,6 +17,7 @@ const {
   returnUserObject,
   returnUserGameData,
   createUser,
+  checkDataObjectFileExists,
 } = require('./backendFunctions.js');
 
 const app = express();
@@ -25,19 +26,8 @@ app.use(express.static('./src/frontend/'));
 app.use(cookieParser());
 
 const port = 3000;
-const gameState = {
-  board: [],
-  rows: 6,
-  cols: 7,
-  turnCount: 0,
-  winner: false,
-  draw: false,
-  winCondition: 4,
-  player1Score: 0,
-  player2Score: 0,
-};
 
-gameState.board = getBoard(gameState.rows, gameState.cols);
+checkDataObjectFileExists();
 
 app.get('/info', (req, res) => {
   res.json('Welcome to connect 4. please read the docs to find the right endpoints');

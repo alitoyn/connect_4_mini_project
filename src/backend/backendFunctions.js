@@ -199,8 +199,6 @@ function createUser(dataObject, username, password, cookie) {
   return dataObjectCopy;
 }
 
-<<<<<<< Updated upstream
-=======
 async function checkDataObjectFileExists() {
   try {
     await fs.writeFile('./src/backend/secrets.json', JSON.stringify([]), { encoding: 'utf-8', flag: 'wx' });
@@ -208,11 +206,10 @@ async function checkDataObjectFileExists() {
     console.log('created data object file');
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('found data object file', error);
+    console.log('found data object file');
   }
 }
 
->>>>>>> Stashed changes
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
@@ -233,5 +230,6 @@ if (typeof module !== 'undefined') {
     returnUserObject,
     returnUserGameData,
     createUser,
+    checkDataObjectFileExists,
   };
 }
