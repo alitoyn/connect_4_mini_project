@@ -73,34 +73,33 @@ app.post('/move', async (req, res) => {
 
   if (checkArrayForLastTurn(gameData.board)) {
     gameData.draw = true;
-    res.status(400).json('The game is a draw');
-  } else {
-    const selectedColumn = parseInt(req.body.button, 10);
-    if (!isRequestValid(gameData, selectedColumn)) {
-      res.status(400).json('The selected column is out of range');
-      return;
-    }
+    // res.status(400).json('The game is a draw');
+  }
+  const selectedColumn = parseInt(req.body.button, 10);
+  if (!isRequestValid(gameData, selectedColumn)) {
+    res.status(400).json('The selected column is out of range');
+    return;
+  }
 
-    if (!gameData.winner) {
-      const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
-      if (selectedRow !== null) {
-        gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
-        gameData.turnCount += 1;
-        gameData.winner = checkWinner(selectedRow, selectedColumn,
-          gameData.board, gameData.winCondition);
-        if (gameData.winner) {
-          const playerScoreKey = getPlayerScoreKey(gameData,
-            gameData.board[selectedRow][selectedColumn]);
-          gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
-        }
-        fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
-        res.json(gameData);
-      } else {
-        res.status(400).json('The selected column is full');
+  if (!gameData.winner) {
+    const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
+    if (selectedRow !== null) {
+      gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
+      gameData.turnCount += 1;
+      gameData.winner = checkWinner(selectedRow, selectedColumn,
+        gameData.board, gameData.winCondition);
+      if (gameData.winner) {
+        const playerScoreKey = getPlayerScoreKey(gameData,
+          gameData.board[selectedRow][selectedColumn]);
+        gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
       }
+      fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+      res.json(gameData);
     } else {
-      res.status(400).json('There is a winner, please reset the game');
+      res.status(400).json('The selected column is full');
     }
+  } else {
+    res.status(400).json('There is a winner, please reset the game');
   }
 });
 
