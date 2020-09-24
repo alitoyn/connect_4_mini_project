@@ -2,19 +2,12 @@ const each = require('jest-each').default;
 // eslint-disable-next-line no-global-assign
 $ = require('jquery');
 
-// const webdriver = require('selenium-webdriver');
-
-// const { By } = webdriver;
-
-// const driver = new webdriver.Builder()
-//   .forBrowser('chrome')
-//   .build();
-
 const { returnLastChar } = require('../src/backend/backendFunctions');
 const fe = require('../src/frontend/frontendFunctions');
 
 beforeEach(() => {
   jest.resetAllMocks();
+  document.getElementsByTagName('html')[0].innerHTML = ''; 
 });
 
 describe('createToast function', () => {
@@ -31,16 +24,13 @@ describe('createToast function', () => {
 
 describe('updatePlayerWinCount function', () => {
   // Arrange
-  document.body.innerHTML = '<div id=\'test-area\'>';
+  document.body.innerHTML = '<div id=\'score\'>';
 
-  // Act
-  fe.updatePlayerWinCount({
-    score: 0,
-  }, 'score');
-
-  // Assert
   it('update the html contents', () => {
-    expect($('#test-area').text() === 0);
+    fe.updatePlayerWinCount({
+      score: 3,
+    }, 'score');
+    expect($('#test-area').text() === 3);
   });
 });
 
@@ -120,28 +110,13 @@ describe('requestLogin function', () => {
   });
 });
 
-// describe.skip('selenium test', () => {
-//   test('test', () => {
-//     driver.get('http://www.google.com');
+describe('updateHTML function', () => {
+  // Arrange
 
-//     driver.findElement(By.name('q')).sendKeys('webdriver');
+  // Act
+  // Assert
+});
 
-//     driver.sleep(1000).then(() => {
-//       driver.findElement(By.name('q')).sendKeys(webdriver.Key.TAB);
-//     });
-
-//     driver.findElement(By.name('btnK')).click();
-
-//     driver.sleep(2000).then(() => {
-//       driver.getTitle().then((title) => {
-//         expect(title).toBe('webdriver - Google Search');
-//         driver.quit();
-//       });
-//     });
-//   });
-// });
-
-// selenium tests
 test.todo('updateHTML function');
 test.todo('loadHTML');
 test.todo('bindModalEventListeners');
