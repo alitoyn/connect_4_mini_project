@@ -17,7 +17,7 @@ function tokenTooCloseToBottom(row, winCondition) {
 
 function pointerEqualToLastCheckpoint(pointer, winCondition) {
   if (typeof (pointer) !== 'number') {
-    return false;
+    throw new Error('Invalid request');
   }
   return pointer === winCondition - 1;
 }
@@ -40,7 +40,7 @@ function checkCols(row, column, board, connectN) {
 
 function getBoard(rows, cols) {
   if (typeof (rows) !== 'number' && typeof (cols) !== 'number') {
-    return false;
+    throw new Error('Invalid request - args should be strings');
   }
   const board = new Array(rows);
   for (let i = 0; i < rows; i++) {

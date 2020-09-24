@@ -303,12 +303,11 @@ describe('pointerEqualToLastCheckpoint function', () => {
   const t3pointer = 3;
   const t4pointer = 'string';
   const t5pointer = null;
+
   each([
     ['valid request #1', t1pointer, winCondition4, true],
     ['valid request #2', t2pointer, winCondition5, true],
     ['valid request #3', t3pointer, winCondition5, false],
-    ['invalid request - string', t4pointer, winCondition4, false],
-    ['invalid request - null', t5pointer, winCondition4, false],
 
   ]).it("'%s'", (text, pointer, winCondition, expected) => {
     expect(
@@ -316,15 +315,24 @@ describe('pointerEqualToLastCheckpoint function', () => {
     )
       .toBe(expected);
   });
+
+  each([
+    ['invalid request - string', t4pointer, winCondition4],
+    ['invalid request - null', t5pointer, winCondition4],
+
+  ]).it("'%s'", (text, pointer, winCondition) => {
+    expect(() => {
+      pointerEqualToLastCheckpoint(pointer, winCondition);
+    })
+      .toThrow('Invalid request');
+  });
 });
 
 describe('getBoard function', () => {
   const t1Row = 1;
   const t2Row = 2;
-  const t3Row = null;
   const t1Cols = 1;
   const t2Cols = 2;
-  const t3Cols = 'string';
 
   const expected1 = [[null]];
   const expected2 = [[null, null], [null, null]];
@@ -333,13 +341,18 @@ describe('getBoard function', () => {
   each([
     ['valid request #1', t1Row, t1Cols, expected1],
     ['valid request #2', t2Row, t2Cols, expected2],
-    ['invalid request', t3Row, t3Cols, expected3],
 
   ]).it("'%s'", (text, rows, cols, expected) => {
     expect(
       getBoard(rows, cols),
     )
       .toStrictEqual(expected);
+  });
+
+  it('throw and error for an invalid request', () => {
+    expect(() => {
+      getBoard(null, 'string');
+    }).toThrow('Invalid request - args should be strings');
   });
 });
 
