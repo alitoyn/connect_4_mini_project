@@ -41,7 +41,7 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/reset', async (req, res) => {
-  let data = await fs.readFile('./backend/secrets.json', 'utf-8');
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
   const userObject = returnUserObject(data, 'token', token);
