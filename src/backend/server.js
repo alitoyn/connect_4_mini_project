@@ -3,6 +3,8 @@ const fs = require('fs').promises;
 const cookieParser = require('cookie-parser');
 const randomstring = require('randomstring');
 
+// const path = '/config/connect_4_mini_project/';
+
 const {
   getBoard,
   checkWinner,
@@ -18,7 +20,7 @@ const {
 
 const app = express();
 app.use(express.json());
-app.use(express.static('/config/connect_4_mini_project/src/frontend/'));
+app.use(express.static('../frontend/'));
 app.use(cookieParser());
 
 const port = 3000;
