@@ -18,7 +18,7 @@ const {
 
 const app = express();
 app.use(express.json());
-app.use(express.static('../frontend/'));
+app.use(express.static('./src/frontend/'));
 app.use(cookieParser());
 
 const port = 3000;
@@ -41,7 +41,7 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/reset', async (req, res) => {
-  let data = await fs.readFile('./secrets.json', 'utf-8');
+  let data = await fs.readFile('./backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
   const userObject = returnUserObject(data, 'token', token);
@@ -50,12 +50,12 @@ app.get('/reset', async (req, res) => {
   gameData.board = getBoard(gameData.rows, gameData.cols);
   gameData.winner = false;
   gameData.draw = false;
-  fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
+  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
   res.json(gameData);
 });
 
 app.get('/reset-scores', async (req, res) => {
-  let data = await fs.readFile('./secrets.json', 'utf-8');
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
   const userObject = returnUserObject(data, 'token', token);
@@ -66,12 +66,12 @@ app.get('/reset-scores', async (req, res) => {
   gameData.draw = false;
   gameData.player1Score = 0;
   gameData.player2Score = 0;
-  fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
+  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
   res.json(gameData);
 });
 
 app.post('/move', async (req, res) => {
-  let data = await fs.readFile('./secrets.json', 'utf-8');
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
   const userIndex = data.findIndex((user) => user.token === token);
@@ -100,7 +100,7 @@ app.post('/move', async (req, res) => {
             gameData.board[selectedRow][selectedColumn]);
           gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
         }
-        fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
+        fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
         res.json(gameData);
       } else {
         res.status(400).json('The selected column is full');
@@ -112,7 +112,7 @@ app.post('/move', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  let data = await fs.readFile('./secrets.json', 'utf-8');
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
 
   const sentUser = req.body.username;
@@ -126,7 +126,7 @@ app.post('/login', async (req, res) => {
     data = createUser(data, sentUser, sentPass, cookie);
 
     res.cookie('token', cookie, { sameSite: true });
-    fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
+    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
     res.status(200).json(data[data.length - 1].gameData[0]);
   } else if (sentPass === data[userIndex].password) {
     const cookie = randomstring.generate(7);
@@ -134,7 +134,7 @@ app.post('/login', async (req, res) => {
 
     res.cookie('token', cookie, { sameSite: true });
 
-    fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
+    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
     res.status(200).json(data[userIndex].gameData[0]);
   } else {
     res.status(401).json('incorrect password');

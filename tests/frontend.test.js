@@ -7,7 +7,7 @@ const fe = require('../src/frontend/frontendFunctions');
 
 beforeEach(() => {
   jest.resetAllMocks();
-  document.getElementsByTagName('html')[0].innerHTML = ''; 
+  document.getElementsByTagName('html')[0].innerHTML = '';
 });
 
 describe('createToast function', () => {
