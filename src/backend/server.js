@@ -2,6 +2,9 @@ const express = require('express');
 const fs = require('fs').promises;
 const cookieParser = require('cookie-parser');
 const randomstring = require('randomstring');
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
 
 const {
   getBoard,
@@ -117,18 +120,19 @@ app.post('/login', async (req, res) => {
 
   const sentUser = req.body.username;
   const sentPass = req.body.password;
+  const hashedPassword = bcrypt.hashSync(sentPass, saltRounds);
 
   // find index of user in data structure
   const userIndex = data.findIndex((user) => user.username === sentUser);
 
   if (userIndex === -1) { // if it doesn't exist
     const cookie = randomstring.generate(7);
-    data = createUser(data, sentUser, sentPass, cookie);
+    data = createUser(data, sentUser, hashedPassword, cookie);
 
     res.cookie('token', cookie, { sameSite: true });
     fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
     res.status(200).json(data[data.length - 1].gameData[0]);
-  } else if (sentPass === data[userIndex].password) {
+  } else if (bcrypt.compareSync(sentPass, data[userIndex].password)) {
     const cookie = randomstring.generate(7);
     data[userIndex].token = cookie;
 

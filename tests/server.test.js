@@ -3,17 +3,22 @@ const each = require('jest-each').default;
 
 const supertest = require('supertest');
 const mock = require('mock-fs');
+const bcrypt = require('bcrypt');
 
 const { app } = require('../src/backend/server');
 
 const request = supertest(app);
 
+const saltRounds = 10;
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 require('iconv-lite').encodingExists('foo');
 
+const hashedPassword = bcrypt.hashSync('123', saltRounds);
+
 const dataObject = [{
   username: 'coolusername123',
-  password: '123',
+  password: hashedPassword,
   token: 'RandomToken',
   gameData: [{
     board: [[null, null, null, null, null, null, null],
@@ -35,7 +40,7 @@ const dataObject = [{
 },
 {
   username: 'coolusername123',
-  password: '123',
+  password: hashedPassword,
   token: 'RandomToken_2',
   gameData: [{
     board: [[null, null, null, null, null, null, null],
@@ -57,7 +62,7 @@ const dataObject = [{
 },
 {
   username: 'fullColumnTest',
-  password: '123',
+  password: hashedPassword,
   token: 'fullColumnTest_token',
   gameData: [{
     board: [['red', null, null, null, null, null, null],
@@ -79,7 +84,7 @@ const dataObject = [{
 },
 {
   username: 'lastTurnTest',
-  password: '123',
+  password: hashedPassword,
   token: 'lastTurnTest_token',
   gameData: [{
     board: [['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
@@ -101,7 +106,7 @@ const dataObject = [{
 },
 {
   username: 'singleWinnerTest',
-  password: '123',
+  password: hashedPassword,
   token: 'singleWinnerTest_token',
   gameData: [{
     board: [['yellow', null, null, null, null, null, null],
@@ -123,7 +128,7 @@ const dataObject = [{
 },
 {
   username: 'makeWinningMove',
-  password: '123',
+  password: hashedPassword,
   token: 'makeWinningMove_token',
   gameData: [{
     board: [['y', null, null, null, null, null, null],
@@ -334,7 +339,7 @@ describe('/move', () => {
 describe('/login', () => {
   const bodyNewUser = {
     username: 'otherCoolUsername',
-    password: 'password123',
+    password: '123',
   };
 
   const bodyExistingUser = {
