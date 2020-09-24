@@ -46,7 +46,7 @@ function updateHTML(gameState) {
 
   // create toast if the game has finished
   if (gameState.winner === true) { // if the winner flag as not been reset, don't change anything
-    winnerNotification(gameState.turnCount % 2 === 0 ? 'y' : 'r');
+    winnerNotification(gameState.turnCount % 2 === 0 ? 'r' : 'y');
     // createToast('Game Over', 'Please press reset to continue...');
   } else if (gameState.draw === true) {
     createToast('Draw', 'Please press reset to start again...');
