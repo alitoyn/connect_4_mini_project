@@ -1,29 +1,22 @@
-function resetBoard(rows, cols) {
-  const board = getBoard(rows, cols);
-  $('#grid').css('background-color', 'darkblue');
-
-  return board;
-}
-
 function createToast(headerText, bodyText) {
   $('.toast-header').text(headerText);
   $('.toast-body').text(bodyText);
-  $(document).ready(() => {
+  $(() => {
     $('.toast').toast('show');
   });
 }
 
 function updatePlayerWinCount(gameState, playerScoreKey) {
-  $('#' + playerScoreKey)
+  $(`#${playerScoreKey}`)
     .text(gameState[playerScoreKey]);
 }
 
 function winnerNotification(winner) {
   const player = winner === 'y' ? 'yellow' : 'red';
-  createToast('Winner!', player + ' is the winner!');
+  createToast('Winner!', `${player} is the winner!`);
 }
 
-function getPlayerScoreKey(gameState, winner) {
+function getPlayerScoreKey(winner) {
   return winner === 'y' ? 'player1Score' : 'player2Score';
 }
 
@@ -62,9 +55,9 @@ function updateHTML(gameState) {
 function loadHTML(gameState) {
   // grid initialiser
   for (let i = 0; i < gameState.rows; i++) {
-    elementIDRow = 'row-' + i;
+    const elementIDRow = `row-${i}`;
 
-    $('#nameHeading').text('Welcome ' + gameState.name + '!');
+    $('#nameHeading').text(`Welcome ${gameState.name}!`);
 
     $('#grid').prepend(
       $('<div></div>')
@@ -73,8 +66,8 @@ function loadHTML(gameState) {
     );
 
     for (let j = 0; j < gameState.cols; j++) {
-      elementIDCol = 'row-' + i + '-column-' + j;
-      $('#' + elementIDRow).append(
+      const elementIDCol = `row-${i}-column-${j}`;
+      $(`#${elementIDRow}`).append(
         $('<div></div>')
           .addClass('col-1')
           .attr('id', elementIDCol),
@@ -86,14 +79,16 @@ function loadHTML(gameState) {
   for (let i = 0; i < gameState.cols; i++) {
     $('#button-row').append(
       $('<button />')
-        .attr('id', 'button' + i)
+        .attr('id', `button${i}`)
         .addClass('col-1 btn btn-primary btn-lg')
-        .click(buttonClick),
+        // eslint-disable-next-line no-undef
+        .on('click', buttonClick),
     );
   }
 
   // bind reset buttons
-  $('#reset').click(buttonClick);
+  // eslint-disable-next-line no-undef
+  $('#reset').on('click', buttonClick);
 
   $('#reset-scores')
     .click(() => {
@@ -113,8 +108,8 @@ function loadHTML(gameState) {
   updateHTML(gameState);
 }
 
-function requestReset(apiKey) {
-  $.get(api + '/reset', (data) => {
+function requestReset() {
+  $.get('/reset', (data) => {
     updateHTML(data);
   });
 }
@@ -125,13 +120,13 @@ function requestPlaceToken(selectedColumn) {
   };
   $.ajax({
     method: 'POST',
-    url: api + '/move',
+    url: '/move',
     dataType: 'json',
     data: JSON.stringify(body),
     contentType: 'application/json',
     success: (res) => { updateHTML(res); },
     error: (res) => {
-      if (res.status === 406) {
+      if (res.status === 400) {
         createToast('Move Error', res.responseText.slice(1, -1));
       }
     },
@@ -145,7 +140,7 @@ function returnLastChar(string) {
 function requestLogin(body) {
   $.ajax({
     method: 'POST',
-    url: api + '/login',
+    url: '/login',
     dataType: 'json',
     data: JSON.stringify(body),
     contentType: 'application/json',
@@ -153,12 +148,13 @@ function requestLogin(body) {
       loadHTML(res);
       $('#modal').modal('hide');
     },
-    error: (res) => {
+    error: () => {
       $('#error-message').css('display', 'inline');
     },
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function bindModalEventListeners() {
   $('#password').keypress((event) => {
     if (event.keyCode === 13) {
@@ -183,7 +179,7 @@ function bindModalEventListeners() {
         url: 'https://randomuser.me/api/?inc=name',
         dataType: 'json',
         success: (data) => {
-          const user = data.results[0].name.first + ' ' + data.results[0].name.last;
+          const user = `${data.results[0].name.first} ${data.results[0].name.last}`;
           const pass = '123';
           const body = {
             username: user,
@@ -200,4 +196,17 @@ function bindModalEventListeners() {
         },
       });
     });
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = {
+    createToast,
+    updatePlayerWinCount,
+    winnerNotification,
+    getPlayerScoreKey,
+    requestReset,
+    requestPlaceToken,
+    returnLastChar,
+    requestLogin,
+  };
 }

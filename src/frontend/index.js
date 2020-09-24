@@ -1,5 +1,5 @@
-const api = '';
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 $(() => {
   $('#modal').modal({ backdrop: 'static', keyboard: false });
   bindModalEventListeners();

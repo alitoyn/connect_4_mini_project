@@ -18,10 +18,10 @@ const {
 
 const app = express();
 app.use(express.json());
-app.use(express.static('./src/frontend/'));
+app.use(express.static('../frontend/'));
 app.use(cookieParser());
 
-const port = 8080;
+const port = 3000;
 const gameState = {
   board: [],
   rows: 6,
@@ -41,24 +41,24 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/reset', async (req, res) => {
-  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  let data = await fs.readFile('./secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
-  userObject = returnUserObject(data, 'token', token);
+  const userObject = returnUserObject(data, 'token', token);
   const gameData = returnUserGameData(userObject);
 
   gameData.board = getBoard(gameData.rows, gameData.cols);
   gameData.winner = false;
   gameData.draw = false;
-  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+  fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
   res.json(gameData);
 });
 
 app.get('/reset-scores', async (req, res) => {
-  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  let data = await fs.readFile('./secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
-  userObject = returnUserObject(data, 'token', token);
+  const userObject = returnUserObject(data, 'token', token);
   const gameData = returnUserGameData(userObject);
 
   gameData.board = getBoard(gameData.rows, gameData.cols);
@@ -66,12 +66,12 @@ app.get('/reset-scores', async (req, res) => {
   gameData.draw = false;
   gameData.player1Score = 0;
   gameData.player2Score = 0;
-  fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+  fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
   res.json(gameData);
 });
 
 app.post('/move', async (req, res) => {
-  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  let data = await fs.readFile('./secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
   const userIndex = data.findIndex((user) => user.token === token);
@@ -80,38 +80,39 @@ app.post('/move', async (req, res) => {
 
   if (checkArrayForLastTurn(gameData.board)) {
     gameData.draw = true;
-  }
-
-  const selectedColumn = parseInt(req.body.button, 10);
-  if (!isRequestValid(gameData, selectedColumn)) {
-    res.status(406).json('The selected column is out of range');
-    return;
-  }
-
-  if (!gameData.winner) {
-    const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
-    if (selectedRow !== null) {
-      gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
-      gameData.turnCount++;
-      gameData.winner = checkWinner(selectedRow, selectedColumn,
-        gameData.board, gameData.winCondition);
-      if (gameData.winner) {
-        const playerScoreKey = getPlayerScoreKey(gameData,
-          gameData.board[selectedRow][selectedColumn]);
-        gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
-      }
-      fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
-      res.json(gameData);
-    } else {
-      res.status(406).json('The selected column is full');
-    }
+    res.status(400).json('The game is a draw');
   } else {
-    res.status(406).json('There is a winner, please reset the game');
+    const selectedColumn = parseInt(req.body.button, 10);
+    if (!isRequestValid(gameData, selectedColumn)) {
+      res.status(400).json('The selected column is out of range');
+      return;
+    }
+
+    if (!gameData.winner) {
+      const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
+      if (selectedRow !== null) {
+        gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
+        gameData.turnCount += 1;
+        gameData.winner = checkWinner(selectedRow, selectedColumn,
+          gameData.board, gameData.winCondition);
+        if (gameData.winner) {
+          const playerScoreKey = getPlayerScoreKey(gameData,
+            gameData.board[selectedRow][selectedColumn]);
+          gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
+        }
+        fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
+        res.json(gameData);
+      } else {
+        res.status(400).json('The selected column is full');
+      }
+    } else {
+      res.status(400).json('There is a winner, please reset the game');
+    }
   }
 });
 
 app.post('/login', async (req, res) => {
-  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  let data = await fs.readFile('./secrets.json', 'utf-8');
   data = JSON.parse(data);
 
   const sentUser = req.body.username;
@@ -125,16 +126,15 @@ app.post('/login', async (req, res) => {
     data = createUser(data, sentUser, sentPass, cookie);
 
     res.cookie('token', cookie, { sameSite: true });
-    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+    fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
     res.status(200).json(data[data.length - 1].gameData[0]);
   } else if (sentPass === data[userIndex].password) {
     const cookie = randomstring.generate(7);
     data[userIndex].token = cookie;
 
     res.cookie('token', cookie, { sameSite: true });
-    console.log(data[userIndex].gameData);
 
-    fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+    fs.writeFile('./secrets.json', JSON.stringify(data), 'utf-8');
     res.status(200).json(data[userIndex].gameData[0]);
   } else {
     res.status(401).json('incorrect password');
@@ -145,6 +145,12 @@ app.use((req, res) => {
   res.status(404).send("<html><body><h1>404</h1><img src='https://media3.giphy.com/media/l2JJKs3I69qfaQleE/giphy.gif'></img><br>This is not the endpoint you are looking for</body></html>");
 });
 
-app.listen(port, () => {
-  console.log('listening on port ' + port + '...');
-});
+/* istanbul ignore next  */
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`listening on port ${port}...`);
+  });
+}
+
+module.exports = { app };
