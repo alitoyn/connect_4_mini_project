@@ -79,7 +79,10 @@ app.post('/move', async (req, res) => {
     gameData.draw = true;
   }
   const selectedColumn = parseInt(req.body.button, 10);
-  if (!isRequestValid(gameData, selectedColumn)) {
+
+  try {
+    isRequestValid(gameData, selectedColumn);
+  } catch (error) {
     res.status(400).json('The selected column is out of range');
     return;
   }

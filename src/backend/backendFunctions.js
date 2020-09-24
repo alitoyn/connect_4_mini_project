@@ -1,11 +1,11 @@
 const fs = require('fs').promises;
 
 function isRequestValid(gameState, requestedColumn) {
-  if (typeof (requestedColumn) !== 'number') {
-    // throw new Error('Request is not valid');
-    return false;
+  if (typeof (requestedColumn) !== 'number' || requestedColumn >= gameState.cols) {
+    throw new Error('Request is not valid');
+  } else {
+    return true;
   }
-  return requestedColumn < gameState.cols;
 }
 
 function tokenTooCloseToBottom(row, winCondition) {

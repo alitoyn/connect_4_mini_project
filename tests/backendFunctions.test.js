@@ -239,15 +239,27 @@ describe('isRequestValid function', () => {
   each([
     ['valid request #1', t1Col, gameState, true],
     ['valid request #2', t2Col, gameState, true],
-    ['invalid request - out of range', t3Col, gameState, false],
-    ['invalid request - string', t4Col, gameState, false],
-    ['invalid request - null', t5Col, gameState, false],
+    // ['invalid request - out of range', t3Col, gameState, false],
+    // ['invalid request - string', t4Col, gameState, false],
+    // ['invalid request - null', t5Col, gameState, false],
 
   ]).it("'%s'", (text, column, _gameState, expected) => {
     expect(
       isRequestValid(_gameState, column),
     )
       .toBe(expected);
+  });
+
+  each([
+    ['invalid request - out of range', t3Col, gameState],
+    ['invalid request - string', t4Col, gameState],
+    ['invalid request - null', t5Col, gameState],
+
+  ]).it("'%s'", (text, column, _gameState) => {
+    expect(() => {
+      isRequestValid(_gameState, column);
+    })
+      .toThrow('Request is not valid');
   });
 });
 
