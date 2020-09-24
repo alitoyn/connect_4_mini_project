@@ -136,7 +136,7 @@ function checkWinner(placedTokenRow, placedTokenCol, board, winCondition) {
 
 function returnLastChar(string) {
   if (typeof (string) !== 'string') {
-    return false;
+    throw new Error('Input was not a string');
   }
   return string[string.length - 1];
 }

@@ -236,13 +236,10 @@ describe('isRequestValid function', () => {
   const t3Col = 10;
   const t4Col = 'string';
   const t5Col = null;
+
   each([
     ['valid request #1', t1Col, gameState, true],
     ['valid request #2', t2Col, gameState, true],
-    // ['invalid request - out of range', t3Col, gameState, false],
-    // ['invalid request - string', t4Col, gameState, false],
-    // ['invalid request - null', t5Col, gameState, false],
-
   ]).it("'%s'", (text, column, _gameState, expected) => {
     expect(
       isRequestValid(_gameState, column),
@@ -363,20 +360,20 @@ describe('returnLastChar function', () => {
   const r1 = '1';
 
   const t2 = 10;
-  const r2 = false;
 
   const t3 = null;
-  const r3 = false;
+
+  it('should return the last character of a string', () => {
+    expect(returnLastChar(t1)).toBe(r1);
+  });
 
   each([
-    ['valid request #1', t1, r1],
-    ['valid request #2', t2, r2],
-    ['invalid request', t3, r3],
-  ]).it("'%s'", (text, passedString, expected) => {
-    expect(
-      returnLastChar(passedString),
-    )
-      .toBe(expected);
+    ['invalid request #1', t2],
+    ['invalid request #2', t3],
+  ]).it("'%s'", (text, passedString) => {
+    expect(() => {
+      returnLastChar(passedString);
+    }).toThrow('Input was not a string');
   });
 });
 
