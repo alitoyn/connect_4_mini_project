@@ -290,7 +290,7 @@ describe('tokenTooCloseToBottom function', () => {
     expect(() => {
       tokenTooCloseToBottom(row, winCondition);
     })
-      .toThrow('Invalid request');
+      .toThrow('Invalid request - row arg should be a number');
   });
 });
 
@@ -324,7 +324,7 @@ describe('pointerEqualToLastCheckpoint function', () => {
     expect(() => {
       pointerEqualToLastCheckpoint(pointer, winCondition);
     })
-      .toThrow('Invalid request');
+      .toThrow('Invalid request - pointer arg should be a number');
   });
 });
 
@@ -336,7 +336,6 @@ describe('getBoard function', () => {
 
   const expected1 = [[null]];
   const expected2 = [[null, null], [null, null]];
-  const expected3 = false;
 
   each([
     ['valid request #1', t1Row, t1Cols, expected1],

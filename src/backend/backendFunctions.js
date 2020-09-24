@@ -10,14 +10,14 @@ function isRequestValid(gameState, requestedColumn) {
 
 function tokenTooCloseToBottom(row, winCondition) {
   if (typeof (row) !== 'number') {
-    throw new Error('Invalid request');
+    throw new Error('Invalid request - row arg should be a number');
   }
   return row < winCondition - 1;
 }
 
 function pointerEqualToLastCheckpoint(pointer, winCondition) {
   if (typeof (pointer) !== 'number') {
-    throw new Error('Invalid request');
+    throw new Error('Invalid request - pointer arg should be a number');
   }
   return pointer === winCondition - 1;
 }
