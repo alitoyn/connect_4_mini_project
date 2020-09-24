@@ -98,7 +98,7 @@ const dataObject = [{
     cols: 7,
     turnCount: 16,
     winner: false,
-    draw: false,
+    draw: true,
     winCondition: 4,
     player1Score: 0,
     player2Score: 0,

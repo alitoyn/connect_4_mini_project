@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 
 function isRequestValid(gameState, requestedColumn) {
   if (typeof (requestedColumn) !== 'number') {
+    // throw new Error('Request is not valid');
     return false;
   }
   return requestedColumn < gameState.cols;

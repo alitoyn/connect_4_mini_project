@@ -71,9 +71,12 @@ app.post('/move', async (req, res) => {
   const userObject = data[userIndex];
   const gameData = returnUserGameData(userObject);
 
+  if (gameData.draw === true) {
+    res.status(400).json('The game is a draw');
+    return;
+  }
   if (checkArrayForLastTurn(gameData.board)) {
     gameData.draw = true;
-    // res.status(400).json('The game is a draw');
   }
   const selectedColumn = parseInt(req.body.button, 10);
   if (!isRequestValid(gameData, selectedColumn)) {
