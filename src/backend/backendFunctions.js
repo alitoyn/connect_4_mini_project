@@ -1,3 +1,5 @@
+const fs = require('fs').promises;
+
 function isRequestValid(gameState, requestedColumn) {
   if (typeof (requestedColumn) !== 'number') {
     return false;
@@ -197,6 +199,20 @@ function createUser(dataObject, username, password, cookie) {
   return dataObjectCopy;
 }
 
+<<<<<<< Updated upstream
+=======
+async function checkDataObjectFileExists() {
+  try {
+    await fs.writeFile('./src/backend/secrets.json', JSON.stringify([]), { encoding: 'utf-8', flag: 'wx' });
+    // eslint-disable-next-line no-console
+    console.log('created data object file');
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('found data object file', error);
+  }
+}
+
+>>>>>>> Stashed changes
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
