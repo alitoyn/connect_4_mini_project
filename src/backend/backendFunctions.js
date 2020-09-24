@@ -197,6 +197,17 @@ function createUser(dataObject, username, password, cookie) {
   return dataObjectCopy;
 }
 
+async function checkDataObjectFileExists() {
+  try {
+    await fs.writeFile('./src/backend/secrets.json', JSON.stringify([]), { encoding: 'utf-8', flag: 'wx' });
+    // eslint-disable-next-line no-console
+    console.log('created data object file');
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('found data object file');
+  }
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
@@ -217,5 +228,6 @@ if (typeof module !== 'undefined') {
     returnUserObject,
     returnUserGameData,
     createUser,
+    checkDataObjectFileExists,
   };
 }
