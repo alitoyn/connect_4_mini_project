@@ -269,18 +269,28 @@ describe('tokenTooCloseToBottom function', () => {
   const t3Row = 3;
   const t4Row = 'string';
   const t5Row = null;
+
   each([
     ['valid request #1', t1Row, winCondition4, true],
     ['valid request #2', t2Row, winCondition5, false],
     ['valid request #3', t3Row, winCondition5, true],
-    ['invalid request - string', t4Row, winCondition4, false],
-    ['invalid request - null', t5Row, winCondition4, false],
 
   ]).it("'%s'", (text, row, winCondition, expected) => {
     expect(
       tokenTooCloseToBottom(row, winCondition),
     )
       .toBe(expected);
+  });
+
+  each([
+    ['invalid request - string', t4Row, winCondition4],
+    ['invalid request - null', t5Row, winCondition4],
+
+  ]).it("'%s'", (text, row, winCondition) => {
+    expect(() => {
+      tokenTooCloseToBottom(row, winCondition);
+    })
+      .toThrow('Invalid request');
   });
 });
 

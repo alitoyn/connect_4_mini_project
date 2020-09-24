@@ -10,7 +10,7 @@ function isRequestValid(gameState, requestedColumn) {
 
 function tokenTooCloseToBottom(row, winCondition) {
   if (typeof (row) !== 'number') {
-    return false;
+    throw new Error('Invalid request');
   }
   return row < winCondition - 1;
 }
