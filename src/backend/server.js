@@ -18,7 +18,7 @@ const {
 
 const app = express();
 app.use(express.json());
-app.use(express.static('src/frontend/index.html'));
+app.use(express.static('/config/connect_4_mini_project/src/frontend/'));
 app.use(cookieParser());
 
 const port = 3000;
@@ -37,7 +37,7 @@ const gameState = {
 gameState.board = getBoard(gameState.rows, gameState.cols);
 
 app.get('/info', (req, res) => {
-  res.json('Welcome to connect 4. please read the docs to find the right endpoints_test');
+  res.json('Welcome to connect 4. please read the docs to find the right endpoints');
 });
 
 app.get('/reset', async (req, res) => {
