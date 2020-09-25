@@ -18,6 +18,7 @@ const {
   returnUserGameData,
   createUser,
   checkDataObjectFileExists,
+  evalBoard,
 } = require('./backendFunctions.js');
 
 const app = express();
@@ -140,7 +141,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/auto-place', async (req, res) => {
+app.get('/auto-place-random', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
   const { token } = req.cookies;
@@ -157,6 +158,7 @@ app.get('/auto-place', async (req, res) => {
   }
 
   if (!gameData.winner) {
+    
     const flag = true;
     const count = 0;
     while (flag) {
@@ -164,6 +166,7 @@ app.get('/auto-place', async (req, res) => {
 
       const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
       if (selectedRow !== null) {
+        console.log(evalBoard(gameData.board, [selectedColumn, selectedRow]));
         gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
         gameData.turnCount += 1;
         gameData.winner = checkWinner(selectedRow, selectedColumn,

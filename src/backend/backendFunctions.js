@@ -211,6 +211,17 @@ async function checkDataObjectFileExists() {
   }
 }
 
+function evalBoard(board, placedToken) {
+  if (checkWinner(placedToken[1], placedToken[0], board, 3)) {
+    return 3;
+  } if (checkWinner(placedToken[1], placedToken[0], board, 2)) {
+    return 2;
+  } if (checkWinner(placedToken[1], placedToken[0], board, 1)) {
+    return 1;
+  }
+  return 0;
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     checkCols,
@@ -232,5 +243,6 @@ if (typeof module !== 'undefined') {
     returnUserGameData,
     createUser,
     checkDataObjectFileExists,
+    evalBoard,
   };
 }

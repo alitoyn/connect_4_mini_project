@@ -108,7 +108,7 @@ function loadHTML(gameState) {
   $('#auto-place').click(() => {
     console.log('AI goes brrrrr');
     $.ajax({
-      url: '/auto-place',
+      url: '/auto-place-random',
       dataType: 'json',
       success: (data) => {
         updateHTML(data);
