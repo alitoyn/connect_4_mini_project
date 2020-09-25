@@ -105,6 +105,20 @@ function loadHTML(gameState) {
       });
     });
 
+  $('#auto-place').click(() => {
+    console.log('AI goes brrrrr');
+    $.ajax({
+      url: '/auto-place',
+      dataType: 'json',
+      success: (data) => {
+        updateHTML(data);
+      },
+      error: (res) => {
+        createToast('Auto Place Error', res.responseText.slice(1, -1));
+      },
+    });
+  });
+
   // push board to html
   updateHTML(gameState);
 }

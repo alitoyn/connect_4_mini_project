@@ -140,6 +140,52 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.get('/auto-place', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  const userIndex = data.findIndex((user) => user.token === token);
+  const userObject = data[userIndex];
+  const gameData = returnUserGameData(userObject);
+
+  if (gameData.draw === true) {
+    res.status(400).json('The game is a draw');
+    return;
+  }
+  if (checkArrayForLastTurn(gameData.board)) {
+    gameData.draw = true;
+  }
+
+  if (!gameData.winner) {
+    const flag = true;
+    const count = 0;
+    while (flag) {
+      const selectedColumn = Math.floor(Math.random() * gameData.cols);
+
+      const selectedRow = getFirstEmptyRow(gameData.board, selectedColumn);
+      if (selectedRow !== null) {
+        gameData.board[selectedRow][selectedColumn] = gameData.turnCount % 2 === 0 ? 'y' : 'r';
+        gameData.turnCount += 1;
+        gameData.winner = checkWinner(selectedRow, selectedColumn,
+          gameData.board, gameData.winCondition);
+        if (gameData.winner) {
+          const playerScoreKey = getPlayerScoreKey(gameData,
+            gameData.board[selectedRow][selectedColumn]);
+          gameData[playerScoreKey] = increasePlayerScore(gameData, playerScoreKey);
+        }
+        fs.writeFile('./src/backend/secrets.json', JSON.stringify(data), 'utf-8');
+        res.json(gameData);
+        return;
+      } if (count > 12) {
+        res.status(400).json('The selected column is full');
+        return;
+      }
+    }
+  } else {
+    res.status(400).json('There is a winner, please reset the game');
+  }
+});
+
 app.use((req, res) => {
   res.status(404).send("<html><body><h1>404</h1><img src='https://media3.giphy.com/media/l2JJKs3I69qfaQleE/giphy.gif'></img><br>This is not the endpoint you are looking for</body></html>");
 });
