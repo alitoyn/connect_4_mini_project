@@ -141,6 +141,17 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.get('/update-board', async (req, res) => {
+  let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
+  data = JSON.parse(data);
+  const { token } = req.cookies;
+  const userIndex = data.findIndex((user) => user.token === token);
+  const userObject = data[userIndex];
+  const gameData = returnUserGameData(userObject);
+
+  res.json(gameData);
+});
+
 app.get('/auto-place-random', async (req, res) => {
   let data = await fs.readFile('./src/backend/secrets.json', 'utf-8');
   data = JSON.parse(data);
@@ -158,7 +169,6 @@ app.get('/auto-place-random', async (req, res) => {
   }
 
   if (!gameData.winner) {
-    
     const flag = true;
     const count = 0;
     while (flag) {
