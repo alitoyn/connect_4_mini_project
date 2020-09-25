@@ -57,7 +57,7 @@ function loadHTML(gameState) {
   // grid initialiser
   for (let i = 0; i < gameState.rows; i++) {
     const elementIDRow = `row-${i}`;
-
+    
     $('#nameHeading').text(`Welcome ${gameState.name}!`);
 
     $('#grid').prepend(

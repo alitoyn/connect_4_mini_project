@@ -7,18 +7,20 @@ $(() => {
 
 // refresh loop
 setInterval(() => {
-  $.ajax({
-    method: 'GET',
-    url: '/update-board',
-    dataType: 'json',
-    contentType: 'application/json',
-    success: async (res) => {
-      updateHTML(res);
-    },
-    error: () => {
-      createToast('Refresh Error', res.responseText.slice(1, -1));
-    },
-  });
+  if ($('#nameHeading').text() !== ' Welcome back! ') {
+    $.ajax({
+      method: 'GET',
+      url: '/update-board',
+      dataType: 'json',
+      contentType: 'application/json',
+      success: async (res) => {
+        updateHTML(res);
+      },
+      error: () => {
+        createToast('Refresh Error', res.responseText.slice(1, -1));
+      },
+    });
+  }
 }, 500);
 
 // event loop
